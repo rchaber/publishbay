@@ -330,6 +330,7 @@ class BaseHandler(webapp2.RequestHandler):
             'app_name': self.app.config.get('app_name'),
             'user_id': self.user_id,
             'username': self.username,
+            'first_name': self.first_name,
             'email': self.email,
             'url': self.request.url,
             'path': self.request.path,
