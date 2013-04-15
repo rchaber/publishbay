@@ -14,6 +14,8 @@ import random
 import re
 import json
 
+import time
+
 # related third party imports
 import webapp2
 import httpagentparser
@@ -790,6 +792,7 @@ class RegisterHandler(RegisterBaseHandler):
             # User registered successfully
             # But if the user registered using the form, the user has to check their email to activate the account ???
             try:
+                time.sleep(.1)
                 user_info = models.User.get_by_email(email)
                 if (user_info.activated == False):
                     # send email
