@@ -122,7 +122,7 @@
                             <li>
                                 <a href="javascript:void(0)">
                                     {% if user_id %}
-                                    {% trans %}Welcome {% endtrans %}{{ first_name }}
+                                    {{ username }}
                                     {% else %}
                                     {% trans %}Login{% endtrans %}
                                     {% endif %}
@@ -130,7 +130,7 @@
                                 <ul>
                                     {% if user_id %}
                                     <li><a href="{{ uri_for("edit-profile") }}"><i class="icon-user icon-white"></i>{% trans %} Edit Profile{% endtrans %}</a></li>
-                                    <li><a href="{{ logout_url }}"><i class="icon-off icon-white"></i>{% trans %} Logout{% endtrans %}</a></li>
+                                    <li><a href="{{ logout_url }}"><i class="icsw16-exit icsw16-white" style="background-position: -39px -900px; margin-right: .1em"></i>{% trans %} Logout{% endtrans %}</a></li>
                                     {% else %}
                                     <li><a href="{{ uri_for("contact") }}"><i class="icon-envelope icon-white"></i>{% trans %} Contact{% endtrans %}</a></li>
                                     <li><a href="{{ uri_for("register") }}"><i class="icon-user icon-white"></i>{% trans %} Register{% endtrans %}</a></li>
@@ -143,9 +143,9 @@
                     </div>
 
                     {% if user_id %}
-                    <div id="fade-menu" class="pull-left">
+                    <div id="fade-menu" class="pull-right">
                         <ul class="clearfix" id="mobile-nav">
-                            <li><a href="javascript:void(0)"><b>my stuff</b></a>
+                            <li><a href="javascript:void(0)" style="border-right: none;">my stuff</a>
                                 <ul>
                                     <li><a href="javascript:void(0)"><i class="icon-th-list icon-white"></i> List an item</a></li>
                                     <li><a href="javascript:void(0)"><i class="icon-retweet icon-white"></i> Make an offer</a></li>
@@ -160,6 +160,21 @@
                     </div>
                     {% endif %}
 
+                    <div class="pull-left" style="  margin-left: 0px;
+                                                    margin-top: 7px;
+                                                    font-size: 20px;
+                                                    font-weight: bold;
+                                                    color: #77BCFF;">
+                        PublishBay
+                    </div>
+
+                    <div class="pull-left top-search" style="margin-left: 20px;">
+                        <form action="">
+                            <input type="text" name="q" id="q-main">
+                            <button class="btn"><i class="icon-search"></i></button>
+                        </form>
+                    </div>
+
                 </div> <!-- container -->
             </div><!-- /navbar-inner -->
         </div><!-- /navbar -->
@@ -168,7 +183,7 @@
 
         {% block header %}
 
-        <header>
+        <header style="display:none;">
             <div class="container" style="width: 940px;">
                 <div class="row">
                     <div class="span4" style="font-size: 50px; line-height: 50px;vertical-align: middle; margin-left: 20px; margin-top: -3px">

@@ -14,8 +14,6 @@ import random
 import re
 import json
 
-import time
-
 # related third party imports
 import webapp2
 import httpagentparser
@@ -38,10 +36,11 @@ from lib.basehandler import BaseHandler
 from lib.basehandler import user_required
 from lib import facebook
 
+
 class AbTestHandler(BaseHandler):
     """
     AB Testing experiments are communly used with landing pages, but is not limited to them.
-    If the rendered page contains a form (i.e. newsletter subscription), 
+    If the rendered page contains a form (i.e. newsletter subscription),
     manage the post request in a different handler
 
     For complex A/B test, you can use the 2 templates instead of one.
@@ -109,10 +108,10 @@ class SendEmailHandler(BaseHandler):
                 logging.error("Error saving Email Log in datastore")
 
         message = mail.EmailMessage()
-        message.sender=sender
-        message.to=to
-        message.subject=subject
-        message.html=body
+        message.sender = sender
+        message.to = to
+        message.subject = subject
+        message.html = body
         message.send()
 
 
@@ -792,8 +791,7 @@ class RegisterHandler(RegisterBaseHandler):
             # User registered successfully
             # But if the user registered using the form, the user has to check their email to activate the account ???
             try:
-                time.sleep(1)
-                user_info = models.User.get_by_email(email)
+                user_info = user[1]
                 if (user_info.activated == False):
                     # send email
                     subject =  _("%s Account Verification" % self.app.config.get('app_name'))
