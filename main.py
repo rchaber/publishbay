@@ -14,7 +14,7 @@
 #
 
 __author__  = 'Richard Haber'
-__website__ = 'www.demyoctavo.com'
+__website__ = 'www.publishbay.com'
 
 import os, sys
 # Third party libraries path must be fixed before importing webapp2

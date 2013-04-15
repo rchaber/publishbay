@@ -15,7 +15,7 @@ config = {
                            'environment_args': {'extensions': ['jinja2.ext.i18n']}},
 
 # application name
-'app_name' : "DemyOctavo",
+'app_name' : "PublishBay",
 
 # the default language code for the application.
 # should match whatever language the site uses when i18n is disabled
@@ -66,7 +66,7 @@ config = {
 'captcha_private_key' : "6LfXYNwSAAAAAAQFjA66WcyLUOnK0ei3hJXRJjih",
 
 # Leave blank "google_analytics_domain" if you only want Analytics code
-'google_analytics_domain' : "demyoctavo.com",
+'google_analytics_domain' : "publishbay.com",
 'google_analytics_code' : "UA-XXXXX-X",
 
 # add status codes and templates used to catch and display errors
