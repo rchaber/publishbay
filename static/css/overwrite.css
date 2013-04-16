@@ -140,6 +140,15 @@ footer, .push {
 	float: left;
 }
 
+span.password_strength {
+	position: relative;
+	top: -67px;
+	width: auto;
+	left: -1px;
+	float: right;
+	margin-bottom: -20px;
+}
+
 .form-horizontal .controls {
 	line-height: 30;
 	font-size: 14px;
@@ -147,6 +156,7 @@ footer, .push {
 
 .alert {
 	border-radius: 0;
+	margin-top: 20px;
 }
 
 .help-block {
@@ -177,7 +187,7 @@ form {
 
 .form-actions {
 	padding: 19px 0 20px;
-	margin-top: 20px;
+	margin-top: 0;
 	margin-bottom: 20px;
 	background-color: #F5F5F5;
 	border-top: none;

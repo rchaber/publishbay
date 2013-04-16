@@ -1,7 +1,7 @@
 {% extends base_layout %}
 
 {% block content %}
-<div class="span8" style="float: none; margin: 30px auto;">
+<div class="span7" style="float: none; margin: 30px auto;">
     <div class="w-box">
         <div class="w-box-header"><h4>create a free personal account</h4></div>
         <div class="w-box-content">
@@ -15,7 +15,7 @@
                         {{ macros.field(form.last_name, label=_("Last Name"), class="input-large focused") }}
                         {{ macros.field(form.email, label=_("Email"), class="input-large focused required email", type="email") }}
                     </div>
-                    <div style="display: inline-block; float: right; width: 50%">
+                    <div style="display: inline-block; float: left; width: 45%; margin-left: 30px">
                         {{ macros.field(form.password, label=_("Password"), class="input-large focused required", type="password") }}
                         {% if not is_mobile %}
                         {{ macros.field(form.c_password, label=_("Confirm Password"), class="input-large focused required", type="password") }}
@@ -27,7 +27,7 @@
                         <a href="/terms/" target="_blank">Terms of Service</a> and the
                         <a href="/privacy/" target="_blank">Privacy Policy</a>.</p>
                     </div>
-                    <div class="form-actions" style="float: right; margin-top: 0">
+                    <div class="form-actions" style="margin-top: 0">
                         <button type="submit" class="btn">{% trans %}Create an account{% endtrans %}</button>
                     </div>
                 </fieldset>

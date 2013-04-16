@@ -1,7 +1,7 @@
 {% extends base_layout %}
 
 {% block content %}
-<div class="span8" style="float: none; margin: 30px auto;">
+<div class="span7" style="float: none; margin: 30px auto;">
     <div class="w-box">
         <div class="w-box-header"><h4>Login</h4></div>
         <div class="w-box-content">
@@ -16,8 +16,8 @@
                         </div>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                    {{ macros.field(form.username, label=_("Username or Email"), class="input-xlarge focused required") }}
-                    {{ macros.field(form.password, label=_("Password"), class="input-xlarge focused required", type="password") }}
+                    {{ macros.field(form.username, label=_("Username or Email"), class="input-large focused required") }}
+                    {{ macros.field(form.password, label=_("Password"), class="input-large focused required", type="password") }}
                     <div class="control-group">
                         <div class="controls">
                             <button type="submit" class="btn btn-login">{% trans %}Login{% endtrans %}</button>
