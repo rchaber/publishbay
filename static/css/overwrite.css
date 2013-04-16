@@ -5,24 +5,28 @@
 
 #fade-menu [class^="icon-"], #fade-menu [class*=" icon-"] {
 	margin-right: 3px;
-	margin-top: 0px;
+	margin-top: 0;
 }
 
 #fade-menu ul li ul li a {
 	padding-top: 2px;
 }
 
+body {
+	padding-top: 35px;
+}
+
 header {
-	margin-bottom: 0px;
+	margin-bottom: 0;
 	/* background: #A0A0A0; */
 }
 
 .main-col {
 	float: left;
-	padding: 10px 0;
+	padding: 10 0;
 	position: relative;
-	margin-left: 10px;
-	padding-left: 20px;
+	margin-left: 10;
+	padding-left: 20;
 }
 
 #login-wrapper {
@@ -38,75 +42,57 @@ header {
 	border-radius: 8px;
 }
 
-div.flash {
+.flash {
 	font-weight: bold;
 	display: none;
 	position: fixed;
-	padding: 5px 10px;
-	top: 120px;
-	right: 110px;
-	min-width: 200px;
+	padding: 5px 10;
+	top: 120;
+	right: 110;
+	min-width: 200;
 	opacity: 0.95;
-	margin: 0px 0px 10px 10px;
+	margin: 0 0 10 10;
 	vertical-align: middle;
 	cursor: pointer;
 	color: #fff;
 	background-color: #888;
 	border: 2px solid #fff;
-	border-radius: 0;
 	-o-border-radius: 0;
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
+	border-radius: 0;
 	background-image: none;
-	background-repeat: none;
+	background-repeat: no-repeat;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	z-index: 2000;
 }
 
-/*
-div.error {
-	background: crimson;
-	color: white;
-	padding: 0px 6px;
-	display: inline-block;
-	background-image: none;
-	background-repeat: none;
-	float: left;
-	margin-top: -35px;
-	position: relative;
-	left: 225px;
-	border-radius: 0;
-	border: none;
-	width: auto;
-}
-*/
-
 .error.help-inline {
-	margin-top: 0px;
+	margin-top: -12px;
 	font-size: 11px;
 	float: left;
-	margin-bottom: -20px;
+	margin-bottom: 0;
 }
 
 textarea {
-	width: 200px;
+	width: 200;
 }
 
 input[type="text"], input[type="password"], select {
-	/* width: 200px; */
+	/* width: 200; */
 	margin-right: 5px;
 }
 
 .navbar .nav > li > a {
-    padding: 10px 15px 10px 0;
+    padding: 10 15px 10 0;
 }
 
 div.error_wrapper .error {
-    border-radius: 0px;
-    -o-border-radius: 0px;
-    -moz-border-radius: 0px;
-    -webkit-border-radius: 0px;
+    -o-border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
 }
 
 div.error_wrapper {
@@ -118,33 +104,35 @@ span#closeflash {
 }
 
 .well {
-	margin: -10px;
+	margin-bottom: 0;
 	border: none;
 	border-radius: 0;
+	background: none;
+	box-shadow: none;
 }
 
 #content {
-	padding-top: 20px;
+	padding-top: 20;
 }
 
 .auth-at-loginpage fieldset {
 	width: 25%;
-	min-width: 270px;
-	margin: 0 10px;
+	min-width: 270;
+	margin: 0 10;
 }
 
 #main-wrapper {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -40px;
+	margin: 0 auto -40;
 }
 
 footer, .push {
 	height: 35px;
 }
 
-span.password_strength {
+.password_strength {
 	display: block;
 	width: auto;
 	margin: 2px 0 -18px 5px;
@@ -153,21 +141,78 @@ span.password_strength {
 }
 
 .form-horizontal .controls {
-	line-height: 30px;
+	line-height: 30;
 	font-size: 14px;
 }
-
-/*
-[class*="span"]:first-child {
-	margin-left: 0px;
-}
-*/
 
 .alert {
 	border-radius: 0;
 }
 
 .help-block {
-	margin-top: 0px;
+	margin-top: 0;
 	font-size: 14px;
+}
+
+.w-box-header {
+	height: 40px;
+	line-height: 40px;
+	padding: 0 10px 0px;
+	background: #A2A2A2;
+	color: #FFF;
+	font-size: 13px;
+}
+
+.w-box-header h4 {
+	display: inline-block;
+	font-size: 14px;
+	font-weight: 700;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+form {
+	background: none;
+}
+
+.form-actions {
+	padding: 19px 0 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background-color: #F5F5F5;
+	border-top: none;
+}
+
+input[type="radio"], input[type="checkbox"] {
+	margin: 0;
+	line-height: normal;
+}
+
+.social-login-icons a.social-btn {
+	border-radius: 4px;
+}
+
+.form-actions h5 {
+	font-weight: normal;
+}
+
+.form-warning {
+	background-color: #FFFFE2;
+	border: 1px solid #E7E4C2;
+	border-radius: 4px;
+	color: #333;
+	display: inline-block;
+	font-family: Helvetica, arial, freesans, clean, sans-serif;
+	font-size: 13px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 19px;
+	margin: 10px 0 0;
+	padding: 8px 10px;
+	width: auto;
+}
+
+.form-warning p {
+	margin: 0;
 }

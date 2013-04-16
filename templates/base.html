@@ -97,8 +97,6 @@
         <script src="/static/js/beoro_common.js"></script> 
 
 
-    <noscript><link href="/static/css/web2py_bootstrap_nojs.css" rel="stylesheet" type="text/css" /></noscript>
-
 </head>
 <body class="bg_none">
     <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
@@ -183,24 +181,9 @@
 
         {% block header %}
 
-        <header style="display:none;">
-            <div class="container" style="width: 940px;">
-                <div class="row">
-                    <div class="span4" style="font-size: 50px; line-height: 50px;vertical-align: middle; margin-left: 20px; margin-top: -3px">
-                        <a href="/" style="text-decoration: none;"><b>PublishBay</b></a>
-                    </div>
-                    <div class="input-append" style="margin-bottom: 0px; float: right; margin-right: 100px;">
-                        <input type="text" class="span6" style="height: 46px; margin: 0; padding: 0 10px; font-size: 20px; width: 400px;">
-                        <button type="button" class="btn btn-large btn-warning" style="height: 48px; margin: 0 0 0 3px; padding: 0 10px; font-size: 20px;">Search</button>
-                    </div>
-                    <input class="span6" value="" type="text" style="height: 2.3em; margin: 0; padding: 0 10px; font-size: 20px; display: none;">
-                </div>
-            </div>
-        </header>
-
         {% endblock %}
 
-        <div id="content" class="container">
+        <div class="container">
 
         {% if messages|safe %}
             {% for message in messages %}

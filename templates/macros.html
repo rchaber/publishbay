@@ -21,13 +21,13 @@
 <!-- renders federated login (openId and Oauth) login buttons -->
 {% macro federated_login(provider_info, provider_uris, enable_federated_login) -%}
 {% if enable_federated_login %}
-            <div id="third_party_login" class="form-actions">
+            <div id="third_party_login" class="form-actions" style="margin-top: -10px;">
 {#
                 {% if disable_local_accounts %}
-                <h4>{% trans %}Sign in using:{% endtrans %}</h4>
+                <h5>{% trans %}Sign in using:{% endtrans %}</h5>
                 {% else %}
 #}
-                <h4>{% trans %}Or Sign in using:{% endtrans %}</h4>
+                <h5>{% trans %}Or Sign in using:{% endtrans %}</h5>
                 <ul class="social-login-icons">
                     {% for p in provider_info if provider_uris[p] %}
                         <li><a href="{{ provider_uris[p] }}" class="social-btn social-btn-{{ p }}" title="{{ p }}">{{ p }}</a></li>

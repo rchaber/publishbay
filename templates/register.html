@@ -1,25 +1,34 @@
 {% extends base_layout %}
 
 {% block content %}
-<div class="span7">             
-    <div class="w-box w-box-blue">
-        <div class="w-box-header" style="font-size: 20px; font-weight: bold;">Register</div>
-        <div class="w-box-content cnt_a">
+<div class="span8" style="float: none; margin: 30px auto;">
+    <div class="w-box">
+        <div class="w-box-header"><h4>create a free personal account</h4></div>
+        <div class="w-box-content">
 
-            <form id="form_register" action="{{ url|safe }}" method="post" class="well form-horizontal">
+            <form id="form_register" action="{{ url|safe }}" method="post" class="well form-vertical">
                 <fieldset>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                    {{ macros.field(form.username, label=_("Username"), placeholder=_("Enter your")+" "+_("Username"), class="input-xlarge focused required") }}
-                    {{ macros.field(form.name, label=_("Name"), placeholder=_("Enter your")+" "+_("Name"), class="input-xlarge focused") }}
-                    {{ macros.field(form.last_name, label=_("Last Name"), placeholder=_("Enter your")+" "+_("Last Name"), class="input-xlarge focused") }}
-                    {{ macros.field(form.email, label=_("Email"), placeholder=_("Enter your")+" "+_("Email"), class="input-xlarge focused required email", type="email") }}
-                    {{ macros.field(form.password, label=_("Password"), placeholder=_("Enter your")+" "+_("Password"), class="input-xlarge focused required", type="password") }}
-                    {% if not is_mobile %}
-                    {{ macros.field(form.c_password, label=_("Confirm Password"), placeholder=_("Confirm Password"), class="input-xlarge focused required", type="password") }}
-                    {% endif %}
-                    {{ macros.field(form.country, label=_("Country")) }}
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">{% trans %}Register{% endtrans %}</button>
+                    <div style="float: left; width: 45%">
+                        {{ macros.field(form.username, label=_("Username"), class="input-large focused required") }}
+                        {{ macros.field(form.name, label=_("Name"), class="input-large focused") }}
+                        {{ macros.field(form.last_name, label=_("Last Name"), class="input-large focused") }}
+                        {{ macros.field(form.email, label=_("Email"), class="input-large focused required email", type="email") }}
+                    </div>
+                    <div style="display: inline-block; float: right; width: 50%">
+                        {{ macros.field(form.password, label=_("Password"), class="input-large focused required", type="password") }}
+                        {% if not is_mobile %}
+                        {{ macros.field(form.c_password, label=_("Confirm Password"), class="input-large focused required", type="password") }}
+                        {% endif %}
+                        {{ macros.field(form.country, label=_("Country")) }}
+                    </div>
+                    <div class="form-warning">
+                        <p>By clicking on "Create an account" below, you are agreeing to the
+                        <a href="/terms/" target="_blank">Terms of Service</a> and the
+                        <a href="/privacy/" target="_blank">Privacy Policy</a>.</p>
+                    </div>
+                    <div class="form-actions" style="float: right; margin-top: 0">
+                        <button type="submit" class="btn">{% trans %}Create an account{% endtrans %}</button>
                     </div>
                 </fieldset>
             </form>
