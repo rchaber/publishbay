@@ -1,12 +1,12 @@
 {% extends base_layout %}
 
 {% block content %}
-<div class="span7">             
-    <div class="w-box w-box-blue">
-        <div class="w-box-header" style="font-size: 20px; font-weight: bold;">Edit profile</div>
-        <div class="w-box-content cnt_a">
+<div class="span7" style="float: none; margin: 30px auto;">             
+    <div class="w-box">
+        <div class="w-box-header"><h4>Edit profile</h4></div>
+        <div class="w-box-content">
 
-            <div id="edit_profile" class="well form-horizontal">
+            <div id="edit_profile" class="well form-vertical">
                 <fieldset>
                     <form id="form_edit_profile" action="{{ url|safe }}" method="post">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">{% trans %}Update Profile{% endtrans %}</button>
+                            <button type="submit" class="btn">{% trans %}Update Profile{% endtrans %}</button>
                         </div>
                     </form>
                     {% if enable_federated_login %}

@@ -62,8 +62,8 @@ config = {
 'github_client_secret': 'PUT_YOUR_GITHUB_CLIENT_SECRET_HERE',
 
 # get your own recaptcha keys by registering at http://www.google.com/recaptcha/
-'captcha_public_key': "6LfXYNwSAAAAAEoJDglhwZKYEgygSLa5qYQeJGfL",
-'captcha_private_key': "6LfXYNwSAAAAAAQFjA66WcyLUOnK0ei3hJXRJjih",
+'captcha_public_key': "6Lf-_98SAAAAAFnd-mqylFGgfHMLMDg-csT2R5AP",
+'captcha_private_key': "6Lf-_98SAAAAAGEH-kEdTQF3oAff1ZJ07gR71WOf",
 
 # Leave blank "google_analytics_domain" if you only want Analytics code
 'google_analytics_domain': "publishbay.com",
