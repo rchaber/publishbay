@@ -75,6 +75,18 @@ header {
 	margin-bottom: 0;
 }
 
+.control-group.error .controls .error.help-inline {
+	float: none;
+	margin-bottom: 0;
+	font-size: 11px;
+	display: inline-block;
+	z-index: 1000;
+	vertical-align: bottom;
+	position: relative;
+	top: 11px;
+	right: 232px;
+}
+
 textarea {
 	width: 200;
 }
@@ -235,4 +247,12 @@ input[type="radio"], input[type="checkbox"] {
 
 .form-warning p {
 	margin: 0;
+}
+
+label {
+	cursor: default;
+}
+
+#pageNav a {
+	font-size: 12px;
 }

@@ -1,18 +1,9 @@
 {% extends base_layout %}
 
 {% block content %}
-<div class="span3" style="margin-left: 0; margin-right: 30px;">
-    <div class="sidebar">
-        <ul id="pageNav">
-            <li class="current"><a href="">Edit profile</a></li>
-            <li><a href="{{ uri_for('edit-email') }}">{% trans %}Change email{% endtrans %}</a></li>
-            <li><a href="{{ uri_for("edit-password") }}">{% trans %}Change password{% endtrans %}</a></li>
-            <li><a href="">Associate social network</a></li>
-            <li><a href="{{ uri_for("edit-password") }}">{% trans %}Contact info{% endtrans %}</a></li>
-            <li><a href="{{ uri_for("edit-password") }}">{% trans %}My occupations{% endtrans %}</a></li>
-        </ul>
-    </div>
-</div>
+
+{{ macros.left_sidebar("edit_profile") }}
+
 <div class="span5">             
     <div class="w-box">
         <div class="w-box-header"><h4>Edit profile</h4></div>

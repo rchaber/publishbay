@@ -1,12 +1,15 @@
 {% extends base_layout %}
 
 {% block content %}
-<div class="span7">             
-    <div class="w-box w-box-blue">
-        <div class="w-box-header" style="font-size: 20px; font-weight: bold;">Change your e-mail</div>
-        <div class="w-box-content cnt_a">
 
-            <form id="form_edit_email" action="{{ url|safe }}" method="post" class="well form-horizontal">
+{{ macros.left_sidebar("change_email") }}
+
+<div class="span5">             
+    <div class="w-box">
+        <div class="w-box-header"><h4>Change e-mail</h4></div>
+        <div class="w-box-content">
+
+            <form id="form_edit_email" action="{{ url|safe }}" method="post" class="well form-vertical">
                 <fieldset>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     <div class="control-group">
@@ -15,10 +18,10 @@
                             <p class="help-block">{{ current_email }}</p>
                         </div>
                     </div>
-                    {{ macros.field(form.new_email, label=_("New Email"), placeholder=_("Enter a new email address"), class="input-xlarge focused required email", type="email") }}
-                    {{ macros.field(form.password, label=_("Current Password"), placeholder=_("Enter your")+" "+_("Password"), class="input-xlarge focused required", type="password") }}
+                    {{ macros.field(form.new_email, label=_("New Email"), class="input-large focused required email", type="email") }}
+                    {{ macros.field(form.password, label=_("Current Password"), class="input-large focused required", type="password") }}
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">{% trans %}Change your email{% endtrans %}</button>
+                        <button type="submit" class="btn">{% trans %}Change email{% endtrans %}</button>
                     </div>
                 </fieldset>
             </form>

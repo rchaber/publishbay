@@ -36,3 +36,19 @@
             </div>
 {% endif %}
 {%- endmacro %}
+
+<!-- renders left sidebar -->
+{% macro left_sidebar(current_page) -%}
+    <div class="span3" style="margin-left: 0; margin-right: 10px;">
+        <div class="sidebar">
+            <ul id="pageNav">
+                <li {% if current_page == 'edit_profile' %}{{ 'class="current"' }}{% endif %}><a href="{{ uri_for('edit-profile') }}">{% trans %}Edit profile{% endtrans %}</a></li>
+                <li {% if current_page == 'change_email' %}{{ 'class="current"' }}{% endif %}><a href="{{ uri_for('edit-email') }}">{% trans %}Change email{% endtrans %}</a></li>
+                <li {% if current_page == 'change_password' %}{{ 'class="current"' }}{% endif %}><a href="{{ uri_for('edit-password') }}">{% trans %}Change password{% endtrans %}</a></li>
+                <li {% if current_page == 'social_network' %}{{ 'class="current"' }}{% endif %}><a href="{{ uri_for('edit-password') }}">{% trans %}Associate social network{% endtrans %}</a></li>
+                <li {% if current_page == 'contact_info' %}{{ 'class="current"' }}{% endif %}><a href="{{ uri_for('edit-password') }}">{% trans %}Contact info{% endtrans %}</a></li>
+                <li {% if current_page == 'my_occupation' %}{{ 'class="current"' }}{% endif %}><a href="{{ uri_for('edit-password') }}">{% trans %}My occupations{% endtrans %}</a></li>
+            </ul>
+        </div>
+    </div>
+{%- endmacro %}
