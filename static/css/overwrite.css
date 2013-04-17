@@ -125,7 +125,7 @@ span#closeflash {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -40;
+	margin: 0 auto -40px;
 }
 
 footer, .push {
@@ -150,8 +150,18 @@ span.password_strength {
 }
 
 .form-horizontal .controls {
-	line-height: 30;
+	line-height: 30px;
 	font-size: 14px;
+}
+
+.form-vertical .controls {
+	line-height: 30px;
+	font-size: 14px;
+}
+
+.form-vertical .controls a {
+	color: #4183C4;
+	font-weight: bold;
 }
 
 .alert {

@@ -1,7 +1,19 @@
 {% extends base_layout %}
 
 {% block content %}
-<div class="span7" style="float: none; margin: 30px auto;">             
+<div class="span3" style="margin-left: 0; margin-right: 30px;">
+    <div class="sidebar">
+        <ul id="pageNav">
+            <li class="current"><a href="">Edit profile</a></li>
+            <li><a href="{{ uri_for('edit-email') }}">{% trans %}Change email{% endtrans %}</a></li>
+            <li><a href="{{ uri_for("edit-password") }}">{% trans %}Change password{% endtrans %}</a></li>
+            <li><a href="">Associate social network</a></li>
+            <li><a href="{{ uri_for("edit-password") }}">{% trans %}Contact info{% endtrans %}</a></li>
+            <li><a href="{{ uri_for("edit-password") }}">{% trans %}My occupations{% endtrans %}</a></li>
+        </ul>
+    </div>
+</div>
+<div class="span5">             
     <div class="w-box">
         <div class="w-box-header"><h4>Edit profile</h4></div>
         <div class="w-box-content">
@@ -10,9 +22,9 @@
                 <fieldset>
                     <form id="form_edit_profile" action="{{ url|safe }}" method="post">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                        {{ macros.field(form.username, label=_("Username"), placeholder=_("Enter your")+" "+_("Username"), class="input-xlarge focused required") }}
-                        {{ macros.field(form.name, label=_("Name"), placeholder=_("Enter your")+" "+_("Name"), class="input-xlarge focused") }}
-                        {{ macros.field(form.last_name, label=_("Last Name"), placeholder=_("Enter your")+" "+_("Last Name"), class="input-xlarge focused") }}
+                        {{ macros.field(form.username, label=_("Username"), class="input-large focused required") }}
+                        {{ macros.field(form.name, label=_("Name"), class="input-large focused") }}
+                        {{ macros.field(form.last_name, label=_("Last Name"), class="input-large focused") }}
                         {{ macros.field(form.country, label=_("Country")) }}
                         <div class="control-group">
                             <label class="control-label">{% trans %}Email{% endtrans %}:</label>
@@ -52,7 +64,7 @@
         	            {% endif %}
         	            {% if unused_providers %}
         	                <div id="trird_party_login" class="form-actions">
-        	                    <h4>{% trans %}Associate account with{% endtrans %}:</h4>
+        	                    <h5>{% trans %}Associate account with{% endtrans %}:</h5>
         	                    <div class="social-login-icons">
         	                        {% for provider in unused_providers %}
         	                            <a href="{{ provider_uris[provider.name] }}" class="social-btn social-btn-{{ provider.name }}" title="{{ provider.label }}">{{ provider.label }}</a>
