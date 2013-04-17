@@ -114,36 +114,12 @@
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container" style="width: 940px;">
-
                     <div id="fade-menu" class="pull-right">
                         <ul class="clearfix" id="mobile-nav">
+
+                            {% if user_id %}
                             <li>
-                                <a href="javascript:void(0)">
-                                    {% if user_id %}
-                                    {{ username }}
-                                    {% else %}
-                                    {% trans %}Login{% endtrans %}
-                                    {% endif %}
-                                </a>
-                                <ul>
-                                    {% if user_id %}
-                                    <li><a href="{{ uri_for("edit-profile") }}"><i class="icon-user icon-white"></i>{% trans %} Edit Profile{% endtrans %}</a></li>
-                                    <li><a href="{{ logout_url }}"><i class="icsw16-exit icsw16-white" style="background-position: -39px -900px; margin-right: .1em"></i>{% trans %} Logout{% endtrans %}</a></li>
-                                    {% else %}
-                                    <li><a href="{{ uri_for("contact") }}"><i class="icon-envelope icon-white"></i>{% trans %} Contact{% endtrans %}</a></li>
-                                    <li><a href="{{ uri_for("register") }}"><i class="icon-user icon-white"></i>{% trans %} Register{% endtrans %}</a></li>
-                                    <li><a href="{{ uri_for("password-reset") }}"><i class="icon-lock icon-white"></i>{% trans %} Forgot password?{% endtrans %}</a></li>
-                                    <li><a href="{{ uri_for("login") }}"><i class="icon-off icon-white"></i> Login</a></li>
-                                    {% endif %}
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {% if user_id %}
-                    <div id="fade-menu" class="pull-right">
-                        <ul class="clearfix" id="mobile-nav">
-                            <li><a href="javascript:void(0)" style="border-right: none;">my stuff</a>
+                                <a href="javascript:void(0)">my stuff</a>
                                 <ul>
                                     <li><a href="javascript:void(0)"><i class="icon-th-list icon-white"></i> List an item</a></li>
                                     <li><a href="javascript:void(0)"><i class="icon-retweet icon-white"></i> Make an offer</a></li>
@@ -154,12 +130,27 @@
                                     <li><a href="javascript:void(0)"><i class="icsw16-truck icsw16-white" style="margin-left: -2px;"></i></i> My items</a></li>
                                 </ul>
                             </li>
+                            <li><a href="{{ uri_for("edit-profile") }}"><i class="icsw16-cog icsw16-white"></i></a></li>
+                            <li><a href="{{ logout_url }}"><i class="icsw16-exit icsw16-white"></i></a></li>
+                            {% else %}
+                            <li>
+                                <a href="javascript:void(0)">{% trans %}Login{% endtrans %}</a>
+                                <ul>
+                                    <li><a href="{{ uri_for("contact") }}"><i class="icon-envelope icon-white"></i>{% trans %} Contact{% endtrans %}</a></li>
+                                    <li><a href="{{ uri_for("register") }}"><i class="icon-user icon-white"></i>{% trans %} Register{% endtrans %}</a></li>
+                                    <li><a href="{{ uri_for("password-reset") }}"><i class="icon-lock icon-white"></i>{% trans %} Forgot password?{% endtrans %}</a></li>
+                                    <li><a href="{{ uri_for("login") }}"><i class="icon-off icon-white"></i> Login</a></li>
+                                </ul>
+                            </li>
+                            {% endif %}
                         </ul>
                     </div>
+
+                    {% if user_id %}
+                    <div class="pull-right" style="color: #EEE; margin-top: 6px; margin-right: 30px;"><b>{{ username }}</b></div>
                     {% endif %}
 
-                    <div class="pull-left" style="  margin-left: 0px;
-                                                    margin-top: 7px;">
+                    <div class="pull-left" style="margin-left: 0px; margin-top: 7px;">
                         <a href="/" style="font-size: 20px; font-weight: bold; color: #77BCFF;">PublishBay</a>
                     </div>
 
@@ -180,7 +171,7 @@
 
         {% endblock %}
 
-        <div class="container" style="margin-top: 15px;">
+        <div class="container" style="margin-top: 15px; padding-top: 15px;">
 
         {% if messages|safe %}
             {% for message in messages %}
