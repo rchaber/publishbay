@@ -1,0 +1,50 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    {{ macros.left_sidebar("contact_info") }}
+
+    <div class="span5">             
+        <div class="w-box">
+            <div class="w-box-header"><h4>Update contact info</h4></div>
+            <div class="w-box-content">
+
+                <div id="edit_contact_info" class="well form-vertical">
+                    <fieldset>
+                        <form id="form_contact_info" action="{{ url|safe }}" method="post">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                            {{ macros.field(form.address1, label=_("Address 1"), class="input-large focused") }}
+                            {{ macros.field(form.address2, label=_("Address 2"), class="input-large focused") }}
+                            {{ macros.field(form.city, label=_("City"), class="input-large focused") }}
+                            {{ macros.field(form.state, label=_("State"), class="input-large focused") }}
+                            {{ macros.field(form.zipcode, label=_("ZIP"), class="input-large focused") }}
+                            {{ macros.field(form.phone1, label=_("Phone 1"), class="input-large focused") }}
+                            {{ macros.field(form.phone2, label=_("Phone 2"), class="input-large focused") }}
+                            <div class="form-actions">
+                                <button type="submit" class="btn">{% trans %}Update Contact Info{% endtrans %}</button>
+                            </div>
+                        </form>
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    <script type="text/javascript">
+        $().ready(function() {
+            $("#form_contact_info").validate({
+                submitHandler: function(form) {
+                        form.submit();
+                },
+                errorPlacement: function(error, element) {
+                    element.parent().parent().addClass("error");
+                    error.addClass("help-inline").appendTo( element.parent() );
+                }
+            });
+        });
+    </script>
+    {% endblock %}
+

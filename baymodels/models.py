@@ -2,7 +2,7 @@ from boilerplate import models
 from google.appengine.ext import ndb
 
 
-class ContactDetails(ndb.Model):
+class ContactInfo(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     address1 = ndb.StringProperty()
     address2 = ndb.StringProperty()
@@ -14,6 +14,10 @@ class ContactDetails(ndb.Model):
     picture = ndb.BlobProperty()
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
+
+    @classmethod
+    def get_by_userkey(cls, k):
+        return cls.query(cls.user == k).get()
 
 
 class ProfessionalDetails(ndb.Model):

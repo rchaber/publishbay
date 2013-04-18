@@ -1,0 +1,60 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    {{ macros.left_sidebar("edit_associations") }}
+
+    <div class="span5">             
+        <div class="w-box">
+            <div class="w-box-header"><h4>Link social accounts</h4></div>
+            <div class="w-box-content">
+
+                <div id="edit_associations" class="well form-vertical">
+                    <fieldset>
+                        {% if enable_federated_login %}
+            	            {% if used_providers %}
+            	                <div id="third_party_login" class="existing-association">
+            	                    <h5>{% trans %}Existing linked accounts{% endtrans %}:</h5>
+            	                    <table class=" social-login-icons">
+            	                        {% for provider in used_providers %}
+            	                            <tr>
+            	                                <td><a href="#" class="social-btn social-btn-{{ provider.name }}" title="{{ provider.label }}"></a></td>
+            	                                {% if used_providers|length > 1 or local_account %}
+                                                <td>
+                                                    <form id="delete_social" action="/social_login/{{ provider.name }}/delete" method="post"  provider="{{provider.name}}" >
+                                                        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                                                        <button class="btn-small btn-danger" type="submit" style="margin-top: 2px;"><i class="icon-trash icon-white"></i>&nbsp;{% trans %}Remove{% endtrans %}</button>
+                                                    </form>
+                                                </td>
+                                                {% endif %}
+            	                            </tr>
+            	                        {% endfor %}
+            	                    </table>
+            	                </div>
+            	            {% endif %}
+            	            {% if unused_providers %}
+            	                <div id="third_party_login" class="form-actions">
+            	                    <h5>{% trans %}Link account with{% endtrans %}:</h5>
+            	                    <div class="social-login-icons">
+            	                        {% for provider in unused_providers %}
+            	                            <a href="{{ provider_uris[provider.name] }}" class="social-btn social-btn-{{ provider.name }}" title="{{ provider.label }}">{{ provider.label }}</a>
+            	                        {% endfor %}
+            	                    </div>
+            	                </div>
+            	            {% endif %}
+                        {% endif %}
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    <script type="text/javascript">
+        $().ready(function() {
+        });
+    </script>
+    {% endblock %}
+

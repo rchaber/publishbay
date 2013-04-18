@@ -165,7 +165,7 @@
 		closeDelay: 100,
 		placement: 'n',
 		smartPlacement: false,
-		offset: 10,
+		offset: 7,
 		mouseOnToPopup: false,
 		manual: false
 	};
