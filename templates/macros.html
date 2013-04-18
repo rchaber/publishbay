@@ -21,7 +21,7 @@
 <!-- renders federated login (openId and Oauth) login buttons -->
 {% macro federated_login(provider_info, provider_uris, enable_federated_login) -%}
 {% if enable_federated_login %}
-            <div id="third_party_login" class="form-actions" style="margin-top: -10px;">
+            <div id="third_party_login" class="form-actions">
 {#
                 {% if disable_local_accounts %}
                 <h5>{% trans %}Sign in using:{% endtrans %}</h5>

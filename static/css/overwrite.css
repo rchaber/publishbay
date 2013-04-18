@@ -216,6 +216,10 @@ form {
 	border-top: none;
 }
 
+.form-actions h5 {
+	font-weight: normal;
+}
+
 input[type="radio"], input[type="checkbox"] {
 	margin: 0;
 	line-height: normal;
