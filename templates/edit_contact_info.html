@@ -13,9 +13,9 @@
                     <fieldset>
                         <form id="form_contact_info" action="{{ url|safe }}" method="post">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                            {{ macros.field(form.address1, label=_("Address 1"), class="input-large focused") }}
-                            {{ macros.field(form.address2, label=_("Address 2"), class="input-large focused") }}
-                            {{ macros.field(form.city, label=_("City"), class="input-large focused") }}
+                            {{ macros.field(form.address1, label=_("Address 1"), class="input-xlarge focused") }}
+                            {{ macros.field(form.address2, label=_("Address 2"), class="input-xlarge focused") }}
+                            {{ macros.field(form.city, label=_("City"), class="input-xlarge focused") }}
                             {{ macros.field(form.state, label=_("State"), class="input-large focused") }}
                             {{ macros.field(form.zipcode, label=_("ZIP"), class="input-large focused") }}
                             {{ macros.field(form.phone1, label=_("Phone 1"), class="input-large focused") }}

@@ -129,8 +129,7 @@ class EditContactInfoHandler(BaseHandler):
 
         params = {}
         if self.user:
-            k = models.User.get_by_id(long(self.user_id)).key
-            user_contact_info = bmodels.ContactInfo.get_by_userkey(k)
+            user_contact_info = bmodels.ContactInfo.get_by_userkey(self.user_key)
             if user_contact_info:
                 self.form.address1.data = user_contact_info.address1
                 self.form.address2.data = user_contact_info.address2

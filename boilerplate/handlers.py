@@ -1113,7 +1113,7 @@ class EditProfileHandler(BaseHandler):
                         # The unique values were created, so we can save the user.
                         user_info.username=username
                         user_info.auth_ids[0]='own:%s' % username
-                        message+= _('Your new username is %s' % '<strong>{0:>s}</strong>'.format(username) )
+                        message+= _('Your new username is %s.' % '<strong>{0:>s}</strong>'.format(username) )
 
                     else:
                         message+= _('The username %s is already taken. Please choose another.'
