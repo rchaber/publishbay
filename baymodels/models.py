@@ -48,7 +48,7 @@ class OccupationType(ndb.Model):
         return obj[0].key.id() if len(obj) > 0 else None
 
 
-class OccupationUsers(ndb.Model):
+class UserOccupation(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     occupation = ndb.KeyProperty(kind=OccupationType)
     username = ndb.ComputedProperty(lambda self: self.user.get().username)
@@ -71,3 +71,35 @@ class OccupationUsers(ndb.Model):
         object_list = cls.query(cls.occup_name == occup_name).fetch()
         list = [x.username for x in object_list]
         return list
+
+
+class PublishingHouse(ndb.Model):
+    name = ndb.StringProperty()
+    owner = ndb.KeyProperty(kind=models.User)
+    partners = ndb.KeyProperty(kind=models.User, repeated=True)
+
+
+class BookProject(ndb.Model):
+    author = ndb.KeyProperty(kind=models.User)
+    title = ndb.StringProperty()
+    publishingHouse = ndb.KeyProperty(kind=PublishingHouse)
+
+
+class WorkingForProject(ndb.Model):
+    worker = ndb.KeyProperty(kind=models.User)
+    book_project = ndb.KeyProperty(kind=BookProject)
+    working_as = ndb.KeyProperty(kind=OccupationType)
+    hired_on = ndb.DateTimeProperty(auto_now_add=True)
+    total_value = ndb.IntegerProperty()
+    already_paid = ndb.IntegerProperty()
+    to_be_paid = ndb.ComputedProperty(lambda self: self.total_value - self.already_paid)
+
+
+class PublishingHouseStaff(ndb.Model):
+    house = ndb.KeyProperty(kind=PublishingHouse)
+    employee = ndb.KeyProperty(kind=models.User)
+    job = ndb.KeyProperty(kind=OccupationType)
+    currently_active = ndb.BooleanProperty(default=False)
+    working_on_projects = ndb.KeyProperty(kind=BookProject, repeated=True)
+    joined_on = ndb.DateTimeProperty(auto_now_add=True)
+    terminated_on = ndb.DateTimeProperty()
