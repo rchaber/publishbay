@@ -152,8 +152,7 @@ class EditContactInfoHandler(BaseHandler):
         city = self.form.city.data
         state = self.form.state.data.upper()
         zipcode = self.form.zipcode.data
-        phone1 = self.form.phone1.data
-        phone2 = self.form.phone2.data
+        phone = self.form.phone.data
 
         k = models.User.get_by_id(long(self.user_id)).key
         user_contact_info = bmodels.ContactInfo.get_by_userkey(k)
@@ -169,8 +168,7 @@ class EditContactInfoHandler(BaseHandler):
             user_contact_info.city = city
             user_contact_info.state = state
             user_contact_info.zipcode = zipcode
-            user_contact_info.phone1 = phone1
-            user_contact_info.phone2 = phone2
+            user_contact_info.phone = phone
             user_contact_info.put()
             message += " " + _('Your contact info has been updated.')
             self.add_message(message, 'success')

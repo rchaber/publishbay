@@ -16,6 +16,5 @@ class EditContactInfo(forms.BaseForm):
     city = fields.TextField(_('City'), [validators.Length(max=FIELD_MAXLENGTH)])
     state = fields.TextField(_('State'), [validators.Length(max=FIELD_MAXLENGTH)])
     zipcode = fields.TextField(_('ZIP'), [validators.Length(max=FIELD_MAXLENGTH)])
-    phone1 = fields.TextField(_('Phone 1'), [validators.Length(max=FIELD_MAXLENGTH)])
-    phone2 = fields.TextField(_('Phone 2'), [validators.Length(max=FIELD_MAXLENGTH)])
+    phone = fields.TextField(_('Phone'), [validators.Length(max=FIELD_MAXLENGTH)])
     pass

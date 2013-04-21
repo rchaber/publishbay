@@ -16,8 +16,10 @@ _routes = [
     RedirectRoute('/settings/contactinfo', handlers.EditContactInfoHandler, name='edit-contactinfo', strict_slash=True),
 ]
 
+
 def get_routes():
     return _routes
+
 
 def add_routes(app):
     if app.debug:
