@@ -118,7 +118,7 @@ class DeleteSocialProviderHandler(BaseHandler):
         self.redirect_to('edit-associations')
 
 
-class EditContactInfoHandler(BaseHandler):
+class EditProDetailsHandler(BaseHandler):
     """
     Handler for Edit User Contact Info
     """
@@ -129,17 +129,17 @@ class EditContactInfoHandler(BaseHandler):
 
         params = {}
         if self.user:
-            user_contact_info = bmodels.ContactInfo.get_by_userkey(self.user_key)
-            if user_contact_info:
-                self.form.address1.data = user_contact_info.address1
-                self.form.address2.data = user_contact_info.address2
-                self.form.city.data = user_contact_info.city
-                self.form.state.data = user_contact_info.state
-                self.form.zipcode.data = user_contact_info.zipcode
-                self.form.phone1.data = user_contact_info.phone1
-                self.form.phone2.data = user_contact_info.phone2
+            user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
+            if user_pro_details:
+                self.form.address1.data = user_pro_details.address1
+                self.form.address2.data = user_pro_details.address2
+                self.form.city.data = user_pro_details.city
+                self.form.state.data = user_pro_details.state
+                self.form.zipcode.data = user_pro_details.zipcode
+                self.form.phone1.data = user_pro_details.phone1
+                self.form.phone2.data = user_pro_details.phone2
 
-        return self.render_template('edit_contact_info.html', **params)
+        return self.render_template('edit_pro_details.html', **params)
 
     def post(self):
         """ Get fields from POST dict """
@@ -155,21 +155,21 @@ class EditContactInfoHandler(BaseHandler):
         phone = self.form.phone.data
 
         k = models.User.get_by_id(long(self.user_id)).key
-        user_contact_info = bmodels.ContactInfo.get_by_userkey(k)
+        user_pro_details = bmodels.ProDetails.get_by_userkey(k)
 
-        if not user_contact_info:
-            user_contact_info = bmodels.ContactInfo()
-            user_contact_info.user = k
+        if not user_pro_details:
+            user_pro_details = bmodels.ProDetails()
+            user_pro_details.user = k
 
         try:
             message = ''
-            user_contact_info.address1 = address1
-            user_contact_info.address2 = address2
-            user_contact_info.city = city
-            user_contact_info.state = state
-            user_contact_info.zipcode = zipcode
-            user_contact_info.phone = phone
-            user_contact_info.put()
+            user_pro_details.address1 = address1
+            user_pro_details.address2 = address2
+            user_pro_details.city = city
+            user_pro_details.state = state
+            user_pro_details.zipcode = zipcode
+            user_pro_details.phone = phone
+            user_pro_details.put()
             message += " " + _('Your contact info has been updated.')
             self.add_message(message, 'success')
             return self.get()
@@ -182,4 +182,4 @@ class EditContactInfoHandler(BaseHandler):
 
     @webapp2.cached_property
     def form(self):
-        return bayforms.EditContactInfo(self)
+        return bayforms.EditProDetails(self)

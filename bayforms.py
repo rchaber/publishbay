@@ -10,7 +10,7 @@ from boilerplate import forms as forms
 FIELD_MAXLENGTH = 50  # intended to stop maliciously long input
 
 
-class EditContactInfo(forms.BaseForm):
+class EditProDetails(forms.BaseForm):
     address1 = fields.TextField(_('Address 1'), [validators.Length(max=FIELD_MAXLENGTH)])
     address2 = fields.TextField(_('Address 2'), [validators.Length(max=FIELD_MAXLENGTH)])
     city = fields.TextField(_('City'), [validators.Length(max=FIELD_MAXLENGTH)])

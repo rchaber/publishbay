@@ -2,16 +2,16 @@
 
     {% block content %}
 
-    {{ macros.left_sidebar("contact_info") }}
+    {{ macros.left_sidebar("pro_details") }}
 
     <div class="span5">             
         <div class="w-box">
-            <div class="w-box-header"><h4>Update contact info</h4></div>
+            <div class="w-box-header"><h4>Update professional profile</h4></div>
             <div class="w-box-content">
 
-                <div id="edit_contact_info" class="well form-vertical">
+                <div id="edit_pro_details" class="well form-vertical">
                     <fieldset>
-                        <form id="form_contact_info" action="{{ url|safe }}" method="post">
+                        <form id="form_pro_details" action="{{ url|safe }}" method="post">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                             {{ macros.field(form.address1, label=_("Address 1"), class="input-xlarge focused") }}
                             {{ macros.field(form.address2, label=_("Address 2"), class="input-xlarge focused") }}
@@ -20,7 +20,7 @@
                             {{ macros.field(form.zipcode, label=_("ZIP"), class="input-large focused") }}
                             {{ macros.field(form.phone, label=_("Phone"), class="input-large focused") }}
                             <div class="form-actions">
-                                <button type="submit" class="btn">{% trans %}Update Contact Info{% endtrans %}</button>
+                                <button type="submit" class="btn">{% trans %}Update Professional Profile{% endtrans %}</button>
                             </div>
                         </form>
                     </fieldset>
@@ -34,7 +34,7 @@
     {% block mediaJS %}
     <script type="text/javascript">
         $().ready(function() {
-            $("#form_contact_info").validate({
+            $("#form_pro_details").validate({
                 submitHandler: function(form) {
                         form.submit();
                 },

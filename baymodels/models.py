@@ -1,9 +1,19 @@
 from boilerplate import models
 from google.appengine.ext import ndb
+import config
+
+joblist = config.localhost.config['joblist']
 
 
-class ContactInfo(ndb.Model):
+class ProDetails(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
+    username = ndb.ComputedProperty(lambda self: self.user.get().username)
+    display_name = ndb.StringProperty(choices=['full', 'last_initial'])
+    title = ndb.StringProperty()
+    overview = ndb.TextProperty()
+    english_level = ndb.IntegerProperty(choices=[1, 2, 3, 4, 5])
+    jobs = ndb.StringProperty(choices=joblist, repeated=True)
+    profile_visibility = ndb.StringProperty(choices=['everyone', 'pb_users_only', 'hidden'])
     address1 = ndb.StringProperty()
     address2 = ndb.StringProperty()
     city = ndb.StringProperty()
@@ -18,58 +28,19 @@ class ContactInfo(ndb.Model):
     def get_by_userkey(cls, k):
         return cls.query(cls.user == k).get()
 
-
-class ProfessionalDetails(ndb.Model):
-    user = ndb.KeyProperty(kind=models.User)
-    resume = ndb.TextProperty()
-    bio = ndb.TextProperty()
-    shortstatement = ndb.StringProperty()
-    longstatement = ndb.TextProperty()
-
-
-class OccupationType(ndb.Model):
-    name = ndb.StringProperty()
-
     @classmethod
     def list_all(cls):
         object_list = cls.query().fetch()
-        list = [x.key.id() for x in object_list]
-        return list
+        return [[x.user.get().username, x.jobs] for x in object_list]
 
     @classmethod
-    def key_by_name(cls, name):
-        obj = cls.query(cls.name == name).fetch()
-        return obj[0].key if len(obj) > 0 else None
+    def user_jobs(cls, username):
+        return cls.query(cls.username == username).get().jobs
 
     @classmethod
-    def id_by_name(cls, name):
-        obj = cls.query(cls.name == name).fetch()
-        return obj[0].key.id() if len(obj) > 0 else None
-
-
-class UserOccupation(ndb.Model):
-    user = ndb.KeyProperty(kind=models.User)
-    occupation = ndb.KeyProperty(kind=OccupationType)
-    username = ndb.ComputedProperty(lambda self: self.user.get().username)
-    occup_name = ndb.ComputedProperty(lambda self: self.occupation.get().name)
-
-    @classmethod
-    def list_all(cls):
-        object_list = cls.query().fetch()
-        list = [[x.username, x.occup_name] for x in object_list]
-        return list
-
-    @classmethod
-    def user_occupations(cls, username):
-        object_list = cls.query(cls.username == username).fetch()
-        list = [x.occup_name for x in object_list]
-        return list
-
-    @classmethod
-    def occupation_users(cls, occup_name):
-        object_list = cls.query(cls.occup_name == occup_name).fetch()
-        list = [x.username for x in object_list]
-        return list
+    def job_users(cls, job):
+        obj_list = cls.query(cls.jobs == job).fetch()
+        return [x.username for x in obj_list]
 
 
 class PublishingHouse(ndb.Model):
@@ -87,7 +58,7 @@ class BookProject(ndb.Model):
 class WorkingForProject(ndb.Model):
     worker = ndb.KeyProperty(kind=models.User)
     book_project = ndb.KeyProperty(kind=BookProject)
-    working_as = ndb.KeyProperty(kind=OccupationType)
+    working_as = ndb.StringProperty(choices=joblist, repeated=True)
     hired_on = ndb.DateTimeProperty(auto_now_add=True)
     total_value = ndb.IntegerProperty()
     already_paid = ndb.IntegerProperty()
@@ -97,7 +68,8 @@ class WorkingForProject(ndb.Model):
 class PublishingHouseStaff(ndb.Model):
     house = ndb.KeyProperty(kind=PublishingHouse)
     employee = ndb.KeyProperty(kind=models.User)
-    job = ndb.KeyProperty(kind=OccupationType)
+    job = ndb.StringProperty(choices=joblist, repeated=True)
+    exclusivity = ndb.BooleanProperty(default=False)
     currently_active = ndb.BooleanProperty(default=False)
     working_on_projects = ndb.KeyProperty(kind=BookProject, repeated=True)
     joined_on = ndb.DateTimeProperty(auto_now_add=True)
