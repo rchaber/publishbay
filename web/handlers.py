@@ -125,19 +125,19 @@ class EditProDetailsHandler(BaseHandler):
 
     @user_required
     def get(self):
-        """ Returns a simple HTML form for edit contact info """
+        """ Returns a simple HTML form for edit professional details """
 
-        params = {}
+        params = {'display_full_name': True}
         if self.user:
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
             if user_pro_details:
+                params['display_full_name'] = user_pro_details.display_full_name
                 self.form.address1.data = user_pro_details.address1
                 self.form.address2.data = user_pro_details.address2
                 self.form.city.data = user_pro_details.city
                 self.form.state.data = user_pro_details.state
                 self.form.zipcode.data = user_pro_details.zipcode
-                self.form.phone1.data = user_pro_details.phone1
-                self.form.phone2.data = user_pro_details.phone2
+                self.form.phone.data = user_pro_details.phone
 
         return self.render_template('edit_pro_details.html', **params)
 
@@ -147,6 +147,7 @@ class EditProDetailsHandler(BaseHandler):
         if not self.form.validate():
             return self.get()
 
+        display_full_name = self.form.display_full_name.data
         address1 = self.form.address1.data
         address2 = self.form.address2.data
         city = self.form.city.data
@@ -163,6 +164,7 @@ class EditProDetailsHandler(BaseHandler):
 
         try:
             message = ''
+            user_pro_details.display_full_name = display_full_name
             user_pro_details.address1 = address1
             user_pro_details.address2 = address2
             user_pro_details.city = city

@@ -221,6 +221,13 @@ class BaseHandler(webapp2.RequestHandler):
         return  None
 
     @webapp2.cached_property
+    def last_name(self):
+        if self.user:
+            user_info = models.User.get_by_id(long(self.user_id))
+            return str(user_info.last_name)
+        return  None
+
+    @webapp2.cached_property
     def username(self):
         if self.user:
             try:
@@ -344,6 +351,7 @@ class BaseHandler(webapp2.RequestHandler):
             'query_string': self.request.query_string,
             'path_for_language': self.path_for_language,
             'is_mobile': self.is_mobile,
+            'last_name': self.last_name,
             'locale_iso': locale_iso, # babel locale object
             'locale_language': language.capitalize() + " (" + territory.capitalize() + ")", # babel locale object
             'locale_language_id': language_id, # babel locale object

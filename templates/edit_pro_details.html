@@ -4,17 +4,37 @@
 
     {{ macros.left_sidebar("pro_details") }}
 
-    <div class="span5">             
+    <div class="span8">             
         <div class="w-box">
-            <div class="w-box-header"><h4>Update professional profile</h4></div>
+            <div class="w-box-header"><h4>{% trans %}Update professional profile{% endtrans %}</h4></div>
             <div class="w-box-content">
 
                 <div id="edit_pro_details" class="well form-vertical">
                     <fieldset>
                         <form id="form_pro_details" action="{{ url|safe }}" method="post">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                            {{ macros.field(form.address1, label=_("Address 1"), class="input-xlarge focused") }}
-                            {{ macros.field(form.address2, label=_("Address 2"), class="input-xlarge focused") }}
+                            <div class="control-group">
+                                <label class="control-label">Display Name</label>
+                                <label class="radio">
+                                    <input type="radio" name="display_full_name" id="display_full_name_true" value="True" {% if display_full_name %}checked=""{% endif %}>
+                                    <b>{{ first_name }}&nbsp;{{ last_name }}</b>&nbsp;-&nbsp;{% trans %}show your full name{% endtrans %}
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="display_full_name" id="display_full_name_false" value="False" {% if not display_full_name %}checked=""{% endif %}>
+                                    <b>{{ first_name }}&nbsp;{{ last_name[0]+'.' }}</b>&nbsp;-&nbsp;{% trans %}show your first name and last initial{% endtrans %}
+                                </label>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Portrait</label>
+                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"><img src="/static/images/dummy_50x50.gif" alt=""></div>
+                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"></div>
+                                    <span class="btn btn-small btn-file"><span class="fileupload-new">Select a photo now</span><span class="fileupload-exists">Change</span><input type="file"></span>
+                                    <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                </div>
+                            </div>
+                            {{ macros.field(form.address1, label=_("Address 1"), class="input-xxlarge focused") }}
+                            {{ macros.field(form.address2, label=_("Address 2"), class="input-xxlarge focused") }}
                             {{ macros.field(form.city, label=_("City"), class="input-xlarge focused") }}
                             {{ macros.field(form.state, label=_("State"), class="input-large focused") }}
                             {{ macros.field(form.zipcode, label=_("ZIP"), class="input-large focused") }}

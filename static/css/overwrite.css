@@ -351,3 +351,12 @@ label {
 	margin-top: -16px;
 }
 
+.radio, .checkbox {
+font-size: 13px;
+}
+
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+	margin-top: 2px;
+	float: left;
+	margin-left: -20px;
+}

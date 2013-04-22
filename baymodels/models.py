@@ -8,7 +8,7 @@ joblist = config.localhost.config['joblist']
 class ProDetails(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     username = ndb.ComputedProperty(lambda self: self.user.get().username)
-    display_name = ndb.StringProperty(choices=['full', 'last_initial'])
+    display_full_name = ndb.BooleanProperty(default=True)
     title = ndb.StringProperty()
     overview = ndb.TextProperty()
     english_level = ndb.IntegerProperty(choices=[1, 2, 3, 4, 5])
