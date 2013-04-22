@@ -127,11 +127,14 @@ class EditProDetailsHandler(BaseHandler):
     def get(self):
         """ Returns a simple HTML form for edit professional details """
 
-        params = {'display_full_name': True}
+        params = {}
+        self.form.display_full_name.data = True
         if self.user:
+            # params['last_name'] = self.user_key.get().last_name
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
             if user_pro_details:
-                params['display_full_name'] = user_pro_details.display_full_name
+                self.form.display_full_name.data = user_pro_details.display_full_name
+                self.form.title.data = user_pro_details.title
                 self.form.address1.data = user_pro_details.address1
                 self.form.address2.data = user_pro_details.address2
                 self.form.city.data = user_pro_details.city
@@ -139,6 +142,7 @@ class EditProDetailsHandler(BaseHandler):
                 self.form.zipcode.data = user_pro_details.zipcode
                 self.form.phone.data = user_pro_details.phone
 
+        params['display_full_name'] = self.form.display_full_name.data
         return self.render_template('edit_pro_details.html', **params)
 
     def post(self):
@@ -148,6 +152,7 @@ class EditProDetailsHandler(BaseHandler):
             return self.get()
 
         display_full_name = self.form.display_full_name.data
+        title = self.form.title.data
         address1 = self.form.address1.data
         address2 = self.form.address2.data
         city = self.form.city.data
@@ -165,6 +170,7 @@ class EditProDetailsHandler(BaseHandler):
         try:
             message = ''
             user_pro_details.display_full_name = display_full_name
+            user_pro_details.title = title
             user_pro_details.address1 = address1
             user_pro_details.address2 = address2
             user_pro_details.city = city

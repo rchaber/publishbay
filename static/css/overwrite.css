@@ -360,3 +360,8 @@ font-size: 13px;
 	float: left;
 	margin-left: -20px;
 }
+
+input[type="radio"] label {
+	font-size: 13px;
+	font-weight: bold;
+}

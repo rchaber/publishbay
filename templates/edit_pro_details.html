@@ -24,14 +24,22 @@
                                     <b>{{ first_name }}&nbsp;{{ last_name[0]+'.' }}</b>&nbsp;-&nbsp;{% trans %}show your first name and last initial{% endtrans %}
                                 </label>
                             </div>
-                            <div class="control-group">
+
+                            {{ macros.field(form.title, label=_("Title"), class="input-xlarge focused") }}
+
+                            <div class="control-group" style="margin-bottom: 20px; height: 85px;">
                                 <label class="control-label">Portrait</label>
-                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
                                     <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"><img src="/static/images/dummy_50x50.gif" alt=""></div>
                                     <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"></div>
                                     <span class="btn btn-small btn-file"><span class="fileupload-new">Select a photo now</span><span class="fileupload-exists">Change</span><input type="file"></span>
                                     <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
                                 </div>
+                                <aside style="display: block; margin-top: -10px; padding-right: 20px;">
+                                    <h4 style="font-weight: normal; font-size: 16px; margin-bottom: 5px; margin-top: 13px;">You need a photo! </h4>
+                                    <p>Contractors with a friendly, professional-looking portrait are hired
+                                    <b>5 times more often</b> than those without a photo.</p>
+                                </aside>   
                             </div>
                             {{ macros.field(form.address1, label=_("Address 1"), class="input-xxlarge focused") }}
                             {{ macros.field(form.address2, label=_("Address 2"), class="input-xxlarge focused") }}
@@ -50,8 +58,9 @@
         </div>
     </div>
     {% endblock %}
-
     {% block mediaJS %}
+    <!-- file upload widget -->
+        <script src="/static/js/form/bootstrap-fileupload.min.js"></script>
     <script type="text/javascript">
         $().ready(function() {
             $("#form_pro_details").validate({

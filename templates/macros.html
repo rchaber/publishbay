@@ -18,6 +18,26 @@
             </div>
 {%- endmacro %}
 
+<!-- Renders a form radio with errors, required flags, and common styling.  
+    html element fields such as class, style, or type can be passed as kwargs.
+    Usage: macros.radio(form.username, class="input-xlarge", type="email") -->
+{% macro radio(field, label='') -%}
+            <div class="control-group{% if field.errors %} error{% endif %}">
+                {% set text = label or field.label.text %}
+                {% if field.flags.required %}
+                    {{ field.label(text=text + " *", class="control-label") }}
+                {% else %}
+                    {{ field.label(text=text + " ", class="control-label") }}
+                {% endif %}
+                <div class="controls">
+                {{ field(**kwargs) }}
+                {% if field.errors %}
+                    {% for error in field.errors %}<label for="{{ field.id }}" class="error help-inline">{{ error }}</label>{% endfor %}
+                {% endif %}
+                </div>
+            </div>
+{%- endmacro %}
+
 <!-- renders federated login (openId and Oauth) login buttons -->
 {% macro federated_login(provider_info, provider_uris, enable_federated_login) -%}
 {% if enable_federated_login %}
@@ -48,6 +68,8 @@
                 <li {% if current_page == 'edit_associations' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-associations') }}">{% trans %}Link social accounts{% endtrans %}</a></li>
                 <li {% if current_page == 'pro_details' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-prodetails') }}">{% trans %}Professional profile{% endtrans %}</a></li>
                 <li {% if current_page == 'my_occupation' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-password') }}">{% trans %}My occupations{% endtrans %}</a></li>
+                <li {% if current_page == 'publishing_house' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-password') }}">{% trans %}+ Create publishing house{% endtrans %}</a></li>
+
             </ul>
         </div>
     </div>
