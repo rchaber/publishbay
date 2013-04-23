@@ -4,7 +4,7 @@
 
 {{ macros.left_sidebar("change_email") }}
 
-<div class="span5">             
+<div class="span9">             
     <div class="w-box">
         <div class="w-box-header"><h4>Change e-mail</h4></div>
         <div class="w-box-content">
@@ -13,10 +13,7 @@
                 <fieldset>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     <div class="control-group">
-                        <label class="control-label">Current Email:</label>
-                        <div class="controls">
-                            <p class="help-block">{{ current_email }}</p>
-                        </div>
+                        <label class="control-label">Current Email:&nbsp;<b>{{ current_email }}</b></label>
                     </div>
                     {{ macros.field(form.new_email, label=_("New Email"), class="input-large focused required email", type="email") }}
                     {{ macros.field(form.password, label=_("Current Password"), class="input-large focused required", type="password") }}

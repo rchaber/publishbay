@@ -132,14 +132,18 @@ class EditProDetailsHandler(BaseHandler):
         params = {}
         self.form.display_full_name.data = True
         self.form.profile_visibility.data = 'everyone'
+        self.form.overview.data = ''
+        params['english_level'] = ''
         if self.user:
             # params['last_name'] = self.user_key.get().last_name
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
             if user_pro_details:
                 self.form.display_full_name.data = user_pro_details.display_full_name
+                self.form.picture.data = user_pro_details.picture
                 self.form.title.data = user_pro_details.title
                 self.form.overview.data = user_pro_details.overview
                 self.form.profile_visibility.data = user_pro_details.profile_visibility
+                self.form.english_level.data = user_pro_details.english_level
                 self.form.address1.data = user_pro_details.address1
                 self.form.address2.data = user_pro_details.address2
                 self.form.city.data = user_pro_details.city
@@ -148,6 +152,8 @@ class EditProDetailsHandler(BaseHandler):
                 self.form.phone.data = user_pro_details.phone
 
         params['display_full_name'] = self.form.display_full_name.data
+        params['overviewdata'] = self.form.overview.data
+        params['english_level'] = user_pro_details.english_level
 
         joblist = utils.joblist
         remain = len(joblist) % 3
@@ -167,13 +173,15 @@ class EditProDetailsHandler(BaseHandler):
     def post(self):
         """ Get fields from POST dict """
 
-        if not self.form.validate():
-            return self.get()
+        # if not self.form.validate():
+            # return self.get()
 
-        display_full_name = self.form.display_full_name.data
+        display_full_name = (self.form.display_full_name.data == "True")
         overview = self.form.overview.data
+        picture = self.request.get('picture')
         title = self.form.title.data
         profile_visibility = self.form.profile_visibility.data
+        english_level = int(self.form.english_level.data)  # problem is here when nothing is selected
         address1 = self.form.address1.data
         address2 = self.form.address2.data
         city = self.form.city.data
@@ -182,18 +190,22 @@ class EditProDetailsHandler(BaseHandler):
         phone = self.form.phone.data
 
         k = models.User.get_by_id(long(self.user_id)).key
+
         user_pro_details = bmodels.ProDetails.get_by_userkey(k)
 
         if not user_pro_details:
             user_pro_details = bmodels.ProDetails()
             user_pro_details.user = k
 
+
         try:
             message = ''
             user_pro_details.display_full_name = display_full_name
+            # user_pro_details.picture = picture # this isn't working
             user_pro_details.title = title
             user_pro_details.overview = overview
             user_pro_details.profile_visibility = profile_visibility
+            user_pro_details.english_level = english_level
             user_pro_details.address1 = address1
             user_pro_details.address2 = address2
             user_pro_details.city = city
@@ -207,6 +219,7 @@ class EditProDetailsHandler(BaseHandler):
 
         except (AttributeError, KeyError, ValueError), e:
             logging.error('Error updating contact info: ' + e)
+            print 'here'
             message = _('Unable to update contact info. Please try again later.')
             self.add_message(message, 'error')
             return self.get()

@@ -188,8 +188,8 @@ span.password_strength {
 }
 
 .w-box-header {
-	height: 40px;
-	line-height: 40px;
+	height: 33px;
+	line-height: 33px;
 	padding: 0 10px 0px;
 	background: #A2A2A2;
 	color: #FFF;
@@ -367,7 +367,7 @@ input[type="radio"] label {
 	font-weight: bold;
 }
 
-.control-group {
+#edit_pro_details .control-group {
 	margin-bottom: 10px;
 	overflow: overlay;
 }

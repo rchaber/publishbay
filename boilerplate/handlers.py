@@ -1068,7 +1068,7 @@ class EditProfileHandler(BaseHandler):
         params = {}
         if self.user:
             user_info = models.User.get_by_id(long(self.user_id))
-            self.form.username.data = user_info.username
+            # self.form.username.data = user_info.username
             self.form.name.data = user_info.name
             self.form.last_name.data = user_info.last_name
             self.form.country.data = user_info.country
@@ -1086,19 +1086,22 @@ class EditProfileHandler(BaseHandler):
     def post(self):
         """ Get fields from POST dict """
 
+        print self.form.validate()
         if not self.form.validate():
             return self.get()
-        username = self.form.username.data.lower()
+        # username = self.form.username.data.lower()
         name = self.form.name.data.strip()
         last_name = self.form.last_name.data.strip()
         country = self.form.country.data
 
         try:
+            print self.user_id
             user_info = models.User.get_by_id(long(self.user_id))
 
             try:
                 message=''
                 # update username if it has changed and it isn't already taken
+                """
                 if username != user_info.username:
                     user_info.unique_properties = ['username','email']
                     uniques = [
@@ -1121,11 +1124,12 @@ class EditProfileHandler(BaseHandler):
                         # At least one of the values is not unique.
                         self.add_message(message, 'error')
                         return self.get()
+                """
                 user_info.name=name
                 user_info.last_name=last_name
                 user_info.country=country
                 user_info.put()
-                message+= " " + _('Thanks, your settings have been saved.')
+                message+= " " + _('Settings have been successfully saved.')
                 self.add_message(message, 'success')
                 return self.get()
 

@@ -11,7 +11,7 @@
 
                 <div id="edit_pro_details" class="well form-vertical">
                     <fieldset>
-                        <form id="form_pro_details" action="{{ url|safe }}" method="post">
+                        <form id="form_pro_details" action="{{ url|safe }}" enctype="multipart/form-data" method="post">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                             <legend>Professional overview</legend>
                             <div class="control-group">
@@ -30,23 +30,27 @@
                                 <label class="control-label">Portrait</label>
                                 <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
                                     <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"><img src="/static/images/dummy_50x50.gif" alt=""></div>
-                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"></div>
-                                    <span class="btn btn-small btn-file"><span class="fileupload-new">Select a photo now</span><span class="fileupload-exists">Change</span><input type="file" name="picture"></span>
+                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"> {{ portrait }} </div>
+                                    <span class="btn btn-small btn-file">
+                                        <span class="fileupload-new">Select a photo now</span>
+                                        <span class="fileupload-exists">Change</span>
+                                        <input type="file" name="picture" id="picture" />
+                                    </span>
                                     <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
                                 </div>
                                 <aside style="display: block; margin-top: -10px; padding-right: 20px;">
                                     <h4 style="font-weight: normal; font-size: 16px; margin-bottom: 5px; margin-top: 13px;">You need a photo! </h4>
-                                    <p>Contractors with a friendly, professional-looking portrait are hired
+                                    <p>Professionals with a friendly, professional-looking portrait are hired
                                     <b>5 times more often</b> than those without a photo.</p>
                                 </aside>   
                             </div>
 
-                            {{ macros.field(form.title, label=_("Title"), class="input-xlarge focused") }}
+                            {{ macros.field(form.title, label=_("Title"), class="input-xxlarge focused") }}
 
                             <div class="control-group">
                                 <label class="control-label">Overview</label>
                                 <div class="controls">
-                                    <textarea class="input-xxlarge focused" cols="50" id="overview" name="overview" rows="8" style="resize: vertical;"></textarea>
+                                    <textarea class="input-xxlarge focused" cols="50" id="overview" name="overview" rows="8" style="resize: vertical;">{{ overviewdata }}</textarea>
                                 </div>
                                 <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
                                     <p>Include a short summary of your career goals and relevant experience. This is your opportunity to sell yourself! Make sure to check your overview statement for spelling and grammar errors. <span id="countdown" style="float: right; font-weight: bold;"></span></p>
@@ -55,15 +59,15 @@
                             </div>
 
                             <div class="control-group">
-                                <label class="control-label">English level</label>
-                                <div class="controls">
-                                    <select name="english_level" class="" id="english_level"> 
-                                        <option value="" label="Please select...">Please select...</option> 
-                                        <option value="5" label="5 - Fluent in both written and verbal skills">5 - Fluent in both written and verbal skills</option> 
-                                        <option value="4" label="4 - Fluent written skills, good verbal skills">4 - Fluent written skills, good verbal skills</option> 
-                                        <option value="3" label="3 - Fluent written skills, basic verbal skills">3 - Fluent written skills, basic verbal skills</option> 
-                                        <option value="2" label="2 - Good written skills, no verbal skills">2 - Good written skills, no verbal skills</option> 
-                                        <option value="1" label="1 - Basic written skills, no verbal skills">1 - Basic written skills, no verbal skills</option> 
+                                <label class="control-label">English level *</label>
+                                <div class="controls required">
+                                    <select name="english_level" class="" id="english_level" style="width: 310px;"> 
+                                        <option value="" label="Please select..."{% if english_level == "" %}selected{% endif %}>Please select...</option> 
+                                        <option value="5" label="5 - Fluent in both written and verbal skills" {% if english_level == 5%}selected{% endif %}>5 - Fluent in both written and verbal skills</option> 
+                                        <option value="4" label="4 - Fluent written skills, good verbal skills" {% if english_level == 4%}selected{% endif %}>4 - Fluent written skills, good verbal skills</option> 
+                                        <option value="3" label="3 - Fluent written skills, basic verbal skills" {% if english_level == 3%}selected{% endif %}>3 - Fluent written skills, basic verbal skills</option> 
+                                        <option value="2" label="2 - Good written skills, no verbal skills" {% if english_level == 2%}selected{% endif %}>2 - Good written skills, no verbal skills</option> 
+                                        <option value="1" label="1 - Basic written skills, no verbal skills" {% if english_level == 1%}selected{% endif %}>1 - Basic written skills, no verbal skills</option> 
                                     </select>
                                 </div>
                             </div>
@@ -104,7 +108,7 @@
                                 </label>
                                 <label class="radio">
                                     <input type="radio" name="profile_visibility" id="profile_visibility_pb_users_only" value="pb_users_only" {% if profile_visibility == 'pb_users_only' %}checked=""{% endif %}>
-                                    <b>{% trans %}PublishBay users only{% endtrans %}</b>&nbsp;-&nbsp;{% trans %}Only PublishBay users who are logged in to PublishBay can see your profile.{% endtrans %}
+                                    <b>{% trans %}PublishBay users only{% endtrans %}</b>&nbsp;-&nbsp;{% trans %}Only PublishBay users who are logged in can see your profile.{% endtrans %}
                                 </label>
                                 <label class="radio">
                                     <input type="radio" name="profile_visibility" id="profile_visibility_hidden" value="hidden" {% if profile_visibility == 'hidden' %}checked=""{% endif %}>
