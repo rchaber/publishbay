@@ -4,7 +4,7 @@
 
     {{ macros.left_sidebar("pro_details") }}
 
-    <div class="span8">             
+    <div class="span9">             
         <div class="w-box">
             <div class="w-box-header"><h4>{% trans %}Update professional profile{% endtrans %}</h4></div>
             <div class="w-box-content">
@@ -25,8 +25,6 @@
                                 </label>
                             </div>
 
-                            {{ macros.field(form.title, label=_("Title"), class="input-xlarge focused") }}
-
                             <div class="control-group" style="margin-bottom: 20px; height: 85px;">
                                 <label class="control-label">Portrait</label>
                                 <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
@@ -41,6 +39,34 @@
                                     <b>5 times more often</b> than those without a photo.</p>
                                 </aside>   
                             </div>
+
+                            {{ macros.field(form.title, label=_("Title"), class="input-xlarge focused") }}
+
+                            <div class="control-group" style="margin-bottom: 20px; display: block;">
+                                <label class="control-label">Overview</label>
+                                <div class="controls">
+                                    <textarea class="input-xxlarge focused" cols="40" id="overview" name="overview" rows="8" style="resize: vertical; margin-top: 0px; margin-bottom: 10px;"></textarea>
+                                </div>
+                                <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
+                                    <p>Include a short summary of your career goals and relevant experience. This is your opportunity to sell yourself! Make sure to check your overview statement for spelling and grammar errors. <span id="countdown" style="float: right;"></span></p>
+                                    
+                                </div>   
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">English level</label>
+                                <div class="controls">
+                                    <select name="english_level" class="" id="english_level"> 
+                                        <option value="" label="Please select...">Please select...</option> 
+                                        <option value="5" label="5 - Fluent in both written and verbal skills">5 - Fluent in both written and verbal skills</option> 
+                                        <option value="4" label="4 - Fluent written skills, good verbal skills">4 - Fluent written skills, good verbal skills</option> 
+                                        <option value="3" label="3 - Fluent written skills, basic verbal skills">3 - Fluent written skills, basic verbal skills</option> 
+                                        <option value="2" label="2 - Good written skills, no verbal skills">2 - Good written skills, no verbal skills</option> 
+                                        <option value="1" label="1 - Basic written skills, no verbal skills">1 - Basic written skills, no verbal skills</option> 
+                                    </select>
+                                </div>
+                            </div>
+
                             {{ macros.field(form.address1, label=_("Address 1"), class="input-xxlarge focused") }}
                             {{ macros.field(form.address2, label=_("Address 2"), class="input-xxlarge focused") }}
                             {{ macros.field(form.city, label=_("City"), class="input-xlarge focused") }}
@@ -62,6 +88,13 @@
     <!-- file upload widget -->
         <script src="/static/js/form/bootstrap-fileupload.min.js"></script>
     <script type="text/javascript">
+
+        function updateCountdown() {
+        // 5000 is the max message length
+        var remaining = 5000 - $('#overview').val().length;
+        $('#countdown').text(remaining + {% trans %}' characters left.'{% endtrans %});
+        }
+
         $().ready(function() {
             $("#form_pro_details").validate({
                 submitHandler: function(form) {
@@ -72,6 +105,11 @@
                     error.addClass("help-inline").appendTo( element.parent() );
                 }
             });
+
+            updateCountdown();
+            $('#overview').change(updateCountdown);
+            $('#overview').keyup(updateCountdown);
+
         });
     </script>
     {% endblock %}

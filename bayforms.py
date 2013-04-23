@@ -13,6 +13,7 @@ FIELD_MAXLENGTH = 50  # intended to stop maliciously long input
 class EditProDetails(forms.BaseForm):
     display_full_name = fields.RadioField(_('Display Name'), choices=[('True', _('show your full name')), ('False', _(' - show your first name and last initial'))], coerce=unicode)
     title = fields.TextField(_('Title'), [validators.Length(max=FIELD_MAXLENGTH)])
+    overview = fields.TextAreaField(_('Overview'), [validators.Length(max=5000)])
     address1 = fields.TextField(_('Address 1'), [validators.Length(max=FIELD_MAXLENGTH)])
     address2 = fields.TextField(_('Address 2'), [validators.Length(max=FIELD_MAXLENGTH)])
     city = fields.TextField(_('City'), [validators.Length(max=FIELD_MAXLENGTH)])

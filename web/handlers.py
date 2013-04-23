@@ -135,6 +135,7 @@ class EditProDetailsHandler(BaseHandler):
             if user_pro_details:
                 self.form.display_full_name.data = user_pro_details.display_full_name
                 self.form.title.data = user_pro_details.title
+                self.form.overview.data = user_pro_details.overview
                 self.form.address1.data = user_pro_details.address1
                 self.form.address2.data = user_pro_details.address2
                 self.form.city.data = user_pro_details.city
@@ -152,6 +153,7 @@ class EditProDetailsHandler(BaseHandler):
             return self.get()
 
         display_full_name = self.form.display_full_name.data
+        overview = self.form.overview.data
         title = self.form.title.data
         address1 = self.form.address1.data
         address2 = self.form.address2.data
@@ -171,6 +173,7 @@ class EditProDetailsHandler(BaseHandler):
             message = ''
             user_pro_details.display_full_name = display_full_name
             user_pro_details.title = title
+            user_pro_details.title = overview
             user_pro_details.address1 = address1
             user_pro_details.address2 = address2
             user_pro_details.city = city
