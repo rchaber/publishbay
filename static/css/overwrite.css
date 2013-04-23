@@ -352,7 +352,8 @@ label {
 }
 
 .radio, .checkbox {
-font-size: 13px;
+	font-size: 13px;
+	margin-left: 2px;
 }
 
 .radio input[type="radio"], .checkbox input[type="checkbox"] {
@@ -364,4 +365,9 @@ font-size: 13px;
 input[type="radio"] label {
 	font-size: 13px;
 	font-weight: bold;
+}
+
+.control-group {
+	margin-bottom: 10px;
+	overflow: overlay;
 }

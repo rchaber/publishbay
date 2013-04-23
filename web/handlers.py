@@ -29,6 +29,8 @@ from boilerplate.lib.basehandler import user_required
 
 from baymodels import models as bmodels
 
+import config.utils as utils
+
 
 class SecureRequestHandler(BaseHandler):
     """
@@ -129,6 +131,7 @@ class EditProDetailsHandler(BaseHandler):
 
         params = {}
         self.form.display_full_name.data = True
+        self.form.profile_visibility.data = 'everyone'
         if self.user:
             # params['last_name'] = self.user_key.get().last_name
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
@@ -136,6 +139,7 @@ class EditProDetailsHandler(BaseHandler):
                 self.form.display_full_name.data = user_pro_details.display_full_name
                 self.form.title.data = user_pro_details.title
                 self.form.overview.data = user_pro_details.overview
+                self.form.profile_visibility.data = user_pro_details.profile_visibility
                 self.form.address1.data = user_pro_details.address1
                 self.form.address2.data = user_pro_details.address2
                 self.form.city.data = user_pro_details.city
@@ -144,6 +148,20 @@ class EditProDetailsHandler(BaseHandler):
                 self.form.phone.data = user_pro_details.phone
 
         params['display_full_name'] = self.form.display_full_name.data
+
+        joblist = utils.joblist
+        remain = len(joblist) % 3
+        if remain == 0:
+            params['joblist_left'] = joblist[0:len(joblist)/3]
+            params['joblist_center'] = joblist[len(joblist)/3:len(joblist)/3*2]
+            params['joblist_right'] = joblist[len(joblist)/3*2:]
+        else:
+            params['joblist_left'] = joblist[0:(len(joblist)-remain)/2]
+            params['joblist_center'] = joblist[(len(joblist)-remain)/2:len(joblist)-remain]
+            params['joblist_right'] = joblist[-remain:]
+
+        params['profile_visibility'] = self.form.profile_visibility.data
+
         return self.render_template('edit_pro_details.html', **params)
 
     def post(self):
@@ -155,6 +173,7 @@ class EditProDetailsHandler(BaseHandler):
         display_full_name = self.form.display_full_name.data
         overview = self.form.overview.data
         title = self.form.title.data
+        profile_visibility = self.form.profile_visibility.data
         address1 = self.form.address1.data
         address2 = self.form.address2.data
         city = self.form.city.data
@@ -173,7 +192,8 @@ class EditProDetailsHandler(BaseHandler):
             message = ''
             user_pro_details.display_full_name = display_full_name
             user_pro_details.title = title
-            user_pro_details.title = overview
+            user_pro_details.overview = overview
+            user_pro_details.profile_visibility = profile_visibility
             user_pro_details.address1 = address1
             user_pro_details.address2 = address2
             user_pro_details.city = city

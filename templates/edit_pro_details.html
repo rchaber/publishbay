@@ -13,8 +13,9 @@
                     <fieldset>
                         <form id="form_pro_details" action="{{ url|safe }}" method="post">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                            <legend>Professional overview</legend>
                             <div class="control-group">
-                                <label class="control-label">Display Name</label>
+                                <label class="control-label">Display name</label>
                                 <label class="radio">
                                     <input type="radio" name="display_full_name" id="display_full_name_true" value="True" {% if display_full_name %}checked=""{% endif %}>
                                     <b>{{ first_name }}&nbsp;{{ last_name }}</b>&nbsp;-&nbsp;{% trans %}show your full name{% endtrans %}
@@ -25,12 +26,12 @@
                                 </label>
                             </div>
 
-                            <div class="control-group" style="margin-bottom: 20px; height: 85px;">
+                            <div class="control-group">
                                 <label class="control-label">Portrait</label>
                                 <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
                                     <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"><img src="/static/images/dummy_50x50.gif" alt=""></div>
                                     <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"></div>
-                                    <span class="btn btn-small btn-file"><span class="fileupload-new">Select a photo now</span><span class="fileupload-exists">Change</span><input type="file"></span>
+                                    <span class="btn btn-small btn-file"><span class="fileupload-new">Select a photo now</span><span class="fileupload-exists">Change</span><input type="file" name="picture"></span>
                                     <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
                                 </div>
                                 <aside style="display: block; margin-top: -10px; padding-right: 20px;">
@@ -42,13 +43,13 @@
 
                             {{ macros.field(form.title, label=_("Title"), class="input-xlarge focused") }}
 
-                            <div class="control-group" style="margin-bottom: 20px; display: block;">
+                            <div class="control-group">
                                 <label class="control-label">Overview</label>
                                 <div class="controls">
-                                    <textarea class="input-xxlarge focused" cols="40" id="overview" name="overview" rows="8" style="resize: vertical; margin-top: 0px; margin-bottom: 10px;"></textarea>
+                                    <textarea class="input-xxlarge focused" cols="50" id="overview" name="overview" rows="8" style="resize: vertical;"></textarea>
                                 </div>
                                 <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
-                                    <p>Include a short summary of your career goals and relevant experience. This is your opportunity to sell yourself! Make sure to check your overview statement for spelling and grammar errors. <span id="countdown" style="float: right;"></span></p>
+                                    <p>Include a short summary of your career goals and relevant experience. This is your opportunity to sell yourself! Make sure to check your overview statement for spelling and grammar errors. <span id="countdown" style="float: right; font-weight: bold;"></span></p>
                                     
                                 </div>   
                             </div>
@@ -66,6 +67,52 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="control-group">
+                                <label class="control-label">What jobs best fit your skills?</label>
+                                <div class="controls" style="float: left; width: 200px;">
+                                    {% for job in joblist_left %}
+                                    <label>
+                                        <input type="checkbox" id="{{job.lower()}}" value="{{job}}">
+                                        {{job}}
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                                <div class="controls" style="float: left; width: 200px;">
+                                    {% for job in joblist_center %}
+                                    <label>
+                                        <input type="checkbox" id="{{job.lower()}}" value="{{job}}">
+                                        {{job}}
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                                <div class="controls" style="float: left; width: 200px;">
+                                    {% for job in joblist_right %}
+                                    <label>
+                                        <input type="checkbox" id="{{job.lower()}}" value="{{job}}">
+                                        {{job}}
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">Profile visibility</label>
+                                <label class="radio">
+                                    <input type="radio" name="profile_visibility" id="profile_visibility_everyone" value="everyone" {% if profile_visibility == 'everyone' %}checked=""{% endif %}>
+                                    <b>{% trans %}Everyone{% endtrans %}</b>&nbsp;-&nbsp;{% trans %}Anyone can see your profile whether or not they are logged into PublishBay.{% endtrans %}
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="profile_visibility" id="profile_visibility_pb_users_only" value="pb_users_only" {% if profile_visibility == 'pb_users_only' %}checked=""{% endif %}>
+                                    <b>{% trans %}PublishBay users only{% endtrans %}</b>&nbsp;-&nbsp;{% trans %}Only PublishBay users who are logged in to PublishBay can see your profile.{% endtrans %}
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="profile_visibility" id="profile_visibility_hidden" value="hidden" {% if profile_visibility == 'hidden' %}checked=""{% endif %}>
+                                    <b>{% trans %}Hidden{% endtrans %}</b>&nbsp;-&nbsp;{% trans %}Clients can see your profile only if you have applied to their job.{% endtrans %}
+                                </label>
+                            </div>
+
+                            <legend>Contact info</legend>
 
                             {{ macros.field(form.address1, label=_("Address 1"), class="input-xxlarge focused") }}
                             {{ macros.field(form.address2, label=_("Address 2"), class="input-xxlarge focused") }}
