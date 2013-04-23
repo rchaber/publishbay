@@ -101,6 +101,4 @@ config = {
 
 # ----> ADD MORE CONFIGURATION OPTIONS HERE <----
 
-'joblist': ['Publisher', 'Manager', 'Editor', 'Professional Reader', 'Designer', 'Translator', 'Proofreader'],
-
 }  # end config

@@ -1,9 +1,8 @@
 from boilerplate import models
 from google.appengine.ext import ndb
-import config
+from config import utils
 
-joblist = config.localhost.config['joblist']
-
+joblist = utils.joblist
 
 class ProDetails(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
