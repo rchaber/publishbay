@@ -27,6 +27,13 @@ from boilerplate import models
 from boilerplate.lib.basehandler import BaseHandler
 from boilerplate.lib.basehandler import user_required
 
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
+
+from google.appengine.api import users
+
+import urllib2
+
 from baymodels import models as bmodels
 
 import config.utils as utils
@@ -129,31 +136,34 @@ class EditProDetailsHandler(BaseHandler):
     def get(self):
         """ Returns a simple HTML form for edit professional details """
 
+
         params = {}
+
         self.form.display_full_name.data = True
         self.form.profile_visibility.data = 'everyone'
         self.form.overview.data = ''
+
         params['english_level'] = ''
+        params['upload_url'] = blobstore.create_upload_url('/upload')
+
         if self.user:
-            # params['last_name'] = self.user_key.get().last_name
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
             if user_pro_details:
                 self.form.display_full_name.data = user_pro_details.display_full_name
-                self.form.picture.data = user_pro_details.picture
+                params['display_full_name'] = self.form.display_full_name.data
+                # self.form.picture.data = user_pro_details.picture
                 self.form.title.data = user_pro_details.title
                 self.form.overview.data = user_pro_details.overview
+                params['overviewdata'] = self.form.overview.data
                 self.form.profile_visibility.data = user_pro_details.profile_visibility
                 self.form.english_level.data = user_pro_details.english_level
+                params['english_level'] = user_pro_details.english_level
                 self.form.address1.data = user_pro_details.address1
                 self.form.address2.data = user_pro_details.address2
                 self.form.city.data = user_pro_details.city
                 self.form.state.data = user_pro_details.state
                 self.form.zipcode.data = user_pro_details.zipcode
                 self.form.phone.data = user_pro_details.phone
-
-        params['display_full_name'] = self.form.display_full_name.data
-        params['overviewdata'] = self.form.overview.data
-        params['english_level'] = user_pro_details.english_level
 
         joblist = utils.joblist
         remain = len(joblist) % 3
@@ -176,9 +186,31 @@ class EditProDetailsHandler(BaseHandler):
         # if not self.form.validate():
             # return self.get()
 
+        # print self.request.get('upload_url')
+        # print dir(self.request.get('picture'))
+        # urllib2.Request(self.request.get('upload_url'), picture=self.request.get('picture').encode)
+
+        # self.request.get('upload_url')
+        # a = blobstore_handlers.BlobstoreUploadHandler()
+        # print dir(a)
+        # upload = a.get_uploads()[0]
+        # print upload.key
+
+
+        k = models.User.get_by_id(long(self.user_id)).key
+
+        user_pro_details = bmodels.ProDetails.get_by_userkey(k)
+
+        if not user_pro_details:
+            user_pro_details = bmodels.ProDetails()
+            user_pro_details.user = k
+
         display_full_name = (self.form.display_full_name.data == "True")
         overview = self.form.overview.data
-        picture = self.request.get('picture')
+        # picture = self.request.get('picture')
+
+        # if picture:
+          #   user_pro_details.picture = 
         title = self.form.title.data
         profile_visibility = self.form.profile_visibility.data
         english_level = int(self.form.english_level.data)  # problem is here when nothing is selected
@@ -188,14 +220,6 @@ class EditProDetailsHandler(BaseHandler):
         state = self.form.state.data.upper()
         zipcode = self.form.zipcode.data
         phone = self.form.phone.data
-
-        k = models.User.get_by_id(long(self.user_id)).key
-
-        user_pro_details = bmodels.ProDetails.get_by_userkey(k)
-
-        if not user_pro_details:
-            user_pro_details = bmodels.ProDetails()
-            user_pro_details.user = k
 
 
         try:

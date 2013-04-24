@@ -30,11 +30,12 @@
                                 <label class="control-label">Portrait</label>
                                 <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
                                     <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"><img src="/static/images/dummy_50x50.gif" alt=""></div>
-                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"> {{ portrait }} </div>
+                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"></div>
                                     <span class="btn btn-small btn-file">
                                         <span class="fileupload-new">Select a photo now</span>
                                         <span class="fileupload-exists">Change</span>
                                         <input type="file" name="picture" id="picture" />
+                                        <input type="hidden" name="upload_url" value="{{ upload_url }}"/>
                                     </span>
                                     <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
                                 </div>

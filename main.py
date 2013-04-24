@@ -29,10 +29,12 @@ from boilerplate import config as boilerplate_config
 import config
 from boilerplate.lib.basehandler import handle_error
 
+from baymodels import models as bmodels
+
 webapp2_config = boilerplate_config.config
 webapp2_config.update(config.config)
 
-app = webapp2.WSGIApplication(debug = os.environ['SERVER_SOFTWARE'].startswith('Dev'), config=webapp2_config)
+app = webapp2.WSGIApplication([('/upload', bmodels.UploadHandler), ('/serve/([^/]+)?', bmodels.ServeHandler)], debug = os.environ['SERVER_SOFTWARE'].startswith('Dev'), config = webapp2_config)
 
 for status_int in app.config['error_templates']:
     app.error_handlers[status_int] = handle_error
