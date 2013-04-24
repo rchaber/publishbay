@@ -6,7 +6,9 @@ from google.appengine.api import users
 
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
+import google.appengine.api.images as images
 
+import urllib
 
 joblist = utils.joblist
 
@@ -26,7 +28,7 @@ class ProDetails(ndb.Model):
     state = ndb.StringProperty()
     zipcode = ndb.StringProperty()
     phone = ndb.StringProperty()
-    picture_key = ndb.BlobKeyProperty() # picture = ndb.BlobProperty()
+    picture_key = ndb.BlobKeyProperty()
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
 
@@ -49,18 +51,10 @@ class ProDetails(ndb.Model):
         return [x.username for x in obj_list]
 
 
-class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
-    def post(self):
-        upload = self.get_uploads()[0]  # 'file' is file upload field in the form
-        # user_photo = UserPhoto(user=users.get_current_user().user_id(), picture_key=upload.key())
-        # picture_key = upload.key
-        # self.redirect('/serve/%s' % blob_info.key())
-
-
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
-    def get(self, resource):
-        resource = str(urllib.unquote(resource))
-        blob_info = blobstore.BlobInfo.get(resource)
+    def get(self, file_key):
+        file_view = str(urllib.unquote(file_key))
+        blob_info = blobstore.BlobInfo.get(file_view)
         self.send_blob(blob_info)
 
 

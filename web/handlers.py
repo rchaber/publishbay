@@ -31,8 +31,12 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
 from google.appengine.api import users
+# from google.appengine.api import images
 
 import urllib2
+import urllib
+
+from pprint import pprint as pprint
 
 from baymodels import models as bmodels
 
@@ -127,7 +131,7 @@ class DeleteSocialProviderHandler(BaseHandler):
         self.redirect_to('edit-associations')
 
 
-class EditProDetailsHandler(BaseHandler):
+class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler for Edit User Contact Info
     """
@@ -136,25 +140,25 @@ class EditProDetailsHandler(BaseHandler):
     def get(self):
         """ Returns a simple HTML form for edit professional details """
 
-
         params = {}
 
         self.form.display_full_name.data = True
         self.form.profile_visibility.data = 'everyone'
-        self.form.overview.data = ''
 
         params['english_level'] = ''
         params['upload_url'] = blobstore.create_upload_url('/upload')
+        params['picture_url'] = ''
+        params['overviewdata'] = ''
 
         if self.user:
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
             if user_pro_details:
                 self.form.display_full_name.data = user_pro_details.display_full_name
                 params['display_full_name'] = self.form.display_full_name.data
-                # self.form.picture.data = user_pro_details.picture
+                params['picture_url'] = '/serve/%s' % user_pro_details.picture_key
                 self.form.title.data = user_pro_details.title
-                self.form.overview.data = user_pro_details.overview
-                params['overviewdata'] = self.form.overview.data
+                print user_pro_details.overview
+                params['overviewdata'] = user_pro_details.overview
                 self.form.profile_visibility.data = user_pro_details.profile_visibility
                 self.form.english_level.data = user_pro_details.english_level
                 params['english_level'] = user_pro_details.english_level
@@ -186,16 +190,11 @@ class EditProDetailsHandler(BaseHandler):
         # if not self.form.validate():
             # return self.get()
 
-        # print self.request.get('upload_url')
-        # print dir(self.request.get('picture'))
-        # urllib2.Request(self.request.get('upload_url'), picture=self.request.get('picture').encode)
-
-        # self.request.get('upload_url')
-        # a = blobstore_handlers.BlobstoreUploadHandler()
-        # print dir(a)
-        # upload = a.get_uploads()[0]
-        # print upload.key
-
+        upload_picture = self.get_uploads()
+        if upload_picture:
+            picture_key = upload_picture[0].key()
+        else:
+            picture_key = ''
 
         k = models.User.get_by_id(long(self.user_id)).key
 
@@ -206,14 +205,11 @@ class EditProDetailsHandler(BaseHandler):
             user_pro_details.user = k
 
         display_full_name = (self.form.display_full_name.data == "True")
-        overview = self.form.overview.data
-        # picture = self.request.get('picture')
+        overview = self.request.POST.get('overview').replace('\r\r\n', '\r\n')
 
-        # if picture:
-          #   user_pro_details.picture = 
         title = self.form.title.data
         profile_visibility = self.form.profile_visibility.data
-        english_level = int(self.form.english_level.data)  # problem is here when nothing is selected
+        english_level = int(self.request.POST.get('english_level'))
         address1 = self.form.address1.data
         address2 = self.form.address2.data
         city = self.form.city.data
@@ -221,11 +217,11 @@ class EditProDetailsHandler(BaseHandler):
         zipcode = self.form.zipcode.data
         phone = self.form.phone.data
 
-
         try:
             message = ''
             user_pro_details.display_full_name = display_full_name
-            # user_pro_details.picture = picture # this isn't working
+            if picture_key != '':
+                user_pro_details.picture_key = picture_key
             user_pro_details.title = title
             user_pro_details.overview = overview
             user_pro_details.profile_visibility = profile_visibility
@@ -239,14 +235,15 @@ class EditProDetailsHandler(BaseHandler):
             user_pro_details.put()
             message += " " + _('Your contact info has been updated.')
             self.add_message(message, 'success')
-            return self.get()
+            self.redirect('/settings/profile')
 
         except (AttributeError, KeyError, ValueError), e:
             logging.error('Error updating contact info: ' + e)
-            print 'here'
             message = _('Unable to update contact info. Please try again later.')
             self.add_message(message, 'error')
             return self.get()
+
+
 
     @webapp2.cached_property
     def form(self):
