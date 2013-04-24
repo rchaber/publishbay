@@ -200,6 +200,10 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
 
         user_pro_details = bmodels.ProDetails.get_by_userkey(k)
 
+        # if picture changes, then the old one is deleted from Blobstore
+        if picture_key != '' and picture_key != user_pro_details.picture_key:
+            blobstore.delete(user_pro_details.picture_key)
+
         if not user_pro_details:
             user_pro_details = bmodels.ProDetails()
             user_pro_details.user = k
