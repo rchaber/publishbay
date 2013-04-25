@@ -369,7 +369,7 @@ input[type="radio"] label {
 
 #edit_pro_details .control-group {
 	margin-bottom: 10px;
-	overflow: overlay;
+	overflow: auto;
 }
 
 .form-warning {
