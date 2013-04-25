@@ -149,19 +149,21 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         params['upload_url'] = blobstore.create_upload_url('/upload')
         params['picture_url'] = ''
         params['overviewdata'] = ''
+        params['joblist'] = []
 
         if self.user:
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
             if user_pro_details:
                 self.form.display_full_name.data = user_pro_details.display_full_name
                 params['display_full_name'] = self.form.display_full_name.data
-                params['picture_url'] = '/serve/%s' % user_pro_details.picture_key
+                if user_pro_details.picture_key and user_pro_details.picture_key != '':
+                    params['picture_url'] = '/serve/%s' % user_pro_details.picture_key
                 self.form.title.data = user_pro_details.title
-                print user_pro_details.overview
                 params['overviewdata'] = user_pro_details.overview
                 self.form.profile_visibility.data = user_pro_details.profile_visibility
                 self.form.english_level.data = user_pro_details.english_level
                 params['english_level'] = user_pro_details.english_level
+                params['joblist'] = user_pro_details.jobs
                 self.form.address1.data = user_pro_details.address1
                 self.form.address2.data = user_pro_details.address2
                 self.form.city.data = user_pro_details.city
@@ -190,6 +192,10 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         # if not self.form.validate():
             # return self.get()
 
+        jobs = self.request.POST.get('joblist').replace('&', '').split('jobs=')[1:]
+
+        print jobs
+
         upload_picture = self.get_uploads()
         if upload_picture:
             picture_key = upload_picture[0].key()
@@ -202,7 +208,10 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
 
         # if picture changes, then the old one is deleted from Blobstore
         if picture_key != '' and picture_key != user_pro_details.picture_key:
-            blobstore.delete(user_pro_details.picture_key)
+            try:
+                blobstore.delete(user_pro_details.picture_key)
+            except:
+                pass
 
         if not user_pro_details:
             user_pro_details = bmodels.ProDetails()
@@ -230,6 +239,7 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             user_pro_details.overview = overview
             user_pro_details.profile_visibility = profile_visibility
             user_pro_details.english_level = english_level
+            user_pro_details.jobs = jobs
             user_pro_details.address1 = address1
             user_pro_details.address2 = address2
             user_pro_details.city = city

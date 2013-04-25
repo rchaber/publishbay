@@ -84,7 +84,7 @@
                                 <div class="controls" style="float: left; width: 200px;">
                                     {% for job in joblist_left %}
                                     <label>
-                                        <input type="checkbox" id="{{job.lower()}}" value="{{job}}">
+                                        <input type="checkbox" id="{{job.lower()}}" name="jobs" value="{{job}}" {% if job in joblist %}checked="checked"{% endif %}>
                                         {{job}}
                                     </label>
                                     {% endfor %}
@@ -92,7 +92,7 @@
                                 <div class="controls" style="float: left; width: 200px;">
                                     {% for job in joblist_center %}
                                     <label>
-                                        <input type="checkbox" id="{{job.lower()}}" value="{{job}}">
+                                        <input type="checkbox" id="{{job.lower()}}" name="jobs" value="{{job}}" {% if job in joblist %}checked="checked"{% endif %}>
                                         {{job}}
                                     </label>
                                     {% endfor %}
@@ -100,11 +100,12 @@
                                 <div class="controls" style="float: left; width: 200px;">
                                     {% for job in joblist_right %}
                                     <label>
-                                        <input type="checkbox" id="{{job.lower()}}" value="{{job}}">
+                                        <input type="checkbox" id="{{job.lower()}}" name="jobs" value="{{job}}" {% if job in joblist %}checked="checked"{% endif %}>
                                         {{job}}
                                     </label>
                                     {% endfor %}
                                 </div>
+                                <input style="display: none;" id="joblist" name="joblist" type="text" value="" />
                             </div>
 
                             <div class="control-group">
@@ -143,8 +144,10 @@
     </div>
     {% endblock %}
     {% block mediaJS %}
+    
     <!-- file upload widget -->
         <script src="/static/js/form/bootstrap-fileupload.min.js"></script>
+    
     <script type="text/javascript">
 
         function updateCountdown() {
@@ -156,6 +159,7 @@
         $().ready(function() {
             $("#form_pro_details").validate({
                 submitHandler: function(form) {
+                        $('#joblist').attr('value', $('input[name="jobs"]').serialize());
                         form.submit();
                 },
                 errorPlacement: function(error, element) {
