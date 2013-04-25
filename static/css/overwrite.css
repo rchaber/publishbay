@@ -371,3 +371,7 @@ input[type="radio"] label {
 	margin-bottom: 10px;
 	overflow: overlay;
 }
+
+.form-warning {
+	margin: 0;
+}

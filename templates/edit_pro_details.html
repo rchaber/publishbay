@@ -29,7 +29,7 @@
                             <div class="control-group">
                                 <label class="control-label">Portrait</label>
                                 <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
-                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px;">
+                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px; line-height: 50px;">
                                         {% if picture_url == ''%}
                                         <img src="/static/images/dummy_50x50.gif" alt="">
                                         {% else %}
@@ -66,10 +66,10 @@
                             </div>
 
                             <div class="control-group">
-                                <label class="control-label">English level *</label>
+                                <label class="control-label">English level</label>
                                 <div class="controls required">
                                     <select name="english_level" class="" id="english_level" style="width: 310px;"> 
-                                        <option value="" label="Please select..."{% if english_level == "" %}selected{% endif %}>Please select...</option> 
+                                        <option value="0" label="Please select..."{% if english_level == 0 %}selected{% endif %}>Please select...</option> 
                                         <option value="5" label="5 - Fluent in both written and verbal skills" {% if english_level == 5%}selected{% endif %}>5 - Fluent in both written and verbal skills</option> 
                                         <option value="4" label="4 - Fluent written skills, good verbal skills" {% if english_level == 4%}selected{% endif %}>4 - Fluent written skills, good verbal skills</option> 
                                         <option value="3" label="3 - Fluent written skills, basic verbal skills" {% if english_level == 3%}selected{% endif %}>3 - Fluent written skills, basic verbal skills</option> 

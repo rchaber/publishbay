@@ -145,7 +145,7 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         self.form.display_full_name.data = True
         self.form.profile_visibility.data = 'everyone'
 
-        params['english_level'] = ''
+        params['english_level'] = 0
         params['upload_url'] = blobstore.create_upload_url('/upload')
         params['picture_url'] = ''
         params['overviewdata'] = ''
@@ -194,8 +194,6 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
 
         jobs = self.request.POST.get('joblist').replace('&', '').split('jobs=')[1:]
 
-        print jobs
-
         upload_picture = self.get_uploads()
         if upload_picture:
             picture_key = upload_picture[0].key()
@@ -205,17 +203,16 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         k = models.User.get_by_id(long(self.user_id)).key
 
         user_pro_details = bmodels.ProDetails.get_by_userkey(k)
+        if not user_pro_details:
+            user_pro_details = bmodels.ProDetails()
+            user_pro_details.user = k
 
         # if picture changes, then the old one is deleted from Blobstore
-        if picture_key != '' and picture_key != user_pro_details.picture_key:
+        if (picture_key != '' and picture_key != user_pro_details.picture_key) and user_pro_details:
             try:
                 blobstore.delete(user_pro_details.picture_key)
             except:
                 pass
-
-        if not user_pro_details:
-            user_pro_details = bmodels.ProDetails()
-            user_pro_details.user = k
 
         display_full_name = (self.form.display_full_name.data == "True")
         overview = self.request.POST.get('overview').replace('\r\r\n', '\r\n')
@@ -234,6 +231,7 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             message = ''
             user_pro_details.display_full_name = display_full_name
             if picture_key != '':
+                print 'here1'
                 user_pro_details.picture_key = picture_key
             user_pro_details.title = title
             user_pro_details.overview = overview

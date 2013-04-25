@@ -19,7 +19,7 @@ class ProDetails(ndb.Model):
     display_full_name = ndb.BooleanProperty(default=True)
     title = ndb.StringProperty()
     overview = ndb.TextProperty()
-    english_level = ndb.IntegerProperty(choices=[1, 2, 3, 4, 5])
+    english_level = ndb.IntegerProperty(choices=[0, 1, 2, 3, 4, 5])
     jobs = ndb.StringProperty(choices=joblist, repeated=True)
     profile_visibility = ndb.StringProperty(choices=['everyone', 'pb_users_only', 'hidden'])
     address1 = ndb.StringProperty()
