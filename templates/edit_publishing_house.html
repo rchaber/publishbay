@@ -1,0 +1,176 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    {{ macros.left_sidebar("edit_publishing_house") }}
+
+    <!-- params: upload_url, name, tagline, description, logo_url, fiction_genres_left, fiction_genres_center, fiction_genres_right, nonfiction_genres_left, nonfiction_genres_center, nonfiction_genres_right, show_in_job_posts -->
+
+    <div class="span9">             
+        <div class="w-box">
+            <div class="w-box-header"><h4>{% trans %}My publishing house{% endtrans %}</h4></div>
+            <div class="w-box-content">
+
+                <div id="edit_publishing_house" class="well form-vertical">
+                    <fieldset>
+                        <form id="form_publishing_house" action="{{ upload_url }}" enctype="multipart/form-data" method="post"> <!-- url|safe -->
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                            <legend>Publishing House Profile Info</legend>
+
+                            <div class="control-group">
+                                <label class="control-label" for="name">Name</label>
+                                <div class="controls">
+                                    <input class="input-xlarge focused" id="name" name="name" type="text" value="{{ name }}" class="input-xlarge focused")>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="name">Tagline</label>
+                                <div class="controls">
+                                    <input class="input-xlarge focused" id="tagline" name="tagline" type="text" value="{{ tagline }}" class="input-xlarge focused")>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">Description</label>
+                                <div class="controls">
+                                    <textarea class="input-xxlarge focused" cols="50" id="description" name="description" rows="8" style="resize: vertical;">{{ description }}</textarea>
+                                </div>
+                                <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
+                                    <p>
+                                        <span id="countdown" style="float: right; font-weight: bold; margin-top: -10px;"></span>
+                                    </p>
+                                </div>   
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">Publishing House logo (optional)</label>
+                                <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
+                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px; line-height: 50px;">
+                                        {% if logo_url == ''%}
+                                        <img src="/static/images/dummy_50x50.gif" alt="">
+                                        {% else %}
+                                        <img src="{{ logo_url }}" alt="">
+                                        {% endif %}
+                                    </div>
+                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"></div>
+                                    <span class="btn btn-small btn-file">
+                                        <span class="fileupload-new">Select a logo now</span>
+                                        <span class="fileupload-exists">Change</span>
+                                        <input type="file" name="file" id="file" />
+                                        <input type="hidden" name="upload_url" value="{{ upload_url }}"/>
+                                    </span>
+                                    <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">Select genres that best fit your publishing house (optional)</label>
+                                <div style = "overflow: auto; border: 1px solid #CCC; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                                    <label style="clear: both; padding-top: 5px;">Fiction:</label>
+                                    <div class="controls" style="float: left; width: 200px;">
+                                        {% for genre in fiction_genres_left %}
+                                        <label>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            {{ genre }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="controls" style="float: left; width: 200px;">
+                                        {% for genre in fiction_genres_center %}
+                                        <label>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            {{ genre }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="controls" style="float: left; width: 200px;">
+                                        {% for genre in fiction_genres_right %}
+                                        <label>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            {{ genre }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                    <label style="clear: both; padding-top: 5px;">Non-fiction:</label>
+                                    <div class="controls" style="float: left; width: 200px;">
+                                        {% for genre in nonfiction_genres_left %}
+                                        <label>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            {{ genre }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="controls" style="float: left; width: 200px;">
+                                        {% for genre in nonfiction_genres_center %}
+                                        <label>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            {{ genre }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="controls" style="float: left; width: 200px;">
+                                        {% for genre in nonfiction_genres_right %}
+                                        <label>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            {{ genre }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <input style="display: none;" id="checked_genres" name="checked_genres" type="text" value="" />
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" style="margin-bottom: 0">Show in job posts</label>
+                                    <div class="controls">
+                                        <input type="checkbox" id="show_in_job_posts" name="show_in_job_posts" value="True" {% if show_in_job_posts %}checked="checked"{% endif %}>
+                                        Show company info in my job posts
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn">{% trans %}Update Professional Profile{% endtrans %}</button>
+                            </div>
+                        </form>
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block mediaJS %}
+    
+    <!-- file upload widget -->
+        <script src="/static/js/form/bootstrap-fileupload.min.js"></script>
+    
+    <script type="text/javascript">
+
+        function updateCountdown() {
+        // 5000 is the max description length
+        var remaining = 5000 - $('#description').val().length;
+        $('#countdown').text(remaining + {% trans %}' characters left.'{% endtrans %});
+        }
+
+        $().ready(function() {
+            $("#form_publishing_house").validate({
+                submitHandler: function(form) {
+                        $('#checked_genres').attr('value', $('input[name="genres"]').serialize());
+                        form.submit();
+                },
+                errorPlacement: function(error, element) {
+                    element.parent().parent().addClass("error");
+                    error.addClass("help-inline").appendTo( element.parent() );
+                }
+            });
+
+            updateCountdown();
+            $('#description').change(updateCountdown);
+            $('#description').keyup(updateCountdown);
+
+        });
+    </script>
+    {% endblock %}
+

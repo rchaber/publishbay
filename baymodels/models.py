@@ -11,6 +11,8 @@ import google.appengine.api.images as images
 import urllib
 
 joblist = utils.joblist
+genres_fiction = utils.genres_fiction
+genres_nonfiction = utils.genres_nonfiction
 
 
 class ProDetails(ndb.Model):
@@ -59,9 +61,18 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 
 class PublishingHouse(ndb.Model):
-    name = ndb.StringProperty()
     owner = ndb.KeyProperty(kind=models.User)
+    name = ndb.StringProperty()
+    tagline = ndb.StringProperty()
+    description = ndb.TextProperty()
+    logo_key = ndb.BlobKeyProperty()
+    genres = ndb.StringProperty(choices=genres_fiction + genres_nonfiction, repeated=True)
+    show_in_job_posts = ndb.BooleanProperty(default=False)
     partners = ndb.KeyProperty(kind=models.User, repeated=True)
+
+    @classmethod
+    def get_by_ownerkey(cls, k):
+        return cls.query(cls.owner == k).get()
 
 
 class BookProject(ndb.Model):

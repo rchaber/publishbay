@@ -36,7 +36,8 @@ from web import handlers as handlers
 webapp2_config = boilerplate_config.config
 webapp2_config.update(config.config)
 
-app = webapp2.WSGIApplication([	('/upload', handlers.EditProDetailsHandler),
+app = webapp2.WSGIApplication([	('/upload_picture', handlers.EditProDetailsHandler),
+								('/upload_logo', handlers.EditPublishingHouseHandler),
 							   	('/serve/([^/]+)?', bmodels.ServeHandler) ], 
 							   	debug=os.environ['SERVER_SOFTWARE'].startswith('Dev'), config=webapp2_config)
 
@@ -46,5 +47,3 @@ for status_int in app.config['error_templates']:
 routes.add_routes(app)
 boilerplate_routes.add_routes(app)
 admin_routes.add_routes(app)
-
-

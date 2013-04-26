@@ -324,7 +324,7 @@ label {
 
 #pageNav .active a {
 	font-weight: bold;
-	border-left: 2px solid #D26911;
+	border-left: 2px solid #D26911 !important;
 	color: #1A5EA2;
 	padding-left: 6px;
 }
@@ -367,9 +367,13 @@ input[type="radio"] label {
 	font-weight: bold;
 }
 
-#edit_pro_details .control-group {
+.control-group {
 	margin-bottom: 10px;
 	overflow: overlay;
+}
+
+label.control-label {
+	font-weight: bold;
 }
 
 .form-warning {

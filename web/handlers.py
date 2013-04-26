@@ -146,7 +146,7 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         self.form.profile_visibility.data = 'everyone'
 
         params['english_level'] = 0
-        params['upload_url'] = blobstore.create_upload_url('/upload')
+        params['upload_url'] = blobstore.create_upload_url('/upload_picture')
         params['picture_url'] = ''
         params['overviewdata'] = ''
         params['joblist'] = []
@@ -255,8 +255,100 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             self.add_message(message, 'error')
             return self.get()
 
-
-
     @webapp2.cached_property
     def form(self):
         return bayforms.EditProDetails(self)
+
+
+class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    """
+    Handler for Create/Edit Publishing House
+    """
+
+    @user_required
+    def get(self):
+        """ Returns a simple HTML form for create/edit publishing house """
+
+        params = {}
+
+        params['upload_url'] = blobstore.create_upload_url('/upload_logo')
+        params['name'] = ''
+        params['tagline'] = ''
+        params['description'] = ''
+        params['pb_genres_list'] = ''
+        params['show_in_job_posts'] = ''
+        params['logo_url'] = ''
+
+        if self.user:
+            publishing_house = bmodels.PublishingHouse.get_by_ownerkey(self.user_key)
+            if publishing_house:
+                params['name'] = publishing_house.name
+                params['tagline'] = publishing_house.tagline
+                params['description'] = publishing_house.description
+                if publishing_house.logo_key and publishing_house.logo_key != '':
+                    params['logo_url'] = '/serve/%s' % publishing_house.logo_key
+                params['pb_genres_list'] = publishing_house.genres
+                params['show_in_job_posts'] = publishing_house.show_in_job_posts
+
+        params['fiction_genres_left'] = utils.split_3cols(utils.genres_fiction)['left']
+        params['fiction_genres_center'] = utils.split_3cols(utils.genres_fiction)['center']
+        params['fiction_genres_right'] = utils.split_3cols(utils.genres_fiction)['right']
+        params['nonfiction_genres_left'] = utils.split_3cols(utils.genres_nonfiction)['left']
+        params['nonfiction_genres_center'] = utils.split_3cols(utils.genres_nonfiction)['center']
+        params['nonfiction_genres_right'] = utils.split_3cols(utils.genres_nonfiction)['right']
+
+        return self.render_template('edit_publishing_house.html', **params)
+
+    def post(self):
+        """ Get fields from POST dict """
+
+        print 'got here'
+        # if not self.form.validate():
+            # return self.get()
+        print self.request.POST.get('checked_genres')
+
+        checked_genres = self.request.POST.get('checked_genres').replace('&', '').replace('+', ' ').replace('%26', '&').split('genres=')[1:]
+
+        upload_logo = self.get_uploads()
+        if upload_logo:
+            logo_key = upload_logo[0].key()
+        else:
+            logo_key = ''
+
+        k = models.User.get_by_id(long(self.user_id)).key
+
+        publishing_house = bmodels.PublishingHouse.get_by_ownerkey(k)
+        if not publishing_house:
+            publishing_house = bmodels.PublishingHouse()
+            publishing_house.owner = k
+
+        # if logo changes, then the old one is deleted from Blobstore
+        if (logo_key != '' and logo_key != publishing_house.logo_key) and publishing_house:
+            try:
+                blobstore.delete(publishing_house.logo_key)
+            except:
+                pass
+
+        try:
+            message = ''
+            publishing_house.name = self.request.POST.get('name')
+            if logo_key != '':
+                publishing_house.logo_key = logo_key
+            publishing_house.tagline = self.request.POST.get('tagline')
+            publishing_house.description = self.request.POST.get('description').replace('\r\r\n', '\r\n')
+            publishing_house.show_in_job_posts = (self.request.POST.get('show_in_job_posts') == "True")
+            publishing_house.genres = checked_genres
+            publishing_house.put()
+            message += " " + _('Your publishing house info has been updated.')
+            self.add_message(message, 'success')
+            self.redirect('/settings/profile')
+
+        except (AttributeError, KeyError, ValueError), e:
+            logging.error('Error creating/updating publishing house: ' + e)
+            message = _('Unable to create/update publishing house. Please try again later.')
+            self.add_message(message, 'error')
+            return self.get()
+
+    @webapp2.cached_property
+    def form(self):
+        return bayforms.EditPublishingHouse(self)
