@@ -369,7 +369,7 @@ input[type="radio"] label {
 
 .control-group {
 	margin-bottom: 10px;
-	overflow: overlay;
+	overflow: auto;
 }
 
 label.control-label {
