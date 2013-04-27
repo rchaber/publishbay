@@ -66,13 +66,27 @@ class PublishingHouse(ndb.Model):
     tagline = ndb.StringProperty()
     description = ndb.TextProperty()
     logo_key = ndb.BlobKeyProperty()
-    genres = ndb.StringProperty(choices=genres_fiction + genres_nonfiction, repeated=True)
+    genres = ndb.StringProperty(repeated=True)
     show_in_job_posts = ndb.BooleanProperty(default=False)
     partners = ndb.KeyProperty(kind=models.User, repeated=True)
 
     @classmethod
     def get_by_ownerkey(cls, k):
         return cls.query(cls.owner == k).get()
+
+
+class JobPost(ndb.Model):
+    """
+    fields:
+    - Job (select)
+    - Title (text)
+    - description (textarea)
+    - estimated duration (select: more than 6 months, 3 to 6 months, 1 to 3 months, less than 1 month, less than 1 week)
+    - job post visibility (Public - All contractors will be able to see your job and apply to it.; Invitation-Only - Only contractors you invite will be able to view and apply to your job.)
+    - attachment
+    - estimated start date
+    - looking to be staff member (can only work for this publishing house)
+    """
 
 
 class BookProject(ndb.Model):

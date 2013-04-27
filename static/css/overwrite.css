@@ -12,6 +12,13 @@
 	padding-top: 2px;
 }
 
+#fade-menu ul li ul li {
+width: 190px;
+display: block;
+float: none;
+border-right: none;
+}
+
 body {
 	padding-top: 35px;
 	font-family: Helvetica, arial, freesans, clean, sans-serif;

@@ -348,3 +348,18 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
             message = _('Unable to create/update publishing house. Please try again later.')
             self.add_message(message, 'error')
             return self.get()
+
+
+class JobPostHandler():
+    """
+    fields:
+    - Job (select)
+    - Title (text)
+    - description (textarea)
+    - estimated duration (select: more than 6 months, 3 to 6 months, 1 to 3 months, less than 1 month, less than 1 week)
+    - job post visibility (Public - All contractors will be able to see your job and apply to it.; Invitation-Only - Only contractors you invite will be able to view and apply to your job.)
+    - attachment
+    - estimated start date
+    - looking to be staff member (can only work for this publishing house)
+    """
+
