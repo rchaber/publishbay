@@ -348,7 +348,3 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
             message = _('Unable to create/update publishing house. Please try again later.')
             self.add_message(message, 'error')
             return self.get()
-
-    @webapp2.cached_property
-    def form(self):
-        return bayforms.EditPublishingHouse(self)

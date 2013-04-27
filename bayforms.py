@@ -27,7 +27,3 @@ class EditProDetails(forms.BaseForm):
     state = fields.TextField(_('State'), [validators.Length(max=FIELD_MAXLENGTH)])
     zipcode = fields.TextField(_('ZIP'), [validators.Length(max=FIELD_MAXLENGTH)])
     phone = fields.TextField(_('Phone'), [validators.Length(max=FIELD_MAXLENGTH)])
-
-
-class EditPublishingHouse(forms.BaseForm):
-    pass
