@@ -14,7 +14,10 @@ _routes = [
     RedirectRoute('/settings/social', handlers.EditAssociationsHandler, name='edit-associations', strict_slash=True),
     RedirectRoute('/social_login/<provider_name>/delete', handlers.DeleteSocialProviderHandler, name='delete-social-provider', strict_slash=True),
     RedirectRoute('/settings/prodetails', handlers.EditProDetailsHandler, name='edit-prodetails', strict_slash=True),
+    RedirectRoute('/upload_picture', handlers.EditProDetailsHandler, name='upload-picture', strict_slash=True),
     RedirectRoute('/settings/publishinghouse', handlers.EditPublishingHouseHandler, name='edit-publishinghouse', strict_slash=True),
+    RedirectRoute('/upload_logo', handlers.EditPublishingHouseHandler, name='upload-logo', strict_slash=True),
+
 ]
 
 

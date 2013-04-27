@@ -3,11 +3,6 @@ from google.appengine.ext import ndb
 from config import utils
 from google.appengine.api import users
 
-
-from google.appengine.ext import blobstore
-from google.appengine.ext.webapp import blobstore_handlers
-import google.appengine.api.images as images
-
 import urllib
 
 joblist = utils.joblist
@@ -51,13 +46,6 @@ class ProDetails(ndb.Model):
     def job_users(cls, job):
         obj_list = cls.query(cls.jobs == job).fetch()
         return [x.username for x in obj_list]
-
-
-class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
-    def get(self, file_key):
-        file_view = str(urllib.unquote(file_key))
-        blob_info = blobstore.BlobInfo.get(file_view)
-        self.send_blob(blob_info)
 
 
 class PublishingHouse(ndb.Model):

@@ -131,6 +131,13 @@ class DeleteSocialProviderHandler(BaseHandler):
         self.redirect_to('edit-associations')
 
 
+class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self, file_key):
+        file_view = str(urllib.unquote(file_key))
+        blob_info = blobstore.BlobInfo.get(file_view)
+        self.send_blob(blob_info)
+
+
 class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler for Edit User Contact Info
