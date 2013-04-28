@@ -62,12 +62,13 @@
     <div class="span3" style="margin-left: 0;">
         <div class="sidebar">
             <ul id="pageNav">
-                <li {% if current_page == 'edit_profile' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-profile') }}">{% trans %}Edit profile{% endtrans %}</a></li>
+                <li {% if current_page == 'edit_profile' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-profile') }}">{% trans %}My basic profile{% endtrans %}</a></li>
                 <li {% if current_page == 'change_email' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-email') }}">{% trans %}Change email{% endtrans %}</a></li>
                 <li {% if current_page == 'change_password' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-password') }}">{% trans %}Change password{% endtrans %}</a></li>
                 <li {% if current_page == 'edit_associations' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-associations') }}">{% trans %}Link account{% endtrans %}</a></li>
-                <li {% if current_page == 'pro_details' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-prodetails') }}">{% trans %}Professional profile{% endtrans %}</a></li>
-                <li {% if current_page == 'edit_publishing_house' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-publishinghouse') }}">{% trans %}Publishing house{% endtrans %}</a></li>
+                <li {% if current_page == 'pro_details' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-prodetails') }}">{% trans %}My contractor profile{% endtrans %}</a></li>
+                <li {% if current_page == 'author_profile' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-authorprofile') }}">{% trans %}My author profile{% endtrans %}</a></li>
+                <li {% if current_page == 'edit_publishing_house' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-publishinghouse') }}">{% trans %}My publishing house profile{% endtrans %}</a></li>
 
             </ul>
         </div>

@@ -6,14 +6,14 @@
 
     <div class="span9">             
         <div class="w-box">
-            <div class="w-box-header"><h4>{% trans %}Update professional profile{% endtrans %}</h4></div>
+            <div class="w-box-header"><h4>{% trans %}Edit my contractor profile{% endtrans %}</h4></div>
             <div class="w-box-content">
 
                 <div id="edit_pro_details" class="well form-vertical">
                     <fieldset>
                         <form id="form_pro_details" action="{{ upload_url }}" enctype="multipart/form-data" method="post"> <!-- url|safe -->
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                            <legend>Professional overview</legend>
+                            <legend>General</legend>
                             <div class="control-group">
                                 <label class="control-label">Display name</label>
                                 <label class="radio">
@@ -133,7 +133,7 @@
                             {{ macros.field(form.zipcode, label=_("ZIP"), class="input-large focused") }}
                             {{ macros.field(form.phone, label=_("Phone"), class="input-large focused") }}
                             <div class="form-actions">
-                                <button type="submit" class="btn">{% trans %}Update Professional Profile{% endtrans %}</button>
+                                <button type="submit" class="btn">{% trans %}Update Contractor Profile{% endtrans %}</button>
                             </div>
                         </form>
                     </fieldset>

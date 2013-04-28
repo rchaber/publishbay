@@ -369,4 +369,8 @@ class JobPostHandler():
     - estimated start date
     - looking to be staff member (can only work for this publishing house)
     """
+    pass
 
+
+class EditAuthorProfileHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    pass
