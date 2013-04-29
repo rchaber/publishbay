@@ -48,6 +48,19 @@ class ProDetails(ndb.Model):
         return [x.username for x in obj_list]
 
 
+class AuthorProfile(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    title = ndb.StringProperty()
+    pseudonyms = ndb.StringProperty(repeated=True)
+    overview = ndb.TextProperty()
+    ghostwrites = ndb.BooleanProperty()
+    genres = ndb.StringProperty(repeated=True)
+
+    @classmethod
+    def get_by_userkey(cls, k):
+        return cls.query(cls.user == k).get()
+
+
 class PublishingHouse(ndb.Model):
     owner = ndb.KeyProperty(kind=models.User)
     name = ndb.StringProperty()

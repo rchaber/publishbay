@@ -178,16 +178,10 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
                 self.form.zipcode.data = user_pro_details.zipcode
                 self.form.phone.data = user_pro_details.phone
 
-        joblist = utils.joblist
-        remain = len(joblist) % 3
-        if remain == 0:
-            params['joblist_left'] = joblist[0:len(joblist)/3]
-            params['joblist_center'] = joblist[len(joblist)/3:len(joblist)/3*2]
-            params['joblist_right'] = joblist[len(joblist)/3*2:]
-        else:
-            params['joblist_left'] = joblist[0:(len(joblist)-remain)/2]
-            params['joblist_center'] = joblist[(len(joblist)-remain)/2:len(joblist)-remain]
-            params['joblist_right'] = joblist[-remain:]
+        a = utils.split_3cols(utils.joblist)
+        params['joblist_left'] = a['left']
+        params['joblist_center'] = a['center']
+        params['joblist_right'] = a['right']
 
         params['profile_visibility'] = self.form.profile_visibility.data
 
@@ -357,6 +351,77 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
             return self.get()
 
 
+class EditAuthorProfileHandler(BaseHandler):
+    """
+    Handler for Create/Edit Author Profile
+    """
+
+    @user_required
+    def get(self):
+        """ Returns a simple HTML form for create/edit author profile """
+
+        params = {}
+
+        params['title'] = ''
+        params['pseudonyms'] = ''
+        params['overview'] = ''
+        params['genres_list'] = ''
+        params['ghostwrites'] = ''
+
+        if self.user:
+            author_profile = bmodels.AuthorProfile.get_by_userkey(self.user_key)
+            if author_profile:
+                params['title'] = author_profile.title
+                params['overview'] = author_profile.overview
+                params['pseudonyms'] = ', '.join(author_profile.pseudonyms)
+                params['genres_list'] = author_profile.genres
+                params['ghostwrites'] = author_profile.ghostwrites
+
+        params['fiction_genres_left'] = utils.split_3cols(utils.genres_fiction)['left']
+        params['fiction_genres_center'] = utils.split_3cols(utils.genres_fiction)['center']
+        params['fiction_genres_right'] = utils.split_3cols(utils.genres_fiction)['right']
+        params['nonfiction_genres_left'] = utils.split_3cols(utils.genres_nonfiction)['left']
+        params['nonfiction_genres_center'] = utils.split_3cols(utils.genres_nonfiction)['center']
+        params['nonfiction_genres_right'] = utils.split_3cols(utils.genres_nonfiction)['right']
+
+        return self.render_template('edit_author_profile.html', **params)
+
+    def post(self):
+        """ Get fields from POST dict """
+
+        checked_genres = self.request.POST.get('checked_genres').replace('&', '').replace('+', ' ').replace('%26', '&').split('genres=')[1:]
+        print checked_genres
+
+        pseudonyms = self.request.POST.get('pseudonyms').replace('  ', ' ').replace(' ,', ',').split(',')
+        pseudonyms = [i.lstrip().rstrip() for i in pseudonyms]
+
+        k = models.User.get_by_id(long(self.user_id)).key
+
+        author_profile = bmodels.AuthorProfile.get_by_userkey(k)
+        if not author_profile:
+            author_profile = bmodels.AuthorProfile()
+            author_profile.user = k
+
+        try:
+            message = ''
+            author_profile.name = self.request.POST.get('name')
+            author_profile.title = self.request.POST.get('title')
+            author_profile.overview = self.request.POST.get('overview').replace('\r\r\n', '\r\n')
+            author_profile.ghostwrites = (self.request.POST.get('ghostwrites') == "True")
+            author_profile.genres = checked_genres
+            author_profile.pseudonyms = pseudonyms
+            author_profile.put()
+            message += " " + _('Your author profile has been updated.')
+            self.add_message(message, 'success')
+            self.redirect('/settings/profile')
+
+        except (AttributeError, KeyError, ValueError), e:
+            logging.error('Error creating/updating author profile: ' + e)
+            message = _('Unable to create/update author profile. Please try again later.')
+            self.add_message(message, 'error')
+            return self.get()
+
+
 class JobPostHandler():
     """
     fields:
@@ -369,8 +434,4 @@ class JobPostHandler():
     - estimated start date
     - looking to be staff member (can only work for this publishing house)
     """
-    pass
-
-
-class EditAuthorProfileHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     pass

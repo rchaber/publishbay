@@ -2,76 +2,56 @@
 
     {% block content %}
 
-    {{ macros.left_sidebar("edit_publishing_house") }}
-
-    <!-- params: upload_url, name, tagline, description, logo_url, fiction_genres_left, fiction_genres_center, fiction_genres_right, nonfiction_genres_left, nonfiction_genres_center, nonfiction_genres_right, show_in_job_posts -->
+    {{ macros.left_sidebar("author_profile") }}
 
     <div class="span9">             
         <div class="w-box">
-            <div class="w-box-header"><h4>{% trans %}Edit my publishing house profile{% endtrans %}</h4></div>
+            <div class="w-box-header"><h4>{% trans %}Edit my author profile{% endtrans %}</h4></div>
             <div class="w-box-content">
 
-                <div id="edit_publishing_house" class="well form-vertical">
+                <div id="edit_author_profile" class="well form-vertical">
                     <fieldset>
-                        <form id="form_publishing_house" action="{{ upload_url }}" enctype="multipart/form-data" method="post"> <!-- url|safe -->
+                        <form id="form_author_profile" action="{{ url|safe }}" method="post">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                            <legend>Publishing House Profile Info</legend>
+                            <legend>Author Profile Info</legend>
 
                             <div class="control-group">
-                                <label class="control-label" for="name">Name</label>
+                                <label class="control-label" for="title">In a few words, describe yourself and/or your work</label>
                                 <div class="controls">
-                                    <input class="input-xlarge focused" id="name" name="name" type="text" value="{{ name }}">
+                                    <input class="input-xxlarge focused" id="title" name="title" type="text" value="{{ title }}">
                                 </div>
                             </div>
 
                             <div class="control-group">
-                                <label class="control-label" for="name">Tagline</label>
+                                <label class="control-label">Overview</label>
                                 <div class="controls">
-                                    <input class="input-xlarge focused" id="tagline" name="tagline" type="text" value="{{ tagline }}">
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">Description</label>
-                                <div class="controls">
-                                    <textarea class="input-xxlarge focused" cols="50" id="description" name="description" rows="8" style="resize: vertical;">{{ description }}</textarea>
+                                    <textarea class="input-xxlarge focused" cols="50" id="overview" name="overview" rows="8" style="resize: vertical;">{{ overview }}</textarea>
                                 </div>
                                 <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
-                                    <p>
-                                        <span id="countdown" style="float: right; font-weight: bold; margin-top: -10px;"></span>
+                                    <p>Include a short summary of your career as an author and/or relevant experience. Make sure to check your overview statement for spelling and grammar errors!
+                                        <span id="countdown" style="float: right; font-weight: bold;"></span>
                                     </p>
                                 </div>   
                             </div>
 
                             <div class="control-group">
-                                <label class="control-label">Publishing House logo (optional)</label>
-                                <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
-                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px; line-height: 50px;">
-                                        {% if logo_url == ''%}
-                                        <img src="/static/images/dummy_50x50.gif" alt="">
-                                        {% else %}
-                                        <img src="{{ logo_url }}" alt="">
-                                        {% endif %}
-                                    </div>
-                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"></div>
-                                    <span class="btn btn-small btn-file">
-                                        <span class="fileupload-new">Select a logo now</span>
-                                        <span class="fileupload-exists">Change</span>
-                                        <input type="file" name="file" id="file" />
-                                        <input type="hidden" name="upload_url" value="{{ upload_url }}"/>
-                                    </span>
-                                    <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                <label class="control-label" for="pseudonyms">Pseudonyms</label>
+                                <div class="controls">
+                                    <input class="input-xxlarge focused" id="pseudonyms" name="pseudonyms" type="text" value="{{ pseudonyms }}">
                                 </div>
+                                <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
+                                    <p>Enter different pseudonyms separated by comma.</p>
+                                </div>   
                             </div>
 
                             <div class="control-group">
-                                <label class="control-label">Select genres that best fit your publishing house (optional)</label>
+                                <label class="control-label">Select genres that best fit your work (optional)</label>
                                 <div style = "overflow: auto; border: 2px solid #CCC; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
                                     <label style="clear: both; padding-top: 5px;">Fiction:</label>
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in fiction_genres_left %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -79,7 +59,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in fiction_genres_center %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -87,7 +67,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in fiction_genres_right %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -96,7 +76,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in nonfiction_genres_left %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -104,7 +84,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in nonfiction_genres_center %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -112,7 +92,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in nonfiction_genres_right %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -122,16 +102,16 @@
                             </div>
 
                             <div class="control-group">
-                                <label class="control-label" style="margin-bottom: 0">Show in job posts</label>
+                                <label class="control-label" style="margin-bottom: 0">Ghostwriting</label>
                                     <div class="controls">
-                                        <input type="checkbox" id="show_in_job_posts" name="show_in_job_posts" value="True" {% if show_in_job_posts %}checked="checked"{% endif %}>
-                                        Show company info in my job posts
+                                        <input type="checkbox" id="ghostwrites" name="ghostwrites" value="True" {% if ghostwrites %}checked="checked"{% endif %}>
+                                        Available as ghostwriter
                                     </div>
                                 </label>
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn">{% trans %}Update Publishing House Profile{% endtrans %}</button>
+                                <button type="submit" class="btn">{% trans %}Update Author Profile{% endtrans %}</button>
                             </div>
                         </form>
                     </fieldset>
@@ -150,7 +130,7 @@
 
         function updateCountdown() {
         // 5000 is the max description length
-        var remaining = 5000 - $('#description').val().length;
+        var remaining = 5000 - $('#overview').val().length;
         $('#countdown').text(remaining + {% trans %}' characters left.'{% endtrans %});
         }
 
@@ -167,8 +147,8 @@
             });
 
             updateCountdown();
-            $('#description').change(updateCountdown);
-            $('#description').keyup(updateCountdown);
+            $('#overview').change(updateCountdown);
+            $('#overview').keyup(updateCountdown);
 
         });
     </script>
