@@ -150,7 +150,7 @@ class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         params = {}
 
         params['profile_visibility'] = 'everyone'
-        params['display_full_name'] = True
+        params['display_full_name'] = False
         params['english_level'] = 0
         params['picture_url'] = ''
         params['overviewdata'] = ''
@@ -164,7 +164,7 @@ class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
                 if user_pro_details.picture_key and user_pro_details.picture_key != '':
                     params['picture_url'] = '/serve/%s' % user_pro_details.picture_key
                 params['title'] = user_pro_details.title
-                params['overviewdata'] = user_pro_details.overview
+                params['overview'] = user_pro_details.overview
                 params['profile_visibility'] = user_pro_details.profile_visibility
                 params['english_level'] = user_pro_details.english_level
                 params['joblist'] = ', '.join(user_pro_details.jobs)
@@ -191,7 +191,7 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
 
         params = {}
 
-        self.form.display_full_name.data = True
+        self.form.display_full_name.data = False
         self.form.profile_visibility.data = 'everyone'
 
         params['english_level'] = 0

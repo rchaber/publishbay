@@ -435,6 +435,16 @@ dt, dd {
 
 dd {
 	overflow: auto;
+	margin-left: 10px;
+}
+
+dd pre {
+	font-family: inherit;
+	font-size: inherit;
+	background: inherit;
+	border: inherit;
+	padding: inherit;
+	padding-top: 0;
 }
 
 a.btn-mini {

@@ -21,13 +21,13 @@
                         <legend>General</legend>
                         <dl style="width: 90px; display: inline-block; float: left; margin-top: 0;">
                             <dd>
-                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px;">
-                                        {% if picture_url == ''%}
-                                        <img src="/static/images/dummy_50x50.gif" alt="">
-                                        {% else %}
-                                        <img src="{{ picture_url }}" alt="">
-                                        {% endif %}
-                                    </div>
+                                <div class="fileupload-new thumbnail" style="width: 50px; height: 50px;">
+                                    {% if picture_url == ''%}
+                                    <img src="/static/images/dummy_50x50.gif" alt="">
+                                    {% else %}
+                                    <img src="{{ picture_url }}" alt="">
+                                    {% endif %}
+                                </div>
                             </dd>
                         </dl>
                         <dl>
@@ -46,7 +46,7 @@
                         </dl>
                         <dl>
                             <dt>Overview</dt>
-                            <dd>{{ overview }}</dd>
+                            <dd><pre style="overflow: visible">{{ overview }}</pre></dd>
                         </dl>
                         <dl>
                             <dt>English level</dt>
@@ -62,6 +62,20 @@
                         <dl>
                             <dt>Jobs you perform</dt>
                             <dd>{{ joblist }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Profile visibility</dt>
+                            <dd> 
+                                {% if profile_visibility == 'everyone' %}
+                                    {% trans %}Everyone{% endtrans %}&nbsp;-&nbsp;{% trans %}Anyone can see your profile whether or not they are logged into PublishBay.{% endtrans %}
+                                {% endif %}
+                                {% if profile_visibility == 'pb_users_only' %}
+                                    {% trans %}PublishBay users only{% endtrans %}&nbsp;-&nbsp;{% trans %}Only PublishBay users who are logged in can see your profile.{% endtrans %}
+                                {% endif %}
+                                {% if profile_visibility == 'hidden' %}
+                                    {% trans %}Hidden{% endtrans %}&nbsp;-&nbsp;{% trans %}Clients can see your profile only if you have applied to their job.{% endtrans %}
+                                {% endif %}
+                            </dd>
                         </dl>
                         <legend>Contact info</legend>
                         <dl>
