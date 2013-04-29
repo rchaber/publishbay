@@ -1,0 +1,104 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    {{ macros.left_sidebar("pro_details") }}
+
+    <div class="span9">             
+        <div class="w-box">
+            <div class="w-box-header">
+                <h4>{% trans %}My contractor profile{% endtrans %}</h4>
+                <div class="pull-right">
+                    {% if there_is_profile %}
+                    <a href="{{ uri_for('edit-prodetails') }}" class="btn btn-mini">Edit</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="w-box-content cnt_a">
+                <div class="well form-vertical">
+                    {% if there_is_profile %}
+                    <div>
+                        <legend>General</legend>
+                        <dl style="width: 90px; display: inline-block; float: left; margin-top: 0;">
+                            <dd>
+                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px;">
+                                        {% if picture_url == ''%}
+                                        <img src="/static/images/dummy_50x50.gif" alt="">
+                                        {% else %}
+                                        <img src="{{ picture_url }}" alt="">
+                                        {% endif %}
+                                    </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>Display name</dt>
+                            <dd>
+                                {% if display_full_name %}
+                                Full name: {{ first_name }}&nbsp;{{ last_name }}
+                                {% else %}
+                                First name and last initial: {{ first_name }}&nbsp;{{ last_name[0]+'.' }}
+                                {% endif %}
+                            </dd>
+                        </dl>
+                        <dl style="clear: left;">
+                            <dt>Title</dt>
+                            <dd>{{ title }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Overview</dt>
+                            <dd>{{ overview }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>English level</dt>
+                            <dd> 
+                                {% if english_level == 0 %}English level not selected{% endif %}
+                                {% if english_level == 5 %}5 - Fluent in both written and verbal skills{% endif %} 
+                                {% if english_level == 4 %}4 - Fluent written skills, good verbal skills{% endif %}
+                                {% if english_level == 3 %}3 - Fluent written skills, basic verbal skills{% endif %}
+                                {% if english_level == 2 %}2 - Good written skills, no verbal skills{% endif %}
+                                {% if english_level == 1 %}1 - Basic written skills, no verbal skills{% endif %} 
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>Jobs you perform</dt>
+                            <dd>{{ joblist }}</dd>
+                        </dl>
+                        <legend>Contact info</legend>
+                        <dl>
+                            <dt>Address</dt>
+                            <dd>{{ address1 }}</dd>
+                            <dd>{{ address2 }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>City</dt>
+                            <dd>{{ city }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>State</dt>
+                            <dd>{{ state }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Zip</dt>
+                            <dd>{{ zipcode }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Phone</dt>
+                            <dd>{{ phone }}</dd>
+                        </dl>
+                    </div>
+                    {% else %}
+                    <div class="row-fluid">
+                        <div class="span6 offset3">
+                            <a href="{{ uri_for('edit-prodetails') }}" class="btn btn-large btn-success btn-block">Create a contractor profile</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    {% endblock %}
+

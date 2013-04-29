@@ -133,7 +133,13 @@
                             {{ macros.field(form.zipcode, label=_("ZIP"), class="input-large focused") }}
                             {{ macros.field(form.phone, label=_("Phone"), class="input-large focused") }}
                             <div class="form-actions">
-                                <button type="submit" class="btn">{% trans %}Update Contractor Profile{% endtrans %}</button>
+                                <button type="submit" class="btn">
+                                {% if there_is_profile %}
+                                    {% trans %}Update Contractor Profile{% endtrans %}
+                                {% else %}
+                                    {% trans %}Create Contractor Profile{% endtrans %}
+                                {% endif %}
+                                </button>
                             </div>
                         </form>
                     </fieldset>

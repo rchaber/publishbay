@@ -138,6 +138,48 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
         self.send_blob(blob_info)
 
 
+class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    """
+    Handler for Edit User Contact Info
+    """
+
+    @user_required
+    def get(self):
+        """ Returns a simple HTML form for edit professional details """
+
+        params = {}
+
+        params['profile_visibility'] = 'everyone'
+        params['display_full_name'] = True
+        params['english_level'] = 0
+        params['picture_url'] = ''
+        params['overviewdata'] = ''
+        params['joblist'] = ''
+
+        if self.user:
+            user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
+            if user_pro_details:
+                params['there_is_profile'] = True
+                params['display_full_name'] = user_pro_details.display_full_name
+                if user_pro_details.picture_key and user_pro_details.picture_key != '':
+                    params['picture_url'] = '/serve/%s' % user_pro_details.picture_key
+                params['title'] = user_pro_details.title
+                params['overviewdata'] = user_pro_details.overview
+                params['profile_visibility'] = user_pro_details.profile_visibility
+                params['english_level'] = user_pro_details.english_level
+                params['joblist'] = ', '.join(user_pro_details.jobs)
+                params['address1'] = user_pro_details.address1
+                params['address2'] = user_pro_details.address2
+                params['city'] = user_pro_details.city
+                params['state'] = user_pro_details.state
+                params['zipcode'] = user_pro_details.zipcode
+                params['phone'] = user_pro_details.phone
+            else:
+                params['there_is_profile'] = False
+
+        return self.render_template('display_pro_details.html', **params)
+
+
 class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler for Edit User Contact Info

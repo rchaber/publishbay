@@ -13,10 +13,14 @@
 }
 
 #fade-menu ul li ul li {
-width: 190px;
-display: block;
-float: none;
-border-right: none;
+	width: 190px;
+	display: block;
+	float: none;
+	border-right: none;
+}
+
+#fade-menu ul li ul {
+	left: 0;
 }
 
 body {
@@ -197,7 +201,7 @@ span.password_strength {
 	position: relative;
 	top: -67px;
 	width: auto;
-	left: -1px;
+	left: -9px;
 	float: right;
 	margin-bottom: -20px;
 }
@@ -418,4 +422,23 @@ label.control-label {
 
 .form-warning {
 	margin: 0;
+}
+
+dl {
+	overflow: auto;
+}
+
+dt, dd {
+	font-size: 14px;
+	margin: 0;
+}
+
+dd {
+	overflow: auto;
+}
+
+a.btn-mini {
+	padding-right: 15px;
+	padding-left: 15px;
+	font-size: 12px;
 }
