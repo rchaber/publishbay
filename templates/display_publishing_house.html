@@ -1,0 +1,71 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    {{ macros.left_sidebar("publishing_house") }}
+
+    <div class="span9">             
+        <div class="w-box">
+            <div class="w-box-header">
+                <h4>{% trans %}My publishing house profile{% endtrans %}</h4>
+                <div class="pull-right">
+                    {% if there_is_ph %}
+                    <a href="{{ uri_for('edit-publishinghouse') }}" class="btn btn-mini">Edit</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="w-box-content cnt_a">
+                <div class="well form-vertical">
+                    {% if there_is_ph %}
+                    <div>
+                        <legend>Publishing House Profile Info</legend>
+                        <dl style="width: 80px; display: inline-block; float: left; margin-top: 0;">
+                            <dd style="margin-left: 0">
+                                <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; line-height: 50px; vertical-align: middle; text-align: center; display: block;">
+                                    {% if logo_url == ''%}
+                                    <img src="/static/images/dummy_50x50.gif" alt="">
+                                    {% else %}
+                                    <img src="{{ logo_url }}" alt="" style="display: inline-block;">
+                                    {% endif %}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>{{ name }}</dd>
+                        </dl>
+                        <dl style="clear: left;">
+                            <dt>Tagline</dt>
+                            <dd>{{ tagline }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Description</dt>
+                            <dd><pre>{{ description }}</pre></dd>
+                        </dl>
+                        <dl>
+                            <dt>Main genres the house works with</dt>
+                            <dd>{{ ph_genres_list }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Show in job posts</dt>
+                            <dd>
+                                {% if show_in_job_posts %}Yes{% else %}No{% endif %}
+                            </dd>
+                        </dl>
+                    </div>
+                    {% else %}
+                    <div class="row-fluid">
+                        <div class="span6 offset3">
+                            <a href="{{ uri_for('edit-publishinghouse') }}" class="btn btn-large btn-success btn-block">Create a publishing house</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    {% endblock %}
+

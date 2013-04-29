@@ -2,7 +2,7 @@
 
     {% block content %}
 
-    {{ macros.left_sidebar("edit_publishing_house") }}
+    {{ macros.left_sidebar("publishing_house") }}
 
     <!-- params: upload_url, name, tagline, description, logo_url, fiction_genres_left, fiction_genres_center, fiction_genres_right, nonfiction_genres_left, nonfiction_genres_center, nonfiction_genres_right, show_in_job_posts -->
 
@@ -131,7 +131,13 @@
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn">{% trans %}Update Publishing House Profile{% endtrans %}</button>
+                                <button type="submit" class="btn">
+                                {% if there_is_ph %}
+                                    {% trans %}Update Publishing House Profile{% endtrans %}
+                                {% else %}
+                                    {% trans %}Create Publishing House Profile{% endtrans %}
+                                {% endif %}
+                                </button>
                             </div>
                         </form>
                     </fieldset>

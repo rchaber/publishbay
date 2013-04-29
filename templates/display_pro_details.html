@@ -19,13 +19,13 @@
                     {% if there_is_profile %}
                     <div>
                         <legend>General</legend>
-                        <dl style="width: 90px; display: inline-block; float: left; margin-top: 0;">
-                            <dd>
-                                <div class="fileupload-new thumbnail" style="width: 50px; height: 50px;">
+                        <dl style="width: 80px; display: inline-block; float: left; margin-top: 0;">
+                            <dd style="margin-left: 0">
+                                <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; line-height: 50px; vertical-align: middle; text-align: center;">
                                     {% if picture_url == ''%}
                                     <img src="/static/images/dummy_50x50.gif" alt="">
                                     {% else %}
-                                    <img src="{{ picture_url }}" alt="">
+                                    <img src="{{ picture_url }}" alt="" style="display: inline-block;">
                                     {% endif %}
                                 </div>
                             </dd>
@@ -46,7 +46,7 @@
                         </dl>
                         <dl>
                             <dt>Overview</dt>
-                            <dd><pre style="overflow: visible">{{ overview }}</pre></dd>
+                            <dd><pre>{{ overview }}</pre></dd>
                         </dl>
                         <dl>
                             <dt>English level</dt>

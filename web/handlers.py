@@ -199,10 +199,12 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         params['picture_url'] = ''
         params['overviewdata'] = ''
         params['joblist'] = []
+        params['there_is_profile'] = False
 
         if self.user:
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
             if user_pro_details:
+                params['there_is_profile'] = True
                 self.form.display_full_name.data = user_pro_details.display_full_name
                 params['display_full_name'] = self.form.display_full_name.data
                 if user_pro_details.picture_key and user_pro_details.picture_key != '':
@@ -303,6 +305,40 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         return bayforms.EditProDetails(self)
 
 
+class DisplayPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    """
+    Handler for Display Publishing House
+    """
+
+    @user_required
+    def get(self):
+        """ Returns a simple HTML form for create/edit publishing house """
+
+        params = {}
+
+        params['name'] = ''
+        params['tagline'] = ''
+        params['description'] = ''
+        params['ph_genres_list'] = ''
+        params['show_in_job_posts'] = ''
+        params['logo_url'] = ''
+        params['there_is_ph'] = False
+
+        if self.user:
+            publishing_house = bmodels.PublishingHouse.get_by_ownerkey(self.user_key)
+            if publishing_house:
+                params['there_is_ph'] = True
+                params['name'] = publishing_house.name
+                params['tagline'] = publishing_house.tagline
+                params['description'] = publishing_house.description
+                if publishing_house.logo_key and publishing_house.logo_key != '':
+                    params['logo_url'] = '/serve/%s' % publishing_house.logo_key
+                params['ph_genres_list'] = ', '.join(publishing_house.genres)
+                params['show_in_job_posts'] = publishing_house.show_in_job_posts
+
+        return self.render_template('display_publishing_house.html', **params)
+
+
 class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler for Create/Edit Publishing House
@@ -321,10 +357,12 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
         params['pb_genres_list'] = ''
         params['show_in_job_posts'] = ''
         params['logo_url'] = ''
+        params['there_is_ph'] = False
 
         if self.user:
             publishing_house = bmodels.PublishingHouse.get_by_ownerkey(self.user_key)
             if publishing_house:
+                params['there_is_ph'] = True
                 params['name'] = publishing_house.name
                 params['tagline'] = publishing_house.tagline
                 params['description'] = publishing_house.description
