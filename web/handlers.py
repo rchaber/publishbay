@@ -431,6 +431,37 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
             return self.get()
 
 
+class DisplayAuthorProfileHandler(BaseHandler):
+    """
+    Handler for Display Author Profile
+    """
+
+    @user_required
+    def get(self):
+        """ Returns a simple HTML form for display author profile """
+
+        params = {}
+
+        params['title'] = ''
+        params['pseudonyms'] = ''
+        params['overview'] = ''
+        params['genres_list'] = ''
+        params['ghostwrites'] = ''
+        params['there_is_author_profile'] = False
+
+        if self.user:
+            author_profile = bmodels.AuthorProfile.get_by_userkey(self.user_key)
+            if author_profile:
+                params['there_is_author_profile'] = True
+                params['title'] = author_profile.title
+                params['overview'] = author_profile.overview
+                params['pseudonyms'] = ', '.join(author_profile.pseudonyms)
+                params['genres_list'] = ', '.join(author_profile.genres)
+                params['ghostwrites'] = author_profile.ghostwrites
+
+        return self.render_template('display_author_profile.html', **params)
+
+
 class EditAuthorProfileHandler(BaseHandler):
     """
     Handler for Create/Edit Author Profile
@@ -447,6 +478,7 @@ class EditAuthorProfileHandler(BaseHandler):
         params['overview'] = ''
         params['genres_list'] = ''
         params['ghostwrites'] = ''
+        params['there_is_author_profile'] = False
 
         if self.user:
             author_profile = bmodels.AuthorProfile.get_by_userkey(self.user_key)
@@ -456,6 +488,7 @@ class EditAuthorProfileHandler(BaseHandler):
                 params['pseudonyms'] = ', '.join(author_profile.pseudonyms)
                 params['genres_list'] = author_profile.genres
                 params['ghostwrites'] = author_profile.ghostwrites
+                params['there_is_author_profile'] = True
 
         params['fiction_genres_left'] = utils.split_3cols(utils.genres_fiction)['left']
         params['fiction_genres_center'] = utils.split_3cols(utils.genres_fiction)['center']

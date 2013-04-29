@@ -1,0 +1,60 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    {{ macros.left_sidebar("author_profile") }}
+
+    <div class="span9">             
+        <div class="w-box">
+            <div class="w-box-header">
+                <h4>{% trans %}My author profile{% endtrans %}</h4>
+                <div class="pull-right">
+                    {% if there_is_author_profile %}
+                    <a href="{{ uri_for('edit-authorprofile') }}" class="btn btn-mini">Edit</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="w-box-content cnt_a">
+                <div class="well form-vertical">
+                    {% if there_is_author_profile %}
+                    <div>
+                        <legend>Author Profile Info</legend>
+                        <dl>
+                            <dt>Short statement</dt>
+                            <dd>{{ title }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Career summary and relevant experience</dt>
+                            <dd><pre>{{ overview }}</pre></dd>
+                        </dl>
+                        <dl>
+                            <dt>Pseudonyms</dt>
+                            <dd>{{ pseudonyms }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Genres that best fit my work</dt>
+                            <dd>{{ genres_list }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Ghostwriting</dt>
+                            <dd>
+                                I'm {% if not ghostwrites %}not{% endif %} available for ghostwriting.
+                            </dd>
+                        </dl>
+                    </div>
+                    {% else %}
+                    <div class="row-fluid">
+                        <div class="span6 offset3">
+                            <a href="{{ uri_for('edit-authorprofile') }}" class="btn btn-large btn-success btn-block">Create an author profile</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    {% endblock %}
+

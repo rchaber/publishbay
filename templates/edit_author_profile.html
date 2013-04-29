@@ -111,7 +111,13 @@
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn">{% trans %}Update Author Profile{% endtrans %}</button>
+                                <button type="submit" class="btn">
+                                {% if there_is_author_profile %}
+                                    {% trans %}Update Author Profile{% endtrans %}
+                                {% else %}
+                                    {% trans %}Create Author Profile{% endtrans %}
+                                {% endif %}
+                                </button>
                             </div>
                         </form>
                     </fieldset>
@@ -135,7 +141,7 @@
         }
 
         $().ready(function() {
-            $("#form_publishing_house").validate({
+            $("#form_author_profile").validate({
                 submitHandler: function(form) {
                         $('#checked_genres').attr('value', $('input[name="genres"]').serialize());
                         form.submit();
