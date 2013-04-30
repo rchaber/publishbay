@@ -10,6 +10,21 @@ genres_fiction = utils.genres_fiction
 genres_nonfiction = utils.genres_nonfiction
 
 
+class PublishingHouse(ndb.Model):
+    owner = ndb.KeyProperty(kind=models.User)
+    name = ndb.StringProperty()
+    tagline = ndb.StringProperty()
+    description = ndb.TextProperty()
+    logo_key = ndb.BlobKeyProperty()
+    genres = ndb.StringProperty(repeated=True)
+    show_in_job_posts = ndb.BooleanProperty(default=False)
+    partners = ndb.KeyProperty(kind=models.User, repeated=True)
+
+    @classmethod
+    def get_by_ownerkey(cls, k):
+        return cls.query(cls.owner == k).get()
+
+
 class ProDetails(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     username = ndb.ComputedProperty(lambda self: self.user.get().username)
@@ -26,6 +41,7 @@ class ProDetails(ndb.Model):
     zipcode = ndb.StringProperty()
     phone = ndb.StringProperty()
     picture_key = ndb.BlobKeyProperty()
+    ph_contractor = ndb.KeyProperty(kind=PublishingHouse)
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
 
@@ -55,25 +71,11 @@ class AuthorProfile(ndb.Model):
     overview = ndb.TextProperty()
     ghostwrites = ndb.BooleanProperty()
     genres = ndb.StringProperty(repeated=True)
+    ph_author = ndb.KeyProperty(kind=PublishingHouse)
 
     @classmethod
     def get_by_userkey(cls, k):
         return cls.query(cls.user == k).get()
-
-
-class PublishingHouse(ndb.Model):
-    owner = ndb.KeyProperty(kind=models.User)
-    name = ndb.StringProperty()
-    tagline = ndb.StringProperty()
-    description = ndb.TextProperty()
-    logo_key = ndb.BlobKeyProperty()
-    genres = ndb.StringProperty(repeated=True)
-    show_in_job_posts = ndb.BooleanProperty(default=False)
-    partners = ndb.KeyProperty(kind=models.User, repeated=True)
-
-    @classmethod
-    def get_by_ownerkey(cls, k):
-        return cls.query(cls.owner == k).get()
 
 
 class JobPost(ndb.Model):

@@ -92,11 +92,20 @@
 
                             {% if user_id %}
                             <li>
+                                <a href="javascript:void(0)">browse</a>
+                                <ul>
+                                    <li><a href="javascript:void(0)"><i class="icsw16-sign-post icsw16-white"></i> Job Posts</a></li>
+                                    <li><a href="{{ uri_for("browse-contractors") }}"><i class="icsw16-under-construction icsw16-white"></i> Contractors</a></li>
+                                    <li><a href="javascript:void(0)"><i class="icsw16-tree icsw16-white"></i> Authors</a></li>
+                                    <li><a href="javascript:void(0)"><i class="icsw16-books icsw16-white"></i> Book Projects</a></li>
+                                    <li><a href="javascript:void(0)"><i class="icsw16-home-2 icsw16-white"></i> Publishing Houses</a></li>
+                                </ul>
+                            </li>
+                            <li>
                                 <a href="javascript:void(0)">author</a>
                                 <ul>
                                     <li><a href="javascript:void(0)"><i class="icsw16-book icsw16-white"></i> New manuscript</a></li>
                                     <li><a href="javascript:void(0)"><i class="icsw16-books icsw16-white"></i> My manuscripts</a></li>
-                                    <li><a href="javascript:void(0)"><i class="icon-search icon-white"></i> Find publishing houses</a></li>
                                     <li><a href="javascript:void(0)"><i class="icon-bookmark icon-white"></i> Saved publishing houses</a></li>
                                     <li><a href="javascript:void(0)"><i class="icsw16-suitcase icsw16-white"></i> Submit manuscript</a></li>
                                     <li><a href="javascript:void(0)"><i class="icsw16-archive icsw16-white"></i> My submissions</a></li>
@@ -118,7 +127,6 @@
                             <li>
                                 <a href="javascript:void(0)">contractor</a>
                                 <ul>
-                                    <li><a href="javascript:void(0)"><i class="icon-search icon-white"></i> Find jobs</a></li>
                                     <li><a href="javascript:void(0)"><i class="icon-eye-open icon-white"></i> Jobs watchlist</a></li>
                                     <li><a href="javascript:void(0)"><i class="icon-envelope icon-white"></i> Apply for a job</a></li>
                                     <li><a href="javascript:void(0)"><i class="icon-hand-right icon-white"></i> My applications</a></li>

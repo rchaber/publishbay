@@ -540,3 +540,21 @@ border-bottom: 1px solid #198D0F;
 	line-height: 50px;
 	width: 100%;
 }
+
+input.PB-big-search {
+	height: 34px;
+	margin: 0;
+	padding: 0 10px;
+	font-size: 16px;
+	width: 480px;
+	border-radius: 7px;
+	color: #6D696F;
+}
+
+.PB-btn-big-search {
+	height: 38px;
+	line-height: 38px;
+	vertical-align: middle;
+	padding: 0 19px;
+	margin-left: 5px;
+}

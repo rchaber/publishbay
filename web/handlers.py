@@ -384,10 +384,8 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
     def post(self):
         """ Get fields from POST dict """
 
-        print 'got here'
         # if not self.form.validate():
             # return self.get()
-        print self.request.POST.get('checked_genres')
 
         checked_genres = self.request.POST.get('checked_genres').replace('&', '').replace('+', ' ').replace('%26', '&').split('genres=')[1:]
 
