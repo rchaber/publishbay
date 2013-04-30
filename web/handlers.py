@@ -167,7 +167,7 @@ class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
                 params['overview'] = user_pro_details.overview
                 params['profile_visibility'] = user_pro_details.profile_visibility
                 params['english_level'] = user_pro_details.english_level
-                params['joblist'] = ', '.join(user_pro_details.jobs)
+                params['joblist'] = urllib.unquote(', '.join(user_pro_details.jobs))
                 params['address1'] = user_pro_details.address1
                 params['address2'] = user_pro_details.address2
                 params['city'] = user_pro_details.city
@@ -333,9 +333,10 @@ class DisplayPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, B
                 params['description'] = publishing_house.description
                 if publishing_house.logo_key and publishing_house.logo_key != '':
                     params['logo_url'] = '/serve/%s' % publishing_house.logo_key
-                params['ph_genres_list'] = ', '.join(publishing_house.genres)
+                params['ph_genres_list'] = urllib.unquote(', '.join(publishing_house.genres))
                 params['show_in_job_posts'] = publishing_house.show_in_job_posts
 
+        print params['ph_genres_list']
         return self.render_template('display_publishing_house.html', **params)
 
 
@@ -455,8 +456,8 @@ class DisplayAuthorProfileHandler(BaseHandler):
                 params['there_is_author_profile'] = True
                 params['title'] = author_profile.title
                 params['overview'] = author_profile.overview
-                params['pseudonyms'] = ', '.join(author_profile.pseudonyms)
-                params['genres_list'] = ', '.join(author_profile.genres)
+                params['pseudonyms'] = urllib.unquote(', '.join(author_profile.pseudonyms))
+                params['genres_list'] = urllib.unquote(', '.join(author_profile.genres))
                 params['ghostwrites'] = author_profile.ghostwrites
 
         return self.render_template('display_author_profile.html', **params)

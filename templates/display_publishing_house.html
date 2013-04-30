@@ -14,13 +14,18 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="w-box-content cnt_a">
+            <div class="w-box-content cnt_ab">
                 <div class="well form-vertical">
                     {% if there_is_ph %}
                     <div>
                         <legend>Publishing House Profile Info</legend>
-                        <dl style="width: 80px; display: inline-block; float: left; margin-top: 0;">
-                            <dd style="margin-left: 0">
+                        <dl class="dl-horizontal">
+                            <dt>Name</dt>
+                            <dd>{{ name }}</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Logo</dt>
+                            <dd>
                                 <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; line-height: 50px; vertical-align: middle; text-align: center; display: block;">
                                     {% if logo_url == ''%}
                                     <img src="/static/images/dummy_50x50.gif" alt="">
@@ -30,23 +35,19 @@
                                 </div>
                             </dd>
                         </dl>
-                        <dl>
-                            <dt>Name</dt>
-                            <dd>{{ name }}</dd>
-                        </dl>
-                        <dl style="clear: left;">
+                        <dl class="dl-horizontal" style="clear: left;">
                             <dt>Tagline</dt>
                             <dd>{{ tagline }}</dd>
                         </dl>
-                        <dl>
+                        <dl class="dl-horizontal">
                             <dt>Description</dt>
                             <dd><pre>{{ description }}</pre></dd>
                         </dl>
-                        <dl>
-                            <dt>Main genres the house works with</dt>
+                        <dl class="dl-horizontal">
+                            <dt>Genres</dt>
                             <dd>{{ ph_genres_list }}</dd>
                         </dl>
-                        <dl>
+                        <dl class="dl-horizontal">
                             <dt>Show in job posts</dt>
                             <dd>
                                 {% if show_in_job_posts %}Yes{% else %}No{% endif %}

@@ -14,28 +14,28 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="w-box-content cnt_a">
+            <div class="w-box-content cnt_ab">
                 <div class="well form-vertical">
                     {% if there_is_author_profile %}
                     <div>
                         <legend>Author Profile Info</legend>
-                        <dl>
-                            <dt>Short statement</dt>
+                        <dl class="dl-horizontal">
+                            <dt>Statement</dt>
                             <dd>{{ title }}</dd>
                         </dl>
-                        <dl>
-                            <dt>Career summary and relevant experience</dt>
+                        <dl class="dl-horizontal">
+                            <dt>Short bio</dt>
                             <dd><pre>{{ overview }}</pre></dd>
                         </dl>
-                        <dl>
+                        <dl class="dl-horizontal">
                             <dt>Pseudonyms</dt>
                             <dd>{{ pseudonyms }}</dd>
                         </dl>
-                        <dl>
-                            <dt>Genres that best fit my work</dt>
+                        <dl class="dl-horizontal">
+                            <dt>Work genres</dt>
                             <dd>{{ genres_list }}</dd>
                         </dl>
-                        <dl>
+                        <dl class="dl-horizontal">
                             <dt>Ghostwriting</dt>
                             <dd>
                                 I'm {% if not ghostwrites %}not{% endif %} available for ghostwriting.
