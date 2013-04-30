@@ -14,8 +14,8 @@
                     {{ macros.field(form.name, label=_("Name"), class="input-xlarge focused required") }}
                     {{ macros.field(form.email, label=_("Email"), class="input-xlarge focused required email", type="email") }}
                     {{ macros.field(form.message, label=_("Message"), class="input-xlarge required", cols="40", rows="8") }}
-                    <div class="form-actions" style="margin-top: -20px;">
-                        <button type="submit" class="btn">{% trans %}Send Message{% endtrans %}</button>
+                    <div class="form-actions">
+                        <button type="submit" class="PB-btn PB-btn-primary">{% trans %}Send Message{% endtrans %}</button>
                     </div>
                 </fieldset>
             </form>

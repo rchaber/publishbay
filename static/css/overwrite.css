@@ -193,6 +193,10 @@ footer, .push {
 	height: 35px;
 }
 
+footer {
+	margin-bottom: 0;
+}
+
 .password_strength {
 	display: block;
 	width: auto;
@@ -257,7 +261,7 @@ form {
 }
 
 .form-actions {
-	padding: 15px 0 20px;
+	padding: 5px 0 20px;
 	margin-top: 0;
 	margin-bottom: 20px;
 	background-color: #F5F5F5;
@@ -472,4 +476,67 @@ a.btn-mini {
 	padding-right: 15px;
 	padding-left: 15px;
 	font-size: 12px;
+}
+
+.PB-btn {
+	cursor: pointer;
+	border: 0;
+	display: inline-block;
+	background: rgba(0, 0, 0, 0);
+	font: 700 13px sans-serif;
+	line-height: 25px;
+	border-radius: 6px;
+	background-clip: padding-box;
+	padding: 5px 14px 3px;
+	-webkit-font-smoothing: antialiased;
+	font-smoothing: always;
+	text-decoration: none;
+	text-align: center;
+	vertical-align: middle;
+	margin-bottom: 0 !important;
+	font-size: 14px;
+}
+
+.PB-btn:hover {
+	text-decoration: none;
+	color: #FFF;
+}
+
+.PB-btn-primary {
+	color: #FFF;
+	background: #7ADA4A;
+	background: #7ADA4A -webkit-linear-gradient(top,#7ADA4A,#62C831 95%,#53BF29);
+	background: #7ADA4A -moz-linear-gradient(top,#7ADA4A,#62C831 95%,#53BF29);
+	background: #7ADA4A -o-linear-gradient(top,#7ADA4A,#62C831 95%,#53BF29);
+	background: #7ADA4A linear-gradient(top,#7ADA4A,#62C831 95%,#53BF29);
+	border: 1px solid #509E19;
+	border-bottom-color: #198D0F;
+	border-top-color: #6DBE38;
+	-webkit-box-shadow: 0 1px 3px rgba(38, 151, 72, .5),inset 0 1px 0 #9FE662;
+	-moz-box-shadow: 0 1px 3px rgba(38,151,72,.5),inset 0 1px 0 #9fe662;
+	box-shadow: 0 1px 3px rgba(38, 151, 72, .5),inset 0 1px 0 #9FE662;
+	text-shadow: 0 1px 0 #25A811;
+}
+
+.PB-btn-primary:hover {
+background: #93DD64;
+background: #93DD64 -webkit-linear-gradient(top,#93DD64,#72D239 95%,#6FCC37);
+background: #93DD64 -moz-linear-gradient(top,#93DD64,#72D239 95%,#6FCC37);
+background: #93DD64 -o-linear-gradient(top,#93DD64,#72D239 95%,#6FCC37);
+background: #93DD64 linear-gradient(top,#93DD64,#72D239 95%,#6FCC37);
+-webkit-box-shadow: 0 1px 3px rgba(38, 151, 72, .5),inset 0 1px 0 #ADEC66;
+-moz-box-shadow: 0 1px 3px rgba(38,151,72,.5),inset 0 1px 0 #adec66;
+box-shadow: 0 1px 3px rgba(38, 151, 72, .5),inset 0 1px 0 #ADEC66;
+border: 1px solid #6DBE38;
+border-bottom: 1px solid #198D0F;
+}
+
+.PB-btn-jumbo {
+	display: block;
+	font-size: 18px;
+	padding: 0;
+	font-weight: 600;
+	height: 50px;
+	line-height: 50px;
+	width: 100%;
 }
