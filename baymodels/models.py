@@ -28,6 +28,8 @@ class PublishingHouse(ndb.Model):
 class ProDetails(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     username = ndb.ComputedProperty(lambda self: self.user.get().username)
+    name = ndb.ComputedProperty(lambda self: self.user.get().name)
+    last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
     display_full_name = ndb.BooleanProperty(default=True)
     title = ndb.StringProperty()
     overview = ndb.TextProperty()

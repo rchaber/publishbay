@@ -13,21 +13,68 @@
         </div>
     </div>
 
-    <div class="span12" style="margin-left:0">
-        <div class="span8 offset4">
-            <div class="pagination pagination-left">
+    <div class="span12" style="margin-left:0; margin-top: 30px;">
+        <div class="span8 offset3" style="width: 679px;">
+            <div class="w-box">
+                <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
+                    <ul>
+                    {% for c in contractors %}
+                        <li>
+                    
+                        {% if c.picture_url != '' %}
+                        <img src="{{ c.picture_url }}" alt="" style="height: 50px;">
+                        {% else %}
+                        <img src="/static/images/dummy_50x50.gif" alt="">
+                        {% endif %}
+                        
+                        <div class="list-name">
+                        {{ c.name_to_display}}
+                        </div>
+
+                        <div class="list-title">
+                        {{ c.title }}
+                        </div>
+
+                        <div class="list-info">
+                        {{ c.overview }}
+                        </div>
+
+                        <div class="list-info">
+                        {% for i in c.jobs %}
+                        <span class="label label-info">{{ i }}</span>
+                        {% endfor %}
+                        </div>
+
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="pagination pagination-right">
                 <ul>
-                    {% if bookmark %}
-                    <p><a href="#">Previous</a></p>
-                    <p><a href="?bookmark={{ bookmark }}">Next</a></p>
+                    {% if previous %}
+                    <li>
+                        <a href="?page={{ previous }}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="inactive">
+                        <a href="javascript:void(0)">Previous</a>
+                    </li>
                     {% endif %}
-                    <li><a href="#">Previous</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">Next</a></li>
+
+                    {% for i in marks.iteritems() %}
+                    <li id="mark_{{ i[0] }}"><a href="?page={{ i[1] }}"> {{ i[1] }} </a></li>
+                    {% endfor %}
+
+                    {% if next %}
+                    <li>
+                        <a href="?page={{ next }}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="inactive">
+                        <a href="javascript:void(0)">Next</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -36,5 +83,14 @@
     {% endblock %}
 
     {% block mediaJS %}
+
+    <script type="text/javascript">
+
+        $().ready(function() {
+            $("#{{ active }}").addClass('active')
+        });
+
+    </script>
+
     {% endblock %}
 
