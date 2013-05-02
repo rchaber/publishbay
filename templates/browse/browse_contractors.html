@@ -13,6 +13,26 @@
         </div>
     </div>
 
+    <div class="span12" style="margin-left:0">
+        <div class="span8 offset4">
+            <div class="pagination pagination-left">
+                <ul>
+                    {% if bookmark %}
+                    <p><a href="#">Previous</a></p>
+                    <p><a href="?bookmark={{ bookmark }}">Next</a></p>
+                    {% endif %}
+                    <li><a href="#">Previous</a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#">Next</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     {% endblock %}
 
     {% block mediaJS %}
