@@ -87,6 +87,10 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         count = query.count()
 
         new_page = self.request.get('page')
+        jobfilter = self.request.get('jobfilter')
+        print jobfilter
+        jobfilter = jobfilter.split('|')
+        print jobfilter
         new_page = int(new_page) if new_page else 1
         offset = 0
         if new_page:
@@ -113,8 +117,6 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
             d['jobs'] = i.jobs
             contractors.append(d)
 
-        print contractors
-
         pagination = paginate(number_of_pages, new_page)
 
         for i in pagination[2].keys():
@@ -126,6 +128,9 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         params['count'] = count
         params['contractors'] = contractors
         params['marks'] = pagination[2]
+
+        params['joblist'] = utils.joblist
+        params['jobfilter'] = jobfilter
 
         return self.render_template('browse/browse_contractors.html', **params)
 

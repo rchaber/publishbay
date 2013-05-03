@@ -14,7 +14,26 @@
     </div>
 
     <div class="span12" style="margin-left:0; margin-top: 15px;">
-        <div class="span8 offset3" style="width: 679px;">
+        <div class="span3" style="margin-left: 0;">
+            <div class="sidebar">
+                <div class="w-box w-box-orange">
+                    <div class="w-box-header">
+                        <h4>Filter by job</h4>
+                    </div>
+                    <div class="w-box-content cnt_b">
+                        <div class="control-group">
+                            {% for i in joblist %}
+                            <div class="controls">
+                                <label><input type="checkbox" id="job_{{ i }}" name="jobfilter" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in jobfilter %} checked = "checked" {% endif %}>{{ i }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span9">
             <div class="w-box">
                 <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
                     <div class="pagination pagination-right" style="border-bottom: 1px solid #B2B2B2;">
@@ -29,7 +48,7 @@
                             </li>
                             {% endif %}
 
-                            {% for i in marks.iteritems() %}
+                            {% for i in marks|dictsort %}
                             <li class="mark_{{ i[0] }}"><a href="?page={{ i[1] }}"> {{ i[1] }} </a></li>
                             {% endfor %}
 
@@ -48,7 +67,7 @@
                     {% for c in contractors %}
                         <li>
                     
-                        {% if c.picture_url != '' %}
+                        {% if c.picture_url != '' and c.picture %}
                         <img src="{{ c.picture_url }}" alt="" style="height: 50px;">
                         {% else %}
                         <img src="/static/images/dummy_50x50.gif" alt="">
@@ -67,7 +86,7 @@
                         {% endif %}
                         </div>
 
-                        <div class="list-tags">{% for i in c.jobs %}<span class="label label-info">{{ i }} </span>{% endfor %}</div>
+                        <div class="list-tags">{% for i in c.jobs|sort %}<span class="label label-info">{{ i }} </span>{% endfor %}</div>
 
                         </li>
                     {% endfor %}
@@ -84,7 +103,7 @@
                             </li>
                             {% endif %}
 
-                            {% for i in marks.iteritems() %}
+                            {% for i in marks|dictsort %}
                             <li class="mark_{{ i[0] }}"><a href="?page={{ i[1] }}"> {{ i[1] }} </a></li>
                             {% endfor %}
 
@@ -112,6 +131,10 @@
 
         $().ready(function() {
             $(".{{ active }}").addClass('active');
+            $("#update").click(function(){
+                var a = $('input[name="jobfilter"]').serialize().replace(/&jobfilter=/g, '|')
+                window.location.href = "/browse/contractors?" + a;
+            })
             $('.lessmore').click(function(i){
                 var a = $(this).closest('.list-info').children();
                 for (var i=0; i<a.length; i++) {
