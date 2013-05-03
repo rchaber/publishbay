@@ -10,33 +10,29 @@
 """
 
 # standard library imports
-import logging
-import time
-import urllib2
-import urllib
-import math
+# import logging
+# import time
+# import urllib2
+# import urllib
 
 # related third party imports
-import webapp2
-from webapp2_extras.i18n import gettext as _
+# import webapp2
+# from webapp2_extras.i18n import gettext as _
 
 # local application/library specific imports
 
-from boilerplate import forms as forms
-import bayforms as bayforms
-
-from boilerplate import models
+# from boilerplate import models
 from boilerplate.lib.basehandler import BaseHandler
 from boilerplate.lib.basehandler import user_required
 
-from google.appengine.ext import ndb
-from google.appengine.ext import blobstore
+# from google.appengine.ext import ndb
+# from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
-from google.appengine.api import users
+# from google.appengine.api import users
 # from google.appengine.api import images
 
-from pprint import pprint as pprint
+# from pprint import pprint as pprint
 
 from baymodels import models as bmodels
 
@@ -73,7 +69,7 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
     def get(self):
         """Handles GET requests to the paging by cursors sub-application.
 
-        It doesn't uses cursors. Instead, it uses offset along with a paginate custom function to navigate through the results. 
+        It doesn't uses cursors. Instead, it uses offset along with a paginate custom function to navigate through the results.
         """
 
         PAGE_SIZE = 5
@@ -86,11 +82,10 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         query = bmodels.ProDetails.query()
         count = query.count()
 
-        new_page = self.request.get('page')
         jobfilter = self.request.get('jobfilter')
-        print jobfilter
         jobfilter = jobfilter.split('|')
-        print jobfilter
+
+        new_page = self.request.get('page')
         new_page = int(new_page) if new_page else 1
         offset = 0
         if new_page:
