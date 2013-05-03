@@ -13,10 +13,37 @@
         </div>
     </div>
 
-    <div class="span12" style="margin-left:0; margin-top: 30px;">
+    <div class="span12" style="margin-left:0; margin-top: 15px;">
         <div class="span8 offset3" style="width: 679px;">
             <div class="w-box">
                 <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
+                    <div class="pagination pagination-right" style="border-bottom: 1px solid #B2B2B2;">
+                        <ul>
+                            {% if previous %}
+                            <li>
+                                <a href="?page={{ previous }}">Previous</a>
+                            </li>
+                            {% else %}
+                            <li class="inactive">
+                                <a href="javascript:void(0)">Previous</a>
+                            </li>
+                            {% endif %}
+
+                            {% for i in marks.iteritems() %}
+                            <li class="mark_{{ i[0] }}"><a href="?page={{ i[1] }}"> {{ i[1] }} </a></li>
+                            {% endfor %}
+
+                            {% if next %}
+                            <li>
+                                <a href="?page={{ next }}">Next</a>
+                            </li>
+                            {% else %}
+                            <li class="inactive">
+                                <a href="javascript:void(0)">Next</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
                     <ul>
                     {% for c in contractors %}
                         <li>
@@ -27,55 +54,52 @@
                         <img src="/static/images/dummy_50x50.gif" alt="">
                         {% endif %}
                         
-                        <div class="list-name">
-                        {{ c.name_to_display}}
-                        </div>
+                        <div class="list-name">{{ c.name_to_display}}</div>
 
-                        <div class="list-title">
-                        {{ c.title }}
-                        </div>
+                        <div class="list-title">{{ c.title }}</div>
 
                         <div class="list-info">
+                        {% if c.overview.split(' ')|length <= 40 %}
                         {{ c.overview }}
+                        {% else %}
+                        <div class='jsTruncated'>{{ ' '.join(c.overview.split(' ')[0:40]) }} ...<span class='lessmore'> more</span></div>
+                        <div class='jsFull isHidden'>{{ c.overview }}<br><span class='lessmore'>less</span></div>
+                        {% endif %}
                         </div>
 
-                        <div class="list-info">
-                        {% for i in c.jobs %}
-                        <span class="label label-info">{{ i }}</span>
-                        {% endfor %}
-                        </div>
+                        <div class="list-tags">{% for i in c.jobs %}<span class="label label-info">{{ i }} </span>{% endfor %}</div>
 
                         </li>
                     {% endfor %}
                     </ul>
+                    <div class="pagination pagination-right">
+                        <ul>
+                            {% if previous %}
+                            <li>
+                                <a href="?page={{ previous }}">Previous</a>
+                            </li>
+                            {% else %}
+                            <li class="inactive">
+                                <a href="javascript:void(0)">Previous</a>
+                            </li>
+                            {% endif %}
+
+                            {% for i in marks.iteritems() %}
+                            <li class="mark_{{ i[0] }}"><a href="?page={{ i[1] }}"> {{ i[1] }} </a></li>
+                            {% endfor %}
+
+                            {% if next %}
+                            <li>
+                                <a href="?page={{ next }}">Next</a>
+                            </li>
+                            {% else %}
+                            <li class="inactive">
+                                <a href="javascript:void(0)">Next</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="pagination pagination-right">
-                <ul>
-                    {% if previous %}
-                    <li>
-                        <a href="?page={{ previous }}">Previous</a>
-                    </li>
-                    {% else %}
-                    <li class="inactive">
-                        <a href="javascript:void(0)">Previous</a>
-                    </li>
-                    {% endif %}
-
-                    {% for i in marks.iteritems() %}
-                    <li id="mark_{{ i[0] }}"><a href="?page={{ i[1] }}"> {{ i[1] }} </a></li>
-                    {% endfor %}
-
-                    {% if next %}
-                    <li>
-                        <a href="?page={{ next }}">Next</a>
-                    </li>
-                    {% else %}
-                    <li class="inactive">
-                        <a href="javascript:void(0)">Next</a>
-                    </li>
-                    {% endif %}
-                </ul>
             </div>
         </div>
     </div>
@@ -87,10 +111,20 @@
     <script type="text/javascript">
 
         $().ready(function() {
-            $("#{{ active }}").addClass('active')
+            $(".{{ active }}").addClass('active');
+            $('.lessmore').click(function(i){
+                var a = $(this).closest('.list-info').children();
+                for (var i=0; i<a.length; i++) {
+                    if ( $(a[i]).hasClass('isHidden') ){
+                        $(a[i]).removeClass('isHidden');
+                    }
+                    else {
+                        $(a[i]).addClass('isHidden');
+                    }
+                }
+            })
         });
 
     </script>
 
     {% endblock %}
-

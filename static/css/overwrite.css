@@ -472,6 +472,10 @@ dd pre {
 	margin-bottom: 0;
 }
 
+.btn {
+	line-height: 25px;
+}
+
 a.btn-mini {
 	padding-right: 15px;
 	padding-left: 15px;
@@ -571,9 +575,9 @@ input.PB-big-search {
 	font-size: 16px;
 	font-weight: bold;
 	display: block;
-	padding: 4px 0 0;
-	color: #555;
-	padding-left: 60px;
+	padding: 0;
+	color: #80A226;
+	padding-left: 67px;
 }
 
 .jQ-list .list-title {
@@ -583,19 +587,29 @@ input.PB-big-search {
 	display: block;
 	padding: 4px 0 0;
 	color: #555;
-	padding-left: 60px;
+	padding-left: 67px;
 }
 
 .jQ-list .list-info {
 	font-size: 13px;
 	display: block;
 	color: #777;
-	padding-left: 60px;
+	padding-left: 67px;
 	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+.jQ-list .list-tags {
+	font-size: 13px;
+	display: block;
+	color: #777;
+	padding-left: 67px;
+	margin-bottom: 5px;
+	margin-top: 5px;
 }
 
 .jQ-list ul img + .list-name, .jQ-list ul img + .list-name + .list-info, .jQ-list ul img + .list-info {
-	padding-left: 60px;
+	padding-left: 67px;
 }
 
 .jQ-list ul li {
@@ -604,6 +618,38 @@ input.PB-big-search {
 	margin-bottom: 18px;
 }
 
+.jQ-list {
+	height: auto;
+	position: relative;
+	overflow: visible;
+}
+
+.jQ-list > ul {
+	height: auto;
+	overflow: visible;
+	list-style: none;
+	padding-top: 20px;
+}
+
 .w-box-content.cnt_browse {
-	padding: 20px;
+	padding: 20px 20px 0 20px;
+}
+
+.pagination {
+	height: 40px;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.label.label-info {
+	margin-right: 4px;
+}
+
+.isHidden {
+	display: none;
+}
+
+.lessmore {
+	color: #80A226;
+	cursor: pointer;
 }

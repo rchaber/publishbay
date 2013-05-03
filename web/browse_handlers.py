@@ -73,20 +73,9 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
     def get(self):
         """Handles GET requests to the paging by cursors sub-application.
 
-        If there is a bookmark value in the query parameters, uses it to create
-        a cursor and page using it. Includes up to PAGE_SIZE results and a link
-        to the next page of results if any more exist.
-        My:
-        There will be 7 pagination links: 'Previous', 'a', 'b', 'c', 'd', 'e', 'Next'.
-        That is, if we are in the first page, position 'a' corresponds to '1', 'b' to '2' and so on.
-        If there are 7 pages and we are on page 6, position 'd' will be active with value 6.
-        If there are 7 pages and we are on page 4, position 'c' will be active with value 4. And so on.
-        Therefore we need to find 5 cursors for positions 'a' through 'e'. However, if active page is not c,
-        then we don't need to produce new cursors.
-        First things first. We have a query result with count 83. Number of pages will be 9.
-        Let's start off by finding the first five cursors. That means we have to fetch 50 elements.
-        Let's find the better solution. Let's use keys_only=True for fetching. Otherwise we can use offset.
+        It doesn't uses cursors. Instead, it uses offset along with a paginate custom function to navigate through the results. 
         """
+
         PAGE_SIZE = 5
         # LIMIT = 500
 
