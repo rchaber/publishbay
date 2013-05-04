@@ -37,11 +37,11 @@
             <div class="w-box">
                 <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
                     <div style="padding: 3px 10px; float: left;"><b>{{ count }}&nbsp;contractors</b></div>
-                    <div class="pagination pagination-right" style="border-bottom: 1px solid #B2B2B2;">
+                    <div class="pagination pagination-right">
                         <ul>
                             {% if previous %}
                             <li>
-                                <a href="?page={{ previous }}">Previous</a>
+                                <a href="javascript:void(0)" class="bookmark" id="page{{ previous }}">Previous</a>
                             </li>
                             {% else %}
                             <li class="inactive">
@@ -50,12 +50,12 @@
                             {% endif %}
 
                             {% for i in marks|dictsort %}
-                            <li class="mark_{{ i[0] }}"><a href="?page={{ i[1] }}"> {{ i[1] }} </a></li>
+                            <li class="mark_{{ i[0] }}"><a href="javascript:void(0)" class="bookmark" id="page{{ i[1] }}"> {{ i[1] }} </a></li>
                             {% endfor %}
 
                             {% if next %}
                             <li>
-                                <a href="?page={{ next }}">Next</a>
+                                <a href="javascript:void(0)" class="bookmark"  id="page{{ next }}">Next</a>
                             </li>
                             {% else %}
                             <li class="inactive">
@@ -96,7 +96,7 @@
                         <ul>
                             {% if previous %}
                             <li>
-                                <a href="?page={{ previous }}">Previous</a>
+                                <a href="javascript:void(0)" class="bookmark" id="page{{ previous }}">Previous</a>
                             </li>
                             {% else %}
                             <li class="inactive">
@@ -105,12 +105,12 @@
                             {% endif %}
 
                             {% for i in marks|dictsort %}
-                            <li class="mark_{{ i[0] }}"><a href="?page={{ i[1] }}"> {{ i[1] }} </a></li>
+                            <li class="mark_{{ i[0] }}"><a href="javascript:void(0)" class="bookmark" id="page{{ i[1] }}"> {{ i[1] }} </a></li>
                             {% endfor %}
 
                             {% if next %}
                             <li>
-                                <a href="?page={{ next }}">Next</a>
+                                <a href="javascript:void(0)" class="bookmark"  id="page{{ next }}">Next</a>
                             </li>
                             {% else %}
                             <li class="inactive">
@@ -135,7 +135,12 @@
             $("#update").click(function(){
                 var a = $('input[name="jobfilter"]').serialize().replace(/&jobfilter=/g, '|')
                 window.location.href = "/browse/contractors?" + a;
-            })
+            });
+            $('.bookmark').click(function(i){
+                var a = $('input[name="jobfilter"]').serialize().replace(/&jobfilter=/g, '|');
+                var b = $(this).attr('id').replace('page', '');
+                window.location.href = "/browse/contractors?" + a + '&' + 'page=' + b;
+            });
             $('.lessmore').click(function(i){
                 var a = $(this).closest('.list-info').children();
                 for (var i=0; i<a.length; i++) {

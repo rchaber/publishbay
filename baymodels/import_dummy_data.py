@@ -51,7 +51,6 @@ def import_users():
 def import_prodetails():
     qry = models.User.query().fetch(400)
     reader = csv.reader(open('/Users/richardhaber/Projects/publishbay/baymodels/fakedata.csv', 'rb'), delimiter=',', quotechar='"')
-    reader.next()  # stripping header
     count = 0
 
     for i in qry:
@@ -73,3 +72,42 @@ def import_prodetails():
         count += 1
 
     print '%s prodetails imported' % count
+
+
+def import_users_prodetails():
+    reader = csv.reader(open('/Users/richardhaber/Projects/publishbay/baymodels/fakedata.csv', 'rb'), delimiter=',', quotechar='"')
+    reader.next()  # stripping header
+    count = 0
+
+    for row in reader:
+        entity = models.User(
+            name=row[1],
+            last_name=row[2],
+            username=row[9],
+            email=row[8],
+            country=row[7],
+            activated=True,
+            auth_ids=['own:'+row[9]]
+        )
+        entity.put()
+
+        k = entity.key
+        # k = models.User.query(models.User.username == entity.username).get().key
+
+        a = bmodels.ProDetails()
+        a.user = k
+        a.display_full_name = random.choice([True, False])
+        a.title = ' '.join(random.sample(lorem_split, random.randint(3, 10)))
+        a.overview = ' '.join(lorem_split[random.randint(0, 15): random.randint(20, 60)])
+        a.english_level = random.randint(0, 5)
+        a.jobs = random.sample(joblist, random.randint(1, 7))
+        a.profile_visibility = random.choice(['everyone', 'pb_users_only', 'hidden'])
+        a.address1 = row[3]
+        a.city = row[4]
+        a.state = row[5]
+        a.zipcode = row[6]
+        a.phone = row[10]
+        a.put()
+
+        count += 1
+
