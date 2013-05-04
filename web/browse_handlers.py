@@ -79,9 +79,6 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
 
         params = {}
 
-        query = bmodels.ProDetails.query()
-        count = query.count()
-
         jobfilter = self.request.get('jobfilter')
         jobfilter = jobfilter.split('|')
 
@@ -91,10 +88,15 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         if new_page:
             offset = int(new_page - 1) * PAGE_SIZE
 
+        if jobfilter == ['']:
+            query = bmodels.ProDetails.query()
+        else:
+            query = bmodels.ProDetails.query(bmodels.ProDetails.jobs.IN(jobfilter))
+        count = query.count()
+        items = query.fetch(PAGE_SIZE, offset=offset)
+
         # the following line returns the equivalent to math.ceil(float), just saving from importing another lib
         number_of_pages = count/PAGE_SIZE if count % PAGE_SIZE == 0 else count/PAGE_SIZE + 1
-
-        items = query.fetch(PAGE_SIZE, offset=offset)
 
         contractors = []
         for i in items:
