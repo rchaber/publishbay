@@ -248,6 +248,7 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             picture_key = ''
 
         k = models.User.get_by_id(long(self.user_id)).key
+        user = k.get()
 
         user_pro_details = bmodels.ProDetails.get_by_userkey(k)
         if not user_pro_details:
@@ -291,8 +292,19 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             user_pro_details.state = state
             user_pro_details.zipcode = zipcode
             user_pro_details.phone = phone
+
+            params = {}
+            params['username'] = user.username
+            params['name'] = user.name
+            params['last_name'] = user.last_name
+            params['title'] = title
+            params['overview'] = overview
+            params['jobs'] = ' '.join(jobs)
+            docs.ContractorDoc.buildContractor(params)
+
             user_pro_details.put()
             message += " " + _('Your contact info has been updated.')
+
             self.add_message(message, 'success')
             self.redirect('/settings/profile')
 

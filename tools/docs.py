@@ -27,10 +27,9 @@ import re
 import string
 import urllib
 
-import categories
-import config
-import errors
-import models
+from config import search_config as search_config
+from config import errors as errors
+# import models
 
 from google.appengine.api import search
 from google.appengine.ext import ndb
@@ -90,8 +89,7 @@ class BaseDocumentManager(object):
                 # until no more documents, get a list of documents,
                 # constraining the returned objects to contain only the doc ids,
                 # extract the doc ids, and delete the docs.
-                document_ids = [document.doc_id
-                                                for document in docindex.get_range(ids_only=True)]
+                document_ids = [document.doc_id for document in docindex.get_range(ids_only=True)]
                 if not document_ids:
                     break
                 docindex.delete(document_ids)
@@ -108,8 +106,7 @@ class BaseDocumentManager(object):
             return None
         try:
             index = cls.getIndex()
-            response = index.get_range(
-                    start_id=doc_id, limit=1, include_start_object=True)
+            response = index.get_range(start_id=doc_id, limit=1, include_start_object=True)
             if response.results and response.results[0].doc_id == doc_id:
                 return response.results[0]
             return None
@@ -152,7 +149,7 @@ class ContractorDoc(BaseDocumentManager):
     existing document."""
     # We are using username as the doc_id
 
-    _INDEX_NAME = config.CONTRACTOR_INDEX_NAME
+    _INDEX_NAME = search_config.CONTRACTOR_INDEX_NAME
 
     # 'core' contractor document field names
     # USER = 'user'
@@ -165,22 +162,18 @@ class ContractorDoc(BaseDocumentManager):
     UPDATED = 'updated_on'
 
     _SORT_OPTIONS = [
-                [NAME, 'name', search.SortExpression(
+                    [NAME, 'name', search.SortExpression(
                         expression=NAME,
                         direction=search.SortExpression.ASCENDING, default_value='zzz')],
-                [LAST_NAME, 'last name', search.SortExpression(
+                    [LAST_NAME, 'last name', search.SortExpression(
                         expression=LAST_NAME,
                         direction=search.SortExpression.ASCENDING, default_value='zzz')],
-                [USERNAME, 'username', search.SortExpression(
+                    [USERNAME, 'username', search.SortExpression(
                         expression=USERNAME,
                         direction=search.SortExpression.ASCENDING, default_value='zzz')],
-                [JOBS, 'jobs', search.SortExpression(
-                        expression=JOBS,
-                        direction=search.SortExpression.ASCENDING, default_value='')],
-                [UPDATED, 'modified', search.SortExpression(
+                    [UPDATED, 'modified', search.SortExpression(
                         expression=UPDATED,
-                        direction=search.SortExpression.DESCENDING, default_value=1)]
-            ]
+                        direction=search.SortExpression.DESCENDING, default_value=1)]]
 
     _SORT_MENU = None
     _SORT_DICT = None
@@ -228,9 +221,9 @@ class ContractorDoc(BaseDocumentManager):
         """Given a doc's username, remove the doc matching it from the contractor index."""
         cls.removeDocById(username)
 
-# 'accessor' convenience methods
+    # 'accessor' convenience methods
 
-    def getUSERNAME(self):
+    def getUsername(self):
         """Get the value of the 'username' field of a ContractorDoc doc."""
         return self.getFieldVal(self.USERNAME)
 
@@ -251,27 +244,26 @@ class ContractorDoc(BaseDocumentManager):
             cls, username, name, last_name, title, overview, jobs):
         """Construct a document field list for the fields of Contractors (ProDetails)."""
         fields = [search.TextField(name=cls.USERNAME, value=username),
-                            # The 'updated' field is always set to the current date.
-                            search.DateField(name=cls.UPDATED,
-                                    value=datetime.datetime.now().date()),
-                            search.TextField(name=cls.NAME, value=name),
-                            search.TextField(name=cls.LAST_NAME, value=last_name),
-                            search.TextField(name=cls.TITLE, value=title),
-                            # strip the markup from the description value, which can
-                            # potentially come from user input.  We do this so that
-                            # we don't need to sanitize the description in the
-                            # templates, showing off the Search API's ability to mark up query
-                            # terms in generated snippets.  This is done only for
-                            # demonstration purposes; in an actual app,
-                            # it would be preferrable to use a library like Beautiful Soup
-                            # instead.
-                            # We'll let the templating library escape all other rendered
-                            # values for us, so this is the only field we do this for.
-                            search.TextField(
-                                    name=cls.OVERVIEW,
-                                    value=re.sub(r'<[^>]*?>', '', overview)),
-                            search.TextField(name=cls.JOBS, value=jobs)
-                         ]
+                  # The 'updated' field is always set to the current date.
+                  search.DateField(name=cls.UPDATED,
+                                   value=datetime.datetime.now().date()),
+                  search.TextField(name=cls.NAME, value=name),
+                  search.TextField(name=cls.LAST_NAME, value=last_name),
+                  search.TextField(name=cls.TITLE, value=title),
+                  # strip the markup from the description value, which can
+                  # potentially come from user input.  We do this so that
+                  # we don't need to sanitize the description in the
+                  # templates, showing off the Search API's ability to mark up query
+                  # terms in generated snippets.  This is done only for
+                  # demonstration purposes; in an actual app,
+                  # it would be preferrable to use a library like Beautiful Soup
+                  # instead.
+                  # We'll let the templating library escape all other rendered
+                  # values for us, so this is the only field we do this for.
+                  search.TextField(name=cls.OVERVIEW,
+                                   value=re.sub(r'<[^>]*?>', '', overview)),
+                  search.TextField(name=cls.JOBS, value=jobs)
+                  ]
         return fields
 
     @classmethod
@@ -288,9 +280,9 @@ class ContractorDoc(BaseDocumentManager):
                 raise errors.OperationFailedError("Illegal username %s" % username)
             # construct the document fields from the params
             resfields = cls._buildContractorFields(
-                    username=username, name=name, last_name=last_name,
-                    title=title, overview=overview,
-                    jobs=jobs, **params)
+                username=username, name=name, last_name=last_name,
+                title=title, overview=overview,
+                jobs=jobs, **params)
             # build and index the document.  Use the pid (product id) as the doc id.
             # (If we did not do this, and left the doc_id unspecified, an id would be
             # auto-generated.)
@@ -298,3 +290,41 @@ class ContractorDoc(BaseDocumentManager):
             return d
         else:
             raise errors.OperationFailedError('Missing parameter.')
+
+    @classmethod
+    def buildContractor(cls, params):
+        """Create/update a contractor document and its related datastore entity.  The
+        contractor id and the field values are taken from the params dict.
+        """
+        # check to see if doc already exists.  We do this because we need to retain
+        # some information from the existing doc.  We could skip the fetch if this
+        # were not the case.
+        curr_doc = cls.getDocFromUsername(params['username'])
+        d = cls._createDocument(**params)
+
+        # This will reindex if a doc with that doc id already exists
+        doc_ids = cls.add(d)
+        try:
+            doc_id = doc_ids[0].id
+        except IndexError:
+            doc_id = None
+            raise errors.OperationFailedError('could not index document')
+        logging.debug('got new doc id %s for contractor: %s', doc_id, params['username'])
+
+        # now update the entity
+        """
+        def _tx():
+            # Check whether the product entity exists. If so, we want to update
+            # from the params, but preserve its ratings-related info.
+            prod = models.Product.get_by_id(params['pid'])
+            if prod:  #update
+                prod.update_core(params, doc_id)
+            else:   # create new entity
+                prod = models.Product.create(params, doc_id)
+            prod.put()
+            return prod
+        prod = ndb.transaction(_tx)
+        logging.debug('prod: %s', prod)
+        return prod
+        """
+
