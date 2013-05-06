@@ -36,6 +36,8 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 from baymodels import models as bmodels
 
+from tools import docs as docs
+
 import config.utils as utils
 
 

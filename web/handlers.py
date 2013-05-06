@@ -40,6 +40,8 @@ from pprint import pprint as pprint
 
 from baymodels import models as bmodels
 
+from tools import docs as docs
+
 import config.utils as utils
 
 
