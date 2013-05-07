@@ -98,6 +98,7 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
 
         params = {}
 
+        query_string = self.request.get('query').strip()
         jobfilter = self.request.get('jobfilter')
         jobfilter = jobfilter.split('|')
 
@@ -146,6 +147,8 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         params['joblist'] = utils.joblist
         params['jobfilter'] = jobfilter
 
+        params['search_input'] = query_string if query_string else ''
+
         return self.render_template('browse/browse_contractors.html', **params)
 
     def post(self):
@@ -154,6 +157,7 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
 
 class ContractorSearchHandler(BaseHandler):
     """The handler for doing a contractor search."""
+    # NOT BEING USED RIGHT NOW, NEEDS MORE WORK
 
     _DEFAULT_DOC_LIMIT = 5  # default number of search results to display per page.
     _OFFSET_LIMIT = 1000
@@ -198,18 +202,11 @@ class ContractorSearchHandler(BaseHandler):
 
         # the contractor fields that we can sort on from the UI, and their mappings to
         # search.SortExpression parameters
-        sort_info = docs.Product.getSortMenu()
-        sort_dict = docs.Product.getSortDict()
+        sort_info = docs.ContractorDoc.getSortMenu()
+        sort_dict = docs.ContractorDoc.getSortDict()
         query = params.get('query', '')
         user_query = query
         doc_limit = self._getDocLimit()
-
-        # categoryq = params.get('category')
-        # if categoryq:
-            # add specification of the category to the query
-            # Because the category field is atomic, put the category string
-            # in quotes for the search.
-            # query += ' %s:"%s"' % (docs.Product.CATEGORY, categoryq)
 
         sortq = params.get('sort')
         try:
@@ -306,20 +303,19 @@ class ContractorSearchHandler(BaseHandler):
             # second dimension, unless we're sorting on rating, in which case price
             # is the second sort dimension.
             # We get the sort direction and default from the 'sort_dict' var.
-            if sortq == docs.Product.AVG_RATING:
-                expr_list = [sort_dict.get(sortq), sort_dict.get(docs.Product.PRICE)]
+            if sortq == docs.ContractorDoc.LAST_NAME:
+                expr_list = [sort_dict.get(sortq), sort_dict.get(docs.ContractorDoc.LAST_NAME)]
             else:
                 expr_list = [sort_dict.get(sortq), sort_dict.get(
-                            docs.Product.AVG_RATING)]
+                    docs.ContractorDoc.NAME)]
             sortopts = search.SortOptions(expressions=expr_list)
             # logging.info("sortopts: %s", sortopts)
             search_query = search.Query(
-                    query_string=query.strip(),
-                    options=search.QueryOptions(
-                            limit=doc_limit,
-                            offset=offsetval,
-                            sort_options=sortopts,
-                            snippeted_fields=[docs.ContractorDoc.DESCRIPTION],
-                            returned_fields=returned_fields
-                            ))
+                query_string=query.strip(),
+                options=search.QueryOptions(
+                    limit=doc_limit,
+                    offset=offsetval,
+                    sort_options=sortopts,
+                    snippeted_fields=[docs.ContractorDoc.DESCRIPTION],
+                    returned_fields=returned_fields))
         return search_query

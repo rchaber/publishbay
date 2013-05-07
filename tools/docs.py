@@ -131,18 +131,19 @@ class BaseDocumentManager(object):
 
 
 class ContractorDoc(BaseDocumentManager):
-    """Provides helper methods to manage Product documents.  All Product documents
-    built using these methods will include a core set of fields (see the
-    _buildCoreProductFields method).  We use the given product id (the Product
-    entity key) as the doc_id.  This is not required for the entity/document
+    """Provides helper methods to manage Contractor documents.  All Contractor documents
+    built using these methods will include set of fields (see the
+    _buildCoreProductFields method).  We use the profile entity id (key.id())
+    as the doc_id.  This is not required for the entity/document
     design-- each explicitly point to each other, allowing their ids to be
-    decoupled-- but using the product id as the doc id allows a document to be
-    reindexed given its product info, without having to fetch the
+    decoupled-- but using the entity key id as the doc id allows a document to be
+    reindexed given its contractor info, without having to fetch the
     existing document."""
-    # We are using username as the doc_id
+    # We are using ProDetails key.id() as the doc_id
 
     _INDEX_NAME = search_config.CONTRACTOR_INDEX_NAME
 
+    PID = 'pid'
     USERNAME = 'username'
     NAME = 'name'
     LAST_NAME = 'last_name'
@@ -157,9 +158,6 @@ class ContractorDoc(BaseDocumentManager):
                         direction=search.SortExpression.ASCENDING, default_value='zzz')],
                     [LAST_NAME, 'last name', search.SortExpression(
                         expression=LAST_NAME,
-                        direction=search.SortExpression.ASCENDING, default_value='zzz')],
-                    [USERNAME, 'username', search.SortExpression(
-                        expression=USERNAME,
                         direction=search.SortExpression.ASCENDING, default_value='zzz')],
                     [UPDATED, 'modified', search.SortExpression(
                         expression=UPDATED,
@@ -201,17 +199,21 @@ class ContractorDoc(BaseDocumentManager):
             cls._SORT_DICT[elt[0]] = elt[2]
 
     @classmethod
-    def getDocFromUsername(cls, username):
-        """Given a username, get its doc. We're using the username as the doc id, so we can
+    def getDocFromPID(cls, pid):
+        """Given profile key id, get its doc. We're using the profile key id as the doc id, so we can
         do this via a direct fetch."""
-        return cls.getDoc(username)
+        return cls.getDoc(pid)
 
     @classmethod
-    def removeDocByUsername(cls, username):
-        """Given a doc's username, remove the doc matching it from the contractor index."""
-        cls.removeDocById(username)
+    def removeDocByPID(cls, pid):
+        """Given a doc's pid, remove the doc matching it from the contractor index."""
+        cls.removeDocById(pid)
 
     # 'accessor' convenience methods
+
+    def getPID(self):
+        """Get the value of the 'pid' field of a ContractorDoc doc."""
+        return self.getFieldVal(self.PID)
 
     def getUsername(self):
         """Get the value of the 'username' field of a ContractorDoc doc."""
@@ -239,7 +241,7 @@ class ContractorDoc(BaseDocumentManager):
 
     @classmethod
     def _buildContractorFields(
-            cls, username, name, last_name, title, overview, jobs):
+            cls, pid, username, name, last_name, title, overview, jobs):
         """Construct a document field list for the fields of Contractors (ProDetails)."""
         fields = [search.TextField(name=cls.USERNAME, value=username),
                   # The 'updated' field is always set to the current date.
@@ -260,44 +262,34 @@ class ContractorDoc(BaseDocumentManager):
                   # values for us, so this is the only field we do this for.
                   search.TextField(name=cls.OVERVIEW,
                                    value=re.sub(r'<[^>]*?>', '', overview)),
-                  search.TextField(name=cls.JOBS, value=jobs)
+                  search.TextField(name=cls.JOBS, value=jobs),
+                  search.TextField(name=cls.PID, value=str(pid))
                   ]
         return fields
 
     @classmethod
     def _createDocument(
-            cls, username=None, name=None, last_name=None, title=None, overview=None,
+            cls, pid=None, username=None, name=None, last_name=None, title=None, overview=None,
             jobs=None, **params):
         """Create a Document object from given params."""
-        # check for the fields that are always required.
-        if username and name and last_name:
-            # First, check that the given username has only visible ascii characters,
-            # and does not contain whitespace. The username will be used as the doc_id,
-            # which has these requirements.
-            if not cls.isValidDocId(username):
-                raise errors.OperationFailedError("Illegal username %s" % username)
-            # construct the document fields from the params
-            resfields = cls._buildContractorFields(
-                username=username, name=name, last_name=last_name,
-                title=title, overview=overview,
-                jobs=jobs, **params)
-            # build and index the document.  Use the pid (product id) as the doc id.
-            # (If we did not do this, and left the doc_id unspecified, an id would be
-            # auto-generated.)
-            d = search.Document(doc_id=username, fields=resfields)
-            return d
-        else:
-            raise errors.OperationFailedError('Missing parameter.')
+        resfields = cls._buildContractorFields(
+            pid=pid, username=username, name=name, last_name=last_name,
+            title=title, overview=overview,
+            jobs=jobs, **params)
+        # build and index the document.  Use the pid (profile id) as the doc id.
+        # (If we did not do this, and left the doc_id unspecified, an id would be
+        # auto-generated.)
+        d = search.Document(doc_id=str(pid), fields=resfields)
+        return d
 
     @classmethod
     def buildContractor(cls, params):
-        """Create/update a contractor document and its related datastore entity.  The
+        """Create/update a contractor profile document and its related datastore entity.  The
         contractor id and the field values are taken from the params dict.
         """
         # check to see if doc already exists.  We do this because we need to retain
         # some information from the existing doc.  We could skip the fetch if this
         # were not the case.
-        curr_doc = cls.getDocFromUsername(params['username'])
         d = cls._createDocument(**params)
 
         # This will reindex if a doc with that doc id already exists
@@ -307,22 +299,4 @@ class ContractorDoc(BaseDocumentManager):
         except IndexError:
             doc_id = None
             raise errors.OperationFailedError('could not index document')
-        logging.debug('got new doc id %s for contractor: %s', doc_id, params['username'])
-
-        # now update the entity
-        """
-        def _tx():
-            # Check whether the product entity exists. If so, we want to update
-            # from the params, but preserve its ratings-related info.
-            prod = models.Product.get_by_id(params['pid'])
-            if prod:  #update
-                prod.update_core(params, doc_id)
-            else:   # create new entity
-                prod = models.Product.create(params, doc_id)
-            prod.put()
-            return prod
-        prod = ndb.transaction(_tx)
-        logging.debug('prod: %s', prod)
-        return prod
-        """
-
+        logging.debug('got new doc id %s for contractor %s, with pid %s', doc_id, params['username'], params['pid'])

@@ -110,6 +110,8 @@ def import_users_prodetails():
         a.zipcode = row[6]
         a.phone = row[10]
 
+        a.put()
+
         params = {}
         params['username'] = entity.username
         params['name'] = entity.name
@@ -117,8 +119,7 @@ def import_users_prodetails():
         params['title'] = a.title
         params['overview'] = a.overview
         params['jobs'] = ' '.join(a.jobs)
+        params['pid'] = str(a.key.id())
         docs.ContractorDoc.buildContractor(params)
-
-        a.put()
 
         count += 1
