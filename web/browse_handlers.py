@@ -133,17 +133,15 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
             d['jobs'] = i.jobs
             contractors.append(d)
 
-        pagination = paginate(number_of_pages, new_page)
+        paging = pagination(number_of_pages, new_page, 5)
 
-        for i in pagination[2].keys():
-            params['mark_'+i] = pagination[2][i]
-
-        params['previous'] = new_page - 1 if new_page > 1 else None
-        params['next'] = new_page + 1 if new_page < number_of_pages else None
-        params['active'] = 'mark_' + pagination[1]
         params['count'] = count
         params['contractors'] = contractors
-        params['marks'] = pagination[2]
+
+        params['marks'] = paging[0]
+        params['active'] = 'mark_' + str(paging[0][paging[1]])
+        params['previous'] = str(new_page - 1) if new_page > 1 else None
+        params['next'] = str(new_page + 1) if new_page < number_of_pages else None
 
         params['joblist'] = utils.joblist
         params['jobfilter'] = jobfilter

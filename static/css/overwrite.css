@@ -424,6 +424,10 @@ input[type="radio"] label {
 	overflow: auto;
 }
 
+.label {
+	padding: 2px 6px;
+}
+
 label.control-label {
 	font-weight: bold;
 }
@@ -615,7 +619,11 @@ input.PB-big-search {
 .jQ-list ul li {
 	border-bottom: 1px solid #B2B2B2;
 	padding-bottom: 18px;
-	margin-bottom: 18px;
+	padding-top: 18px;
+}
+
+.jQ-list ul li:first-child {
+	border-top: 1px solid #B2B2B2;
 }
 
 .jQ-list {
@@ -628,17 +636,18 @@ input.PB-big-search {
 	height: auto;
 	overflow: visible;
 	list-style: none;
-	padding-top: 20px;
+}
+
+.jQ-list .record-count {
+	padding: 3px 10px;
+	float: left;
+	top: 20px;
+	position: relative;
+	font-weight: bold;
 }
 
 .w-box-content.cnt_browse {
-	padding: 20px 20px 0 20px;
-}
-
-.pagination {
-	height: 40px;
-	margin-top: 0;
-	margin-bottom: 0;
+	padding: 0 20px;
 }
 
 .label.label-info {

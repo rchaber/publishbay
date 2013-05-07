@@ -36,7 +36,7 @@
         <div class="span9">
             <div class="w-box">
                 <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
-                    <div style="padding: 3px 10px; float: left;"><b>{{ count }}&nbsp;contractors</b></div>
+                    <div class="record-count">{{ count }}&nbsp;contractors</div>
                     <div class="pagination pagination-right">
                         <ul>
                             {% if previous %}
@@ -49,8 +49,8 @@
                             </li>
                             {% endif %}
 
-                            {% for i in marks|dictsort %}
-                            <li class="mark_{{ i[0] }}"><a href="javascript:void(0)" class="bookmark" id="page{{ i[1] }}"> {{ i[1] }} </a></li>
+                            {% for i in marks %}
+                            <li class="mark_{{ i }}"><a href="javascript:void(0)" class="bookmark" id="page{{ i }}"> {{ i }} </a></li>
                             {% endfor %}
 
                             {% if next %}
@@ -104,8 +104,8 @@
                             </li>
                             {% endif %}
 
-                            {% for i in marks|dictsort %}
-                            <li class="mark_{{ i[0] }}"><a href="javascript:void(0)" class="bookmark" id="page{{ i[1] }}"> {{ i[1] }} </a></li>
+                            {% for i in marks %}
+                            <li class="mark_{{ i }}"><a href="javascript:void(0)" class="bookmark" id="page{{ i }}"> {{ i }} </a></li>
                             {% endfor %}
 
                             {% if next %}
