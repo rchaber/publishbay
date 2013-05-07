@@ -36,7 +36,10 @@ RATING_MIN = 1
 RATING_MAX = 5
 
 # the number of search results to display per page
-DOC_LIMIT = 3
+DOC_LIMIT = 5
+
+# the number of pagination links to display
+NAV_LEN = 5
 
 SAMPLE_DATA_BOOKS = 'sample_data_books.csv'
 SAMPLE_DATA_TVS = 'sample_data_tvs.csv'

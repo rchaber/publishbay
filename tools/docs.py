@@ -130,14 +130,6 @@ class BaseDocumentManager(object):
             logging.exception("Error adding documents.")
 
 
-# class Store(BaseDocumentManager):
-
-#   _INDEX_NAME = config.STORE_INDEX_NAME
-#   STORE_NAME = 'store_name'
-#   STORE_LOCATION = 'store_location'
-#   STORE_ADDRESS = 'store_address'
-
-
 class ContractorDoc(BaseDocumentManager):
     """Provides helper methods to manage Product documents.  All Product documents
     built using these methods will include a core set of fields (see the
@@ -151,8 +143,6 @@ class ContractorDoc(BaseDocumentManager):
 
     _INDEX_NAME = search_config.CONTRACTOR_INDEX_NAME
 
-    # 'core' contractor document field names
-    # USER = 'user'
     USERNAME = 'username'
     NAME = 'name'
     LAST_NAME = 'last_name'
@@ -235,9 +225,17 @@ class ContractorDoc(BaseDocumentManager):
         """Get the value of the 'last_name' field of a ContractorDoc doc."""
         return self.getFieldVal(self.LAST_NAME)
 
+    def getTitle(self):
+        """Get the value of the 'title' field of a ContractorDoc doc."""
+        return self.getFieldVal(self.TITLE)
+
     def getOverview(self):
         """Get the value of the 'overview' field of a ContractorDoc doc."""
         return self.getFieldVal(self.OVERVIEW)
+
+    def getJobs(self):
+        """Get the value of the 'jobs' field of a ContractorDoc doc."""
+        return self.getFieldVal(self.JOBS)
 
     @classmethod
     def _buildContractorFields(
