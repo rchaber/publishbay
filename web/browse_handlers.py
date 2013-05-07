@@ -99,6 +99,7 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         params = {}
 
         query_string = self.request.get('query').strip()
+
         jobfilter = self.request.get('jobfilter')
         jobfilter = jobfilter.split('|')
 
