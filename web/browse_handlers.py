@@ -235,6 +235,7 @@ class ContractorSearchHandler(BaseHandler):
             # logging.info("doc: %s ", doc)
             cdoc = docs.ContractorDoc(doc)
 
+            pid = cdoc.getPID()
             username = cdoc.getUsername()
             name = cdoc.getName()
             last_name = cdoc.getLastName()
@@ -245,8 +246,8 @@ class ContractorSearchHandler(BaseHandler):
             # for this result, generate a result array of selected doc fields, to
             # pass to the template renderer
             csearch_response.append(
-                [doc, urllib.quote_plus(username),
-                    name, last_name, title, overview, jobs])
+                [doc, urllib.quote_plus(pid),
+                    username, name, last_name, title, overview, jobs])
 
         if not query:
             print_query = 'All'
@@ -272,7 +273,7 @@ class ContractorSearchHandler(BaseHandler):
             'first_res': offsetval + 1, 'last_res': offsetval + returned_count,
             'returned_count': returned_count,
             'number_found': search_results.number_found,
-            'search_response': psearch_response,
+            'search_response': csearch_response,
             'cat_info': cat_info, 'sort_info': sort_info,
             'ratings_links': rlinks}
         # render the result page.
