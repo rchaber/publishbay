@@ -33,56 +33,38 @@ from google.appengine.ext.webapp import blobstore_handlers
 # from google.appengine.api import images
 from google.appengine.api import search
 
-# from pprint import pprint as pprint
+from pprint import pprint as pprint
 
 from baymodels import models as bmodels
 
 from tools import docs as docs
+from tools import tools as tools
 
 import config.utils as utils
 import config.search_config as search_config
-
-
-def pagination(number_of_pages, current_page, nav_len):  # better algorithm to paginate
-    if nav_len > number_of_pages:
-        nav_len = number_of_pages
-    center = float(nav_len) / 2 + 1
-    if current_page < center:
-        nav_bar = [i for i in range(1, nav_len + 1)]
-    elif current_page > number_of_pages - nav_len / 2:
-        nav_bar = [i for i in range(number_of_pages - nav_len + 1, number_of_pages + 1)]
-    else:
-        start = current_page - nav_len / 2
-        nav_bar = [i for i in range(start, start + nav_len)]
-    active_mark = nav_bar.index(current_page)
-    return nav_bar, active_mark
-
-
-def paginate(number_of_pages, current_page):
-    positions = ['a', 'b', 'c', 'd', 'e']
-    if current_page < 3:
-        current_position = ['a', 'b'][current_page - 1]
-        pages = range(1, 6)
-    elif current_page > number_of_pages - 2:
-        current_position = ['d', 'e'][number_of_pages - current_page - 1]
-        pages = range(number_of_pages - 4, number_of_pages + 1)
-    else:
-        current_position = 'c'
-        pages = range(current_page - 2, current_page + 3)
-    if number_of_pages < 5:
-        positions = positions[:number_of_pages]
-        current_position = positions[current_page - 1]
-        pages = range(1, number_of_pages + 1)
-    positions_pages = {}
-    for i in positions:
-        positions_pages[i] = pages[positions.index(i)]
-    return positions, current_position, positions_pages
 
 
 class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler for browsing and searching contractors
     """
+
+    _DEFAULT_DOC_LIMIT = 5  # default number of search results to display per page.
+    _OFFSET_LIMIT = 1000
+    _NAV_LEN = 5
+
+    def parseParams(self):
+        """Filter the param set to the expected params."""
+        qparams = {
+            'qtype': '',
+            'query': '',
+            'sort': '',
+            'offset': '0'
+        }
+        for k, v in qparams.iteritems():
+            # Possibly replace default values.
+            qparams[k] = self.request.get(k, v)
+        return qparams
 
     @user_required
     def get(self):
@@ -96,11 +78,20 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
 
         # options = ndb.QueryOptions(limit=LIMIT)
 
-        params = {}
-
         query_string = self.request.get('query').strip()
 
-        jobfilter = self.request.get('jobfilter')
+        qresponse = None
+        contractors = []
+        params = {}
+        items = []
+        qresponse_items = None
+
+        if query_string:
+            qparams = self.parseParams()
+            qresponse = self.doContractorSearch(qparams)
+            qresponse_items = [bmodels.ProDetails.get_by_id(int(i)) for i in qresponse.get('search_response')]
+
+        jobfilter = self.request.get('jobs')
         jobfilter = jobfilter.split('|')
 
         new_page = self.request.get('page')
@@ -119,7 +110,6 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         # the following line returns the equivalent to math.ceil(float), just saving from importing another lib
         number_of_pages = count/PAGE_SIZE if count % PAGE_SIZE == 0 else count/PAGE_SIZE + 1
 
-        contractors = []
         for i in items:
             d = {}
             if i.display_full_name:
@@ -135,7 +125,7 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
             d['jobs'] = i.jobs
             contractors.append(d)
 
-        paging = pagination(number_of_pages, new_page, 5)
+        paging = tools.pagination(number_of_pages, new_page, 5)
 
         params['count'] = count
         params['contractors'] = contractors
@@ -146,41 +136,16 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         params['next'] = str(new_page + 1) if new_page < number_of_pages else None
 
         params['joblist'] = utils.joblist
-        params['jobfilter'] = jobfilter
+        params['jobs'] = jobfilter
 
         params['search_input'] = query_string if query_string else ''
 
         return self.render_template('browse/browse_contractors.html', **params)
 
     def post(self):
-        pass
-
-
-class ContractorSearchHandler(BaseHandler):
-    """The handler for doing a contractor search."""
-    # NOT BEING USED RIGHT NOW, NEEDS MORE WORK
-
-    _DEFAULT_DOC_LIMIT = 5  # default number of search results to display per page.
-    _OFFSET_LIMIT = 1000
-    _NAV_LEN = 5
-
-    def parseParams(self):
-        """Filter the param set to the expected params."""
-        params = {
-            'qtype': '',
-            'query': '',
-            'sort': '',
-            'offset': '0'
-        }
-        for k, v in params.iteritems():
-            # Possibly replace default values.
-            params[k] = self.request.get(k, v)
-        return params
-
-    def post(self):
-        params = self.parseParams()
+        qparams = self.parseParams()
         self.redirect('/browse/contractors?' + urllib.urlencode(
-            dict([k, v.encode('utf-8')] for k, v in params.items()))
+            dict([k, v.encode('utf-8')] for k, v in qparams.items()))
         )
 
     def _getDocLimit(self):
@@ -192,12 +157,6 @@ class ContractorSearchHandler(BaseHandler):
             logging.error('DOC_LIMIT not properly set in config file; using default.')
         return doc_limit
 
-    def get(self):
-        """Handle a contractor search request."""
-
-        params = self.parseParams()
-        self.doContractorSearch(params)
-
     def doContractorSearch(self, params):
         """Perform a contractor search and display the results."""
 
@@ -207,9 +166,11 @@ class ContractorSearchHandler(BaseHandler):
         sort_dict = docs.ContractorDoc.getSortDict()
         query = params.get('query', '')
         user_query = query
+        print "user_query "+user_query
         doc_limit = self._getDocLimit()
 
         sortq = params.get('sort')
+
         try:
             offsetval = int(params.get('offset', 0))
         except ValueError:
@@ -222,6 +183,8 @@ class ContractorSearchHandler(BaseHandler):
             )
             search_results = docs.ContractorDoc.getIndex().search(search_query)
             returned_count = len(search_results.results)
+            print search_results
+            print returned_count
 
         except search.Error:
             logging.exception("Search error:")  # log the exception stack trace
@@ -232,52 +195,33 @@ class ContractorSearchHandler(BaseHandler):
         csearch_response = []
         # For each document returned from the search
         for doc in search_results:
-            # logging.info("doc: %s ", doc)
             cdoc = docs.ContractorDoc(doc)
-
             pid = cdoc.getPID()
-            username = cdoc.getUsername()
-            name = cdoc.getName()
-            last_name = cdoc.getLastName()
-            title = cdoc.getTitle()
-            overview = cdoc.getOverview()
-            jobs = cdoc.getJobs()
+            print "pid = "+pid
+            csearch_response.append(pid)
 
-            # for this result, generate a result array of selected doc fields, to
-            # pass to the template renderer
-            csearch_response.append(
-                [doc, urllib.quote_plus(pid),
-                    username, name, last_name, title, overview, jobs])
+        print "csearch_response = " + str(csearch_response)
 
         if not query:
             print_query = 'All'
         else:
             print_query = query
 
-        # using my own pagination (pagination - not paginate):
-        # pagination(number_of_pages, current_page, nav_len) return nav_bar (list), active_mark (integer, list index)
-        number_of_pages = returned_count / self._getDocLimit()
-        current_page = offsetval / self._getDocLimit()
-        pages = pagination(number_of_pages, current_page, search_config.NAV_LEN)
-
         logging.debug('returned_count: %s', returned_count)
 
-########################
-
-        # construct the template values
-        template_values = {
-            'base_pquery': user_query, 'next_link': next_link,
-            'prev_link': prev_link, 'qtype': 'product',
+        # construct the return dict
+        qresponse = {
+            'base_pquery': user_query,
+            'qtype': 'contractor',
             'query': query, 'print_query': print_query,
             'sort_order': sortq,
             'first_res': offsetval + 1, 'last_res': offsetval + returned_count,
             'returned_count': returned_count,
             'number_found': search_results.number_found,
             'search_response': csearch_response,
-            'cat_info': cat_info, 'sort_info': sort_info,
-            'ratings_links': rlinks}
-        # render the result page.
-        self.render_template('index.html', template_values)
+            'sort_info': sort_info}
+
+        return qresponse
 
     def _buildQuery(self, query, sortq, sort_dict, doc_limit, offsetval):
         """Build and return a search query object."""
@@ -305,11 +249,11 @@ class ContractorSearchHandler(BaseHandler):
             # second dimension, unless we're sorting on rating, in which case price
             # is the second sort dimension.
             # We get the sort direction and default from the 'sort_dict' var.
+            print "here _buildQuery else sortq"
             if sortq == docs.ContractorDoc.LAST_NAME:
-                expr_list = [sort_dict.get(sortq), sort_dict.get(docs.ContractorDoc.LAST_NAME)]
+                expr_list = [sort_dict.get(docs.ContractorDoc.LAST_NAME), sort_dict.get(docs.ContractorDoc.NAME)]
             else:
-                expr_list = [sort_dict.get(sortq), sort_dict.get(
-                    docs.ContractorDoc.NAME)]
+                expr_list = [sort_dict.get(docs.ContractorDoc.UPDATED), sort_dict.get(docs.ContractorDoc.NAME)]
             sortopts = search.SortOptions(expressions=expr_list)
             # logging.info("sortopts: %s", sortopts)
             search_query = search.Query(
@@ -318,6 +262,7 @@ class ContractorSearchHandler(BaseHandler):
                     limit=doc_limit,
                     offset=offsetval,
                     sort_options=sortopts,
-                    snippeted_fields=[docs.ContractorDoc.DESCRIPTION],
                     returned_fields=returned_fields))
+            print "search_query"
+            print search_query
         return search_query

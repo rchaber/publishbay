@@ -47,6 +47,10 @@ class ProDetails(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
 
+    @property
+    def pid(self):
+        return self.key.id()
+
     @classmethod
     def get_by_userkey(cls, k):
         return cls.query(cls.user == k).get()

@@ -24,7 +24,7 @@
                         <div class="control-group">
                             {% for i in joblist %}
                             <div class="controls">
-                                <label><input type="checkbox" id="job_{{ i }}" name="jobfilter" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in jobfilter %} checked = "checked" {% endif %}>{{ i }}</label>
+                                <label><input type="checkbox" id="job_{{ i }}" name="jobs" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in jobs %} checked = "checked" {% endif %}>{{ i }}</label>
                             </div>
                             {% endfor %}
                         </div>
@@ -132,16 +132,18 @@
 
         $().ready(function() {
             $(".{{ active }}").addClass('active');
-            $("#update").click(function(){
-                var a = $('input[name="jobfilter"]').serialize().replace(/&jobfilter=/g, '|')
-                window.location.href = "/browse/contractors?" + a;
-            });
-            $('#query_button').click(function(){
-                var a = $('#query').serialize();
-                window.location.href = "/browse/contractors?" + a
+            // $("#update").click(function(){
+            //     var a = $('input[name="jobfilter"]').serialize().replace(/&jobfilter=/g, '|')
+            //     window.location.href = "/browse/contractors?" + a;
+            // });
+            $('#query_button, #update').click(function(){
+                var a = $('input[name="jobs"]').serialize().replace(/&jobs=/g, '|')
+                var b = $('#query').serialize();
+                alert ("/browse/contractors?" + a + '&' + b)
+                window.location.href = "/browse/contractors?" + a + '&' + b
             })
             $('.bookmark').click(function(i){
-                var a = $('input[name="jobfilter"]').serialize().replace(/&jobfilter=/g, '|');
+                var a = $('input[name="jobs"]').serialize().replace(/&jobs=/g, '|');
                 var b = $(this).attr('id').replace('page', '');
                 window.location.href = "/browse/contractors?" + a + '&' + 'page=' + b;
             });

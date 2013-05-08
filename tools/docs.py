@@ -156,7 +156,7 @@ class ContractorDoc(BaseDocumentManager):
                     [NAME, 'name', search.SortExpression(
                         expression=NAME,
                         direction=search.SortExpression.ASCENDING, default_value='zzz')],
-                    [LAST_NAME, 'last name', search.SortExpression(
+                    [LAST_NAME, 'last_name', search.SortExpression(
                         expression=LAST_NAME,
                         direction=search.SortExpression.ASCENDING, default_value='zzz')],
                     [UPDATED, 'modified', search.SortExpression(
@@ -184,19 +184,27 @@ class ContractorDoc(BaseDocumentManager):
 
     @classmethod
     def _buildSortMenu(cls):
-        """Build the default set of sort options used for Product search.
+        """Build the default set of sort options used for the search.
         Of these options, all but 'relevance' reference core fields that
         all Products will have."""
+        print "here _buildSortMenu start"
         res = [(elt[0], elt[1]) for elt in cls._SORT_OPTIONS]
         cls._SORT_MENU = [('relevance', 'relevance')] + res
+        print "here _buildSortMenu end"
 
     @classmethod
     def _buildSortDict(cls):
         """Build a dict that maps sort option keywords to their corresponding
         SortExpressions."""
+        print "here _buildSortDict start"
         cls._SORT_DICT = {}
         for elt in cls._SORT_OPTIONS:
+            print "elt[0]"
+            print elt[0]
+            print "elt[2]"
+            print elt[2]
             cls._SORT_DICT[elt[0]] = elt[2]
+        print "here _buildSortDict end"
 
     @classmethod
     def getDocFromPID(cls, pid):
@@ -213,7 +221,8 @@ class ContractorDoc(BaseDocumentManager):
 
     def getPID(self):
         """Get the value of the 'pid' field of a ContractorDoc doc."""
-        return self.getFieldVal(self.PID)
+        return self.doc.doc_id
+        # return self.getFieldVal(self.PID)
 
     def getUsername(self):
         """Get the value of the 'username' field of a ContractorDoc doc."""
