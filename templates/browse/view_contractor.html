@@ -63,7 +63,10 @@
                             </dl>
                             <dl class="dl-horizontal">
                                 <dt>Available as</dt>
-                                <dd>{{ joblist }}</dd>
+                                <dd>{% for job in joblist %}
+                                    <span class="label label-info">{{ job }} </span>
+                                    {% endfor %}
+                                </dd>
                             </dl>
                             <dl class="dl-horizontal">
                                 <dt>Located in</dt>

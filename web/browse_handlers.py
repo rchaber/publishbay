@@ -302,7 +302,8 @@ class ViewContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHand
             params['title'] = contractor.title
             params['overview'] = contractor.overview
             params['english_level'] = contractor.english_level
-            params['joblist'] = urllib.unquote(', '.join(contractor.jobs))
+            # params['joblist'] = urllib.unquote(', '.join(contractor.jobs))
+            params['joblist'] = contractor.jobs
             params['city'] = contractor.city
             params['state'] = contractor.state
 
