@@ -165,7 +165,7 @@
         $().ready(function() {
             $("#form_pro_details").validate({
                 submitHandler: function(form) {
-                        $('#joblist').attr('value', $('input[name="jobs"]').serialize());
+                        // $('#joblist').attr('value', $('input[name="jobs"]').serialize());
                         form.submit();
                 },
                 errorPlacement: function(error, element) {

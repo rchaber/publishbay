@@ -242,7 +242,7 @@ span.password_strength {
 .w-box-header {
 	height: 32px;
 	line-height: 32px;
-	padding: 0 10px 0px;
+	padding: 0 10px 0;
 	background: #A2A2A2;
 	color: #FFF;
 	font-size: 13px;
@@ -477,12 +477,18 @@ dd pre {
 }
 
 .btn {
-	line-height: 25px;
+	line-height: 20px;
 }
 
 a.btn-mini {
-	padding-right: 15px;
-	padding-left: 15px;
+	padding-right: 10px;
+	padding-left: 10px;
+	font-size: 12px;
+}
+
+a.btn-mini.icon {
+	padding-right: 6px;
+	padding-left: 6px;
 	font-size: 12px;
 }
 
@@ -574,6 +580,16 @@ input.PB-big-search {
 	color: #888;
 }
 
+.list-name {
+	margin: 0;
+	font-size: 16px;
+	font-weight: bold;
+	display: block;
+	padding: 0;
+	color: #80A226;
+	padding-left: 0;
+}
+
 .jQ-list .list-name {
 	margin: 0;
 	font-size: 16px;
@@ -582,6 +598,19 @@ input.PB-big-search {
 	padding: 0;
 	color: #80A226;
 	padding-left: 67px;
+}
+
+div.list-name a {
+	color: #80A226;
+}
+
+.list-title {
+	margin: 0;
+	font-size: 13px;
+	font-weight: bold;
+	display: block;
+	padding: 4px 0 0;
+	color: #555;
 }
 
 .jQ-list .list-title {
@@ -652,6 +681,7 @@ input.PB-big-search {
 
 .label.label-info {
 	margin-right: 4px;
+	font-weight: bold;
 }
 
 .isHidden {

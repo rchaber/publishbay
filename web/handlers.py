@@ -239,7 +239,7 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         # if not self.form.validate():
             # return self.get()
 
-        jobs = self.request.POST.get('joblist').replace('&', '').split('jobs=')[1:]
+        jobs = self.request.POST.getall('jobs')
 
         upload_picture = self.get_uploads()
         if upload_picture:
@@ -300,7 +300,7 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             params['title'] = title
             params['overview'] = overview
             params['jobs'] = ' '.join(jobs)
-            docs.ContractorDoc.buildContractor(params)
+            # docs.ContractorDoc.buildContractor(params)
 
             user_pro_details.put()
             message += " " + _('Your contact info has been updated.')
@@ -309,7 +309,7 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             self.redirect('/settings/profile')
 
         except (AttributeError, KeyError, ValueError), e:
-            logging.error('Error updating contact info: ' + e)
+            logging.error('Error updating contact info: ' + str(e))
             message = _('Unable to update contact info. Please try again later.')
             self.add_message(message, 'error')
             return self.get()

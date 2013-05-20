@@ -78,32 +78,40 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
 
         # options = ndb.QueryOptions(limit=LIMIT)
 
-        query_string = self.request.get('query').strip()
+        # THE FOLLOWING CALLS SEARCH API - LEAVING OUT FOR THIS VERSION
+        # query_string = self.request.get('query').strip()
+        # print query_string
 
-        qresponse = None
+        # qresponse = None
+        # qresponse_items = None
+
+        # if query_string:
+        #     qparams = self.parseParams()
+        #     qresponse = self.doContractorSearch(qparams)
+        #     qresponse_items = [bmodels.ProDetails.get_by_id(int(i)) for i in qresponse.get('search_response')]
+
         contractors = []
         params = {}
         items = []
-        qresponse_items = None
 
-        if query_string:
-            qparams = self.parseParams()
-            qresponse = self.doContractorSearch(qparams)
-            qresponse_items = [bmodels.ProDetails.get_by_id(int(i)) for i in qresponse.get('search_response')]
+        jobfilter = self.request.GET.getall('jobs')
+        print jobfilter
+        # jobfilter = jobfilter.split('|')
 
-        jobfilter = self.request.get('jobs')
-        jobfilter = jobfilter.split('|')
-
-        new_page = self.request.get('page')
-        new_page = int(new_page) if new_page else 1
         offset = 0
-        if new_page:
-            offset = int(new_page - 1) * PAGE_SIZE
 
-        if jobfilter == ['']:
-            query = bmodels.ProDetails.query()
+        new_page = self.request.GET.get('page')
+        if new_page:
+            new_page = int(new_page)
+            offset = int(new_page - 1) * PAGE_SIZE
         else:
+            new_page = 1
+
+        if jobfilter:
             query = bmodels.ProDetails.query(bmodels.ProDetails.jobs.IN(jobfilter))
+        else:
+            query = bmodels.ProDetails.query()
+
         count = query.count()
         items = query.fetch(PAGE_SIZE, offset=offset)
 
@@ -112,6 +120,7 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
 
         for i in items:
             d = {}
+            d['profile_id'] = i.key.id()
             if i.display_full_name:
                 d['name_to_display'] = i.name + ' ' + i.last_name
             else:
@@ -138,7 +147,8 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         params['joblist'] = utils.joblist
         params['jobs'] = jobfilter
 
-        params['search_input'] = query_string if query_string else ''
+        # search_input is the query string in the Seach box
+        # params['search_input'] = query_string if query_string else ''
 
         return self.render_template('browse/browse_contractors.html', **params)
 
@@ -266,3 +276,34 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
             print "search_query"
             print search_query
         return search_query
+
+
+class ViewContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    """
+    Handler for viewing contractors pages
+    """
+
+    @user_required
+    def get(self):
+        """ Returns a simple HTML form for edit professional details """
+
+        contractor_id = self.request.GET.get('pid')
+
+        contractor = bmodels.ProDetails.get_by_id(int(contractor_id))
+
+        params = {}
+
+        if contractor:
+            params['name'] = contractor.name
+            params['last'] = contractor.last_name
+            params['display_full_name'] = contractor.display_full_name
+            if contractor.picture_key and contractor.picture_key != '':
+                params['picture_url'] = '/serve/%s' % contractor.picture_key
+            params['title'] = contractor.title
+            params['overview'] = contractor.overview
+            params['english_level'] = contractor.english_level
+            params['joblist'] = urllib.unquote(', '.join(contractor.jobs))
+            params['city'] = contractor.city
+            params['state'] = contractor.state
+
+        return self.render_template('browse/view_contractor.html', **params)

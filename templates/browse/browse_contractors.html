@@ -37,33 +37,7 @@
             <div class="w-box">
                 <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
                     <div class="record-count">{{ count }}&nbsp;contractors</div>
-                    <div class="pagination pagination-right">
-                        <ul>
-                            {% if previous %}
-                            <li>
-                                <a href="javascript:void(0)" class="bookmark" id="page{{ previous }}">Previous</a>
-                            </li>
-                            {% else %}
-                            <li class="inactive">
-                                <a href="javascript:void(0)">Previous</a>
-                            </li>
-                            {% endif %}
-
-                            {% for i in marks %}
-                            <li class="mark_{{ i }}"><a href="javascript:void(0)" class="bookmark" id="page{{ i }}"> {{ i }} </a></li>
-                            {% endfor %}
-
-                            {% if next %}
-                            <li>
-                                <a href="javascript:void(0)" class="bookmark"  id="page{{ next }}">Next</a>
-                            </li>
-                            {% else %}
-                            <li class="inactive">
-                                <a href="javascript:void(0)">Next</a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </div>
+                    {{ macros.pagination(previous, next, marks) }}
                     <ul>
                     {% for c in contractors %}
                         <li>
@@ -74,7 +48,7 @@
                         <img src="/static/images/dummy_50x50.gif" alt="">
                         {% endif %}
                         
-                        <div class="list-name">{{ c.name_to_display}}</div>
+                        <div class="list-name"><a href="/browse/contractors/view?pid={{ c.profile_id }}">{{ c.name_to_display }}</a></div>
 
                         <div class="list-title">{{ c.title }}</div>
 
@@ -92,33 +66,7 @@
                         </li>
                     {% endfor %}
                     </ul>
-                    <div class="pagination pagination-right">
-                        <ul>
-                            {% if previous %}
-                            <li>
-                                <a href="javascript:void(0)" class="bookmark" id="page{{ previous }}">Previous</a>
-                            </li>
-                            {% else %}
-                            <li class="inactive">
-                                <a href="javascript:void(0)">Previous</a>
-                            </li>
-                            {% endif %}
-
-                            {% for i in marks %}
-                            <li class="mark_{{ i }}"><a href="javascript:void(0)" class="bookmark" id="page{{ i }}"> {{ i }} </a></li>
-                            {% endfor %}
-
-                            {% if next %}
-                            <li>
-                                <a href="javascript:void(0)" class="bookmark"  id="page{{ next }}">Next</a>
-                            </li>
-                            {% else %}
-                            <li class="inactive">
-                                <a href="javascript:void(0)">Next</a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </div>
+                    {{ macros.pagination(previous, next, marks) }}
                 </div>
             </div>
         </div>
@@ -131,22 +79,20 @@
     <script type="text/javascript">
 
         $().ready(function() {
+
             $(".{{ active }}").addClass('active');
-            // $("#update").click(function(){
-            //     var a = $('input[name="jobfilter"]').serialize().replace(/&jobfilter=/g, '|')
-            //     window.location.href = "/browse/contractors?" + a;
-            // });
+
             $('#query_button, #update').click(function(){
-                var a = $('input[name="jobs"]').serialize().replace(/&jobs=/g, '|')
-                var b = $('#query').serialize();
-                alert ("/browse/contractors?" + a + '&' + b)
-                window.location.href = "/browse/contractors?" + a + '&' + b
+                var a = $('input[name="jobs"], #query').serialize();
+                window.location.href = "/browse/contractors?" + a;
             })
+
             $('.bookmark').click(function(i){
-                var a = $('input[name="jobs"]').serialize().replace(/&jobs=/g, '|');
+                var a = $('input[name="jobs"]').serialize();
                 var b = $(this).attr('id').replace('page', '');
-                window.location.href = "/browse/contractors?" + a + '&' + 'page=' + b;
+                window.location.href = "/browse/contractors?" + a + '&page=' + b;
             });
+
             $('.lessmore').click(function(i){
                 var a = $(this).closest('.list-info').children();
                 for (var i=0; i<a.length; i++) {
@@ -158,6 +104,7 @@
                     }
                 }
             })
+
         });
 
     </script>

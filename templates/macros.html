@@ -38,6 +38,39 @@
             </div>
 {%- endmacro %}
 
+<!-- Renders the pagination bar -->
+{% macro pagination(previous, next, marks) -%}
+
+                    <div class="pagination pagination-right">
+                        <ul>
+                            {% if previous %}
+                            <li>
+                                <a href="javascript:void(0)" class="bookmark" id="page{{ previous }}">Previous</a>
+                            </li>
+                            {% else %}
+                            <li class="inactive">
+                                <a href="javascript:void(0)">Previous</a>
+                            </li>
+                            {% endif %}
+
+                            {% for i in marks %}
+                            <li class="mark_{{ i }}"><a href="javascript:void(0)" class="bookmark" id="page{{ i }}"> {{ i }} </a></li>
+                            {% endfor %}
+
+                            {% if next %}
+                            <li>
+                                <a href="javascript:void(0)" class="bookmark"  id="page{{ next }}">Next</a>
+                            </li>
+                            {% else %}
+                            <li class="inactive">
+                                <a href="javascript:void(0)">Next</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+{%- endmacro %}
+
 <!-- renders federated login (openId and Oauth) login buttons -->
 {% macro federated_login(provider_info, provider_uris, enable_federated_login) -%}
 {% if enable_federated_login %}
