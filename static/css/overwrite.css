@@ -693,3 +693,12 @@ div.list-name a {
 	color: #80A226;
 	cursor: pointer;
 }
+
+.badge {
+	font-size: 10px;
+	padding: 1px 5px;
+	position: absolute;
+	top: 0px;
+	left: 21px;
+	font-weight: bold;
+}

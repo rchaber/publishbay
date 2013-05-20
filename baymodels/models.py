@@ -123,3 +123,18 @@ class PublishingHouseStaff(ndb.Model):
     working_on_projects = ndb.KeyProperty(kind=BookProject, repeated=True)
     joined_on = ndb.DateTimeProperty(auto_now_add=True)
     terminated_on = ndb.DateTimeProperty()
+
+
+class Conversation(ndb.Model):
+    user_one = ndb.KeyProperty(kind=models.User)
+    user_two = ndb.KeyProperty(kind=models.User)
+    ip = ndb.StringProperty()
+    time = ndb.DateTimeProperty(auto_now_add=True)
+
+
+class Conversation_reply(ndb.Model):
+    reply = ndb.TextProperty()
+    user = ndb.KeyProperty(kind=models.User)
+    ip = ndb.StringProperty()
+    time = ndb.DateTimeProperty(auto_now_add=True)
+    conversation = ndb.KeyProperty(kind=Conversation)
