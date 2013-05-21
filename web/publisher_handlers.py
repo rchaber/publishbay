@@ -103,3 +103,65 @@ class ViewSavedContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, Bas
         params['jobs'] = jobfilter
 
         return self.render_template('publisher/view_saved_contractors.html', **params)
+
+
+class ViewSavedAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    """
+    Handler for viewing saved contractors
+    """
+
+    _DEFAULT_DOC_LIMIT = 5  # default number of search results to display per page.
+    _OFFSET_LIMIT = 1000
+    _NAV_LEN = 5
+
+    @user_required
+    def get(self):
+        """Handles GET requests to the paging by cursors sub-application.
+
+        It doesn't uses cursors. Instead, it uses offset along with a paginate custom function to navigate through the results.
+        """
+
+        PAGE_SIZE = 10
+
+        authors = []
+        params = {}
+        items = []
+
+        genrefilter = self.request.GET.getall('genre')
+        print genrefilter
+        print len(genrefilter)
+
+        q = bmodels.Marked_authors.query(bmodels.Marked_authors.user == self.user_key)
+        count = q.count()
+        items = q.fetch()
+
+        for i in items:
+            d = {}
+            author = i.marked.get()
+            d['profile_id'] = i.marked.get().key.id()
+            if author.display_full_name:
+                d['name_to_display'] = author.name + ' ' + author.last_name
+            else:
+                d['name_to_display'] = author.name + ' ' + author.last_name[0] + '.'
+            if author.picture_key != '' and author.picture_key:
+                d['picture_url'] = '/serve/%s' % author.picture_key
+            else:
+                d['picture_url'] = ''
+            d['title'] = author.title
+            d['overview'] = author.overview.replace('\r\n', ' ').replace('\n', ' ')
+            d['jobs'] = author.jobs
+            if len(jobfilter) > 0:
+                if len(set(author.jobs).intersection(set(genrefilter))) > 0:
+                    authors.append(d)
+            else:
+                authors.append(d)
+
+        params['count'] = count
+        params['filter_count'] = len(authors)
+        params['authors'] = authors
+
+        params['genrelist_fiction'] = utils.genres_fiction
+        params['genrelist_nonfiction'] = utils.genres_nonfiction
+        params['genres'] = genrefilter
+
+        return self.render_template('publisher/view_saved_authors.html', **params)

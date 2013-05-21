@@ -683,7 +683,7 @@ div.list-name a {
 .label.label-info {
 	margin-right: 4px;
 	font-weight: bold;
-	display: inline;
+	margin-bottom: 2px;
 }
 
 .isHidden {

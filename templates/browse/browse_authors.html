@@ -1,0 +1,123 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    <div class="span12" style="margin-left: 0">
+        <div class="w-box-header" style="height: 56px; line-height: 54px; background: rgba(0, 0, 0, .08)">
+            <div class="span3" style="font-family: 'Trebuchet MS', Helvetica, sans-serif; color: #2C3F46; font-size: 20px;">Find Authors</div>
+            <div class="span8" style="margin-left:0">
+                <input type="text" class="PB-big-search" id="query" name="query" value="{{ search_input }}">
+                <button type="button" class="btn btn-large PB-btn-big-search" id="query_button">Search</button>
+                <input class="span6" value="" type="text" style="height: 2.3em; margin: 0; padding: 0 10px; font-size: 20px; display: none;">
+            </div>
+        </div>
+    </div>
+
+    <div class="span12" style="margin-left:0; margin-top: 15px;">
+        <div class="span3" style="margin-left: 0;">
+            <div class="sidebar">
+                <div class="w-box w-box-orange">
+                    <div class="w-box-header">
+                        <h4>Filter by genre</h4>
+                    </div>
+                    <div class="w-box-content cnt_b">
+                        <div class="control-group">
+                            Fiction
+                            {% for i in genrelist_fiction %}
+                            <div class="controls">
+                                <label><input type="checkbox" id="genre_{{ i }}" name="genre" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in genres %} checked = "checked" {% endif %}>{{ i }}</label>
+                            </div>
+                            {% endfor %}
+                            Non-fiction
+                            {% for i in genrelist_nonfiction %}
+                            <div class="controls">
+                                <label><input type="checkbox" id="genre_{{ i }}" name="genre" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in genres %} checked = "checked" {% endif %}>{{ i }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span9">
+            <div class="w-box">
+                <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
+                    <div class="record-count">{{ count }}&nbsp;authors</div>
+                    {{ macros.pagination(previous, next, marks) }}
+                    <ul>
+                    {% for a in authors %}
+                        <li>
+                    
+                        {% if a.picture_url != '' and a.picture %}
+                        <img src="{{ a.picture_url }}" alt="" style="height: 50px;">
+                        {% else %}
+                        <img src="/static/images/dummy_50x50.gif" alt="">
+                        {% endif %}
+                        
+                        <div class="list-name"><a href="/browse/authors/view?aid={{ a.author_id }}">{{ a.name_to_display }}</a></div>
+
+                        <div class="list-title">{{ a.title }}</div>
+
+                        <div class="list-info">
+                        {% if a.overview.split(' ')|length <= 40 %}
+                        {{ a.overview }}
+                        {% else %}
+                        <div class='jsTruncated'>{{ ' '.join(a.overview.split(' ')[0:40]) }} ...<span class='lessmore'> more</span></div>
+                        <div class='jsFull isHidden'>{{ a.overview }}<br><span class='lessmore'>less</span></div>
+                        {% endif %}
+                        </div>
+
+                        <div class="list-tags">{% for i in a.genres|sort %}<span class="label label-info">{{ i }} </span>{% endfor %}</div>
+
+                        {% if a.ghostwrites %}
+                        <div class="list-info">Available as ghostwriter</div>
+                        {% endif %}
+
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    {{ macros.pagination(previous, next, marks) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block mediaJS %}
+
+    <script type="text/javascript">
+
+        $().ready(function() {
+
+            $(".{{ active }}").addClass('active');
+
+            $('#query_button, #update').click(function(){
+                var a = $('input[name="jobs"], #query').serialize();
+                window.location.href = "/browse/authors?" + a;
+            })
+
+            $('.bookmark').click(function(i){
+                var a = $('input[name="jobs"]').serialize();
+                var b = $(this).attr('id').replace('page', '');
+                window.location.href = "/browse/authors?" + a + '&page=' + b;
+            });
+
+            $('.lessmore').click(function(i){
+                var a = $(this).closest('.list-info').children();
+                for (var i=0; i<a.length; i++) {
+                    if ( $(a[i]).hasClass('isHidden') ){
+                        $(a[i]).removeClass('isHidden');
+                    }
+                    else {
+                        $(a[i]).addClass('isHidden');
+                    }
+                }
+            })
+
+        });
+
+    </script>
+
+    {% endblock %}

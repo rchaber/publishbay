@@ -1,0 +1,98 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    <div class="span12" style="margin-left:0; margin-top: 15px;">
+        <div class="span3" style="margin-left: 0;">
+            <div class="sidebar">
+                <div class="w-box w-box-orange">
+                    <div class="w-box-header">
+                        <h4>Etc</h4>
+                    </div>
+                    <div class="w-box-content cnt_b">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span9">             
+            <div class="w-box">
+                <div class="w-box-header">
+                    <h4>{% trans %}Profile{% endtrans %}</h4>
+                    <div class="pull-right">
+                        {% if marked %}
+                        <a href="javascript:void(0)" class="btn btn-mini icon ptip_s marked" id="mark" title="Watch"><i class="icon-bookmark" style="opacity: 1"></i></a>
+                        {% else %}
+                        <a href="javascript:void(0)" class="btn btn-mini icon ptip_s" id="mark" title="Watch"><i class="icon-bookmark" style="opacity: .3"></i></a>
+                        {% endif %}
+                        <a href="javascript:void(0)" class="btn btn-mini icon ptip_s" title="Contact"><i class="icon-envelope"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-mini icon ptip_s" title="Offer"><i class="icon-hand-right"></i></a>
+                    </div>
+                </div>
+                <div class="w-box-content cnt_ab">
+                    <div class="well form-vertical">
+                        <div>
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    <div class="fileupload-new" style="width: 50px; height: 50px; vertical-align: middle; text-align: center;">
+                                        {% if picture_url == '' or not picture_url %}
+                                        <img src="/static/images/dummy_50x50.gif" alt="">
+                                        {% else %}
+                                        <img src="{{ picture_url }}" alt="" style="display: inline-block;">
+                                        {% endif %}
+                                    </div>
+                                </dt>
+                                <dd class="list-name">
+                                    {% if display_full_name %}
+                                    {{ name }}&nbsp;{{ last }}
+                                    {% else %}
+                                    {{ name }}&nbsp;{{ last[0]+'.' }}
+                                    {% endif %}
+                                </dd>
+                                <dd class="list-title">{{ title }}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Overview</dt>
+                                <dd><pre>{{ overview }}</pre></dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Genres</dt>
+                                <dd>{% for g in genres %}
+                                    <span class="label label-info">{{ g }}</span>
+                                    {% endfor %}
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Pseudonyms</dt>
+                                <dd>{{ pseudonyms }}</dd>
+                            </dl>
+                            {% if ghostwrites %}
+                            <dl class="dl-horizontal">
+                                <dd>Available as ghostwriter</dd>
+                            </dl>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    <script type="text/javascript">
+
+        $().ready(function() {
+            $("#mark").click( function() {
+                $.ajax({
+                    url: "{{ uri_for('save-author') }}",
+                    type: "GET",
+                    data: { author_id: "{{author_id}}" },
+                    dataType: "script"
+                })
+                
+            });
+
+        });
+    </script>
+    {% endblock %}
+

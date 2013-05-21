@@ -514,18 +514,19 @@ class EditAuthorProfileHandler(BaseHandler):
     def post(self):
         """ Get fields from POST dict """
 
-        checked_genres = self.request.POST.get('checked_genres').replace('&', '').replace('+', ' ').replace('%26', '&').split('genres=')[1:]
-        print checked_genres
+        checked_genres = self.request.POST.getall('genres')
 
         pseudonyms = self.request.POST.get('pseudonyms').replace('  ', ' ').replace(' ,', ',').split(',')
         pseudonyms = [i.lstrip().rstrip() for i in pseudonyms]
 
-        k = models.User.get_by_id(long(self.user_id)).key
+        # k = models.User.get_by_id(long(self.user_id)).key
+        print checked_genres
+        print pseudonyms
 
-        author_profile = bmodels.AuthorProfile.get_by_userkey(k)
+        author_profile = bmodels.AuthorProfile.get_by_userkey(self.user_key)
         if not author_profile:
             author_profile = bmodels.AuthorProfile()
-            author_profile.user = k
+            author_profile.user = self.user_key
 
         try:
             message = ''
@@ -583,3 +584,24 @@ class SaveContractorHandler(BaseHandler):
         print "here2"
         self.response.out.write(js)
 
+
+class SaveAuthorHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+        author_id = self.request.GET.get('author_id')
+        print "author_id: "+author_id
+        author = bmodels.AuthorProfile.get_by_id(int(author_id))
+        q = bmodels.Marked_authors.query(bmodels.Marked_authors.user == self.user_key, bmodels.Marked_authors.marked == author.key).get()
+        js = ''
+        if not q:
+            mark = bmodels.Marked_authors()
+            mark.user = self.user_key
+            mark.marked = author.key
+            mark.put()
+            js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1')"
+        else:
+            q.key.delete()
+            js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3')"
+        print "here2"
+        self.response.out.write(js)

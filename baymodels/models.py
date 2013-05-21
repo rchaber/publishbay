@@ -73,6 +73,9 @@ class ProDetails(ndb.Model):
 
 class AuthorProfile(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
+    name = ndb.ComputedProperty(lambda self: self.user.get().name)
+    last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
+    display_full_name = ndb.ComputedProperty(lambda self: ProDetails.get_by_userkey(self.user.get().key).display_full_name if ProDetails.get_by_userkey(self.user.get().key) else True)
     title = ndb.StringProperty()
     pseudonyms = ndb.StringProperty(repeated=True)
     overview = ndb.TextProperty()
@@ -144,3 +147,8 @@ class Conversation_reply(ndb.Model):
 class Marked_contractors(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     marked = ndb.KeyProperty(kind=ProDetails)
+
+
+class Marked_authors(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    marked = ndb.KeyProperty(kind=AuthorProfile)
