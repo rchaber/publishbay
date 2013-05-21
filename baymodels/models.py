@@ -1,4 +1,5 @@
 from boilerplate import models
+
 from google.appengine.ext import ndb
 from config import utils
 from google.appengine.api import users
@@ -138,3 +139,8 @@ class Conversation_reply(ndb.Model):
     ip = ndb.StringProperty()
     time = ndb.DateTimeProperty(auto_now_add=True)
     conversation = ndb.KeyProperty(kind=Conversation)
+
+
+class Marked_contractors(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    marked = ndb.KeyProperty(kind=ProDetails)

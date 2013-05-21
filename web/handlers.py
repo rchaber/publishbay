@@ -279,7 +279,6 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             message = ''
             user_pro_details.display_full_name = display_full_name
             if picture_key != '':
-                print 'here1'
                 user_pro_details.picture_key = picture_key
             user_pro_details.title = title
             user_pro_details.overview = overview
@@ -561,3 +560,26 @@ class JobPostHandler():
     - looking to be staff member (can only work for this publishing house)
     """
     pass
+
+
+class SaveContractorHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+        contractor_id = self.request.GET.get('contractor_id')
+        print "contractor_id: "+contractor_id
+        contractor = bmodels.ProDetails.get_by_id(int(contractor_id))
+        q = bmodels.Marked_contractors.query(bmodels.Marked_contractors.user == self.user_key, bmodels.Marked_contractors.marked == contractor.key).get()
+        js = ''
+        if not q:
+            mark = bmodels.Marked_contractors()
+            mark.user = self.user_key
+            mark.marked = contractor.key
+            mark.put()
+            js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1')"
+        else:
+            q.key.delete()
+            js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3')"
+        print "here2"
+        self.response.out.write(js)
+

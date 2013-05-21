@@ -27,6 +27,8 @@ _routes = [
 
     RedirectRoute('/browse/contractors/view', browse_handlers.ViewContractorsHandler, name='view-contractors', strict_slash=True),
 
+    RedirectRoute('/browse/contractors/mark', handlers.SaveContractorHandler, name='save-contractor', strict_slash=True)
+
 ]
 
 

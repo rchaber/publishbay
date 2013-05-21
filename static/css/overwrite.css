@@ -698,7 +698,11 @@ div.list-name a {
 	font-size: 10px;
 	padding: 1px 5px;
 	position: absolute;
-	top: 0px;
+	top: 2px;
 	left: 21px;
 	font-weight: bold;
+}
+
+#mark.marked {
+	background: #72CFFD;
 }

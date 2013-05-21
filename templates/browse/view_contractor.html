@@ -19,7 +19,11 @@
                 <div class="w-box-header">
                     <h4>{% trans %}Profile{% endtrans %}</h4>
                     <div class="pull-right">
-                        <a href="javascript:void(0)" class="btn btn-mini icon ptip_s" title="Watch"><i class="icon-eye-open"></i></a>
+                        {% if marked %}
+                        <a href="javascript:void(0)" class="btn btn-mini icon ptip_s marked" id="mark" title="Watch"><i class="icon-bookmark" style="opacity: 1"></i></a>
+                        {% else %}
+                        <a href="javascript:void(0)" class="btn btn-mini icon ptip_s" id="mark" title="Watch"><i class="icon-bookmark" style="opacity: .3"></i></a>
+                        {% endif %}
                         <a href="javascript:void(0)" class="btn btn-mini icon ptip_s" title="Contact"><i class="icon-envelope"></i></a>
                         <a href="javascript:void(0)" class="btn btn-mini icon ptip_s" title="Offer"><i class="icon-hand-right"></i></a>
                     </div>
@@ -81,5 +85,20 @@
     {% endblock %}
 
     {% block mediaJS %}
+    <script type="text/javascript">
+
+        $().ready(function() {
+            $("#mark").click( function() {
+                $.ajax({
+                    url: "{{ uri_for('save-contractor') }}",
+                    type: "GET",
+                    data: { contractor_id: "{{contractor_id}}" },
+                    dataType: "script"
+                })
+                
+            });
+
+        });
+    </script>
     {% endblock %}
 

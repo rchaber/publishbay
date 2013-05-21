@@ -293,6 +293,10 @@ class ViewContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHand
 
         params = {}
 
+        q = bmodels.Marked_contractors.query(bmodels.Marked_contractors.user == self.user_key, bmodels.Marked_contractors.marked == contractor.key).get()
+
+        params['marked'] = True if q else False
+
         if contractor:
             params['name'] = contractor.name
             params['last'] = contractor.last_name
@@ -306,5 +310,6 @@ class ViewContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHand
             params['joblist'] = contractor.jobs
             params['city'] = contractor.city
             params['state'] = contractor.state
+            params['contractor_id'] = contractor_id
 
         return self.render_template('browse/view_contractor.html', **params)
