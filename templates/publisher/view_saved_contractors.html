@@ -1,0 +1,95 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    <div class="span12" style="margin-left:0; margin-top: 15px;">
+        <div class="span3" style="margin-left: 0;">
+            <div class="sidebar">
+                <div class="w-box w-box-orange">
+                    <div class="w-box-header">
+                        <h4>Filter by job</h4>
+                    </div>
+                    <div class="w-box-content cnt_b">
+                        <div class="control-group">
+                            {% for i in joblist %}
+                            <div class="controls">
+                                <label><input type="checkbox" id="job_{{ i }}" name="jobs" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in jobs %} checked = "checked" {% endif %}>{{ i }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span9">
+            <div class="w-box">
+                <div class="w-box-header">
+                    <h4>Saved contractors</h4>
+                </div>
+                <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
+                    <div class="record-count">Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;contractors</div>
+                    <ul>
+                    {% for c in contractors %}
+                        <li>
+                    
+                        {% if c.picture_url != '' and c.picture %}
+                        <img src="{{ c.picture_url }}" alt="" style="height: 50px;">
+                        {% else %}
+                        <img src="/static/images/dummy_50x50.gif" alt="">
+                        {% endif %}
+                        
+                        <div class="list-name"><a href="/browse/contractors/view?pid={{ c.profile_id }}">{{ c.name_to_display }}</a></div>
+
+                        <div class="list-title">{{ c.title }}</div>
+
+                        <div class="list-info">
+                        {% if c.overview.split(' ')|length <= 40 %}
+                        {{ c.overview }}
+                        {% else %}
+                        <div class='jsTruncated'>{{ ' '.join(c.overview.split(' ')[0:40]) }} ...<span class='lessmore'> more</span></div>
+                        <div class='jsFull isHidden'>{{ c.overview }}<br><span class='lessmore'>less</span></div>
+                        {% endif %}
+                        </div>
+
+                        <div class="list-tags">{% for i in c.jobs|sort %}<span class="label label-info">{{ i }} </span>{% endfor %}</div>
+
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    <div class="record-count" style="float: none;">Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;contractors</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block mediaJS %}
+
+    <script type="text/javascript">
+
+        $().ready(function() {
+
+            $('#update').click(function(){
+                var a = $('input[name="jobs"]').serialize();
+                window.location.href = "/publisher/viewsavedcontractors?" + a;
+            })
+
+            $('.lessmore').click(function(i){
+                var a = $(this).closest('.list-info').children();
+                for (var i=0; i<a.length; i++) {
+                    if ( $(a[i]).hasClass('isHidden') ){
+                        $(a[i]).removeClass('isHidden');
+                    }
+                    else {
+                        $(a[i]).addClass('isHidden');
+                    }
+                }
+            })
+
+        });
+
+    </script>
+
+    {% endblock %}

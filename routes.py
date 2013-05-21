@@ -7,6 +7,7 @@ RedirectRoute: http://webapp-improved.appspot.com/api/webapp2_extras/routes.html
 from webapp2_extras.routes import RedirectRoute
 from web import handlers
 from web import browse_handlers
+from web import publisher_handlers
 secure_scheme = 'https'
 
 _routes = [
@@ -27,7 +28,9 @@ _routes = [
 
     RedirectRoute('/browse/contractors/view', browse_handlers.ViewContractorsHandler, name='view-contractors', strict_slash=True),
 
-    RedirectRoute('/browse/contractors/mark', handlers.SaveContractorHandler, name='save-contractor', strict_slash=True)
+    RedirectRoute('/browse/contractors/mark', handlers.SaveContractorHandler, name='save-contractor', strict_slash=True),
+
+    RedirectRoute('/publisher/viewsavedcontractors', publisher_handlers.ViewSavedContractorsHandler, name='view-saved-contractors', strict_slash=True),
 
 ]
 

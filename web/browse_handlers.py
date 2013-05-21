@@ -96,7 +96,6 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
 
         jobfilter = self.request.GET.getall('jobs')
         print jobfilter
-        # jobfilter = jobfilter.split('|')
 
         offset = 0
 
