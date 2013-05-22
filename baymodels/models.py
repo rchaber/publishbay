@@ -11,6 +11,21 @@ genres_fiction = utils.genres_fiction
 genres_nonfiction = utils.genres_nonfiction
 
 
+class BasicProfile(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    username = ndb.ComputedProperty(lambda self: self.user.get().username)
+    name = ndb.ComputedProperty(lambda self: self.user.get().name)
+    last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
+    display_full_name = ndb.BooleanProperty(default=True)
+    picture_key = ndb.BlobKeyProperty()
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    updated_on = ndb.DateTimeProperty(auto_now=True)
+
+    @classmethod
+    def get_by_userkey(cls, k):
+        return cls.query(cls.user == k).get()
+
+
 class PublishingHouse(ndb.Model):
     owner = ndb.KeyProperty(kind=models.User)
     name = ndb.StringProperty()

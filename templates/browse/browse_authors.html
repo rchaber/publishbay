@@ -2,17 +2,6 @@
 
     {% block content %}
 
-    <div class="span12" style="margin-left: 0">
-        <div class="w-box-header" style="height: 56px; line-height: 54px; background: rgba(0, 0, 0, .08)">
-            <div class="span3" style="font-family: 'Trebuchet MS', Helvetica, sans-serif; color: #2C3F46; font-size: 20px;">Find Authors</div>
-            <div class="span8" style="margin-left:0">
-                <input type="text" class="PB-big-search" id="query" name="query" value="{{ search_input }}">
-                <button type="button" class="btn btn-large PB-btn-big-search" id="query_button">Search</button>
-                <input class="span6" value="" type="text" style="height: 2.3em; margin: 0; padding: 0 10px; font-size: 20px; display: none;">
-            </div>
-        </div>
-    </div>
-
     <div class="span12" style="margin-left:0; margin-top: 15px;">
         <div class="span3" style="margin-left: 0;">
             <div class="sidebar">
@@ -93,8 +82,8 @@
 
             $(".{{ active }}").addClass('active');
 
-            $('#query_button, #update').click(function(){
-                var a = $('input[name="jobs"], #query').serialize();
+            $('#update').click(function(){
+                var a = $('input[name="jobs"]').serialize();
                 window.location.href = "/browse/authors?" + a;
             })
 

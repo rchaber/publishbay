@@ -7,8 +7,6 @@ from baymodels import models as bmodels
 
 from boilerplate import models as models
 
-from tools import docs as docs
-
 import csv
 import random
 
@@ -111,15 +109,5 @@ def import_users_prodetails():
         a.phone = row[10]
 
         a.put()
-
-        params = {}
-        params['username'] = entity.username
-        params['name'] = entity.name
-        params['last_name'] = entity.last_name
-        params['title'] = a.title
-        params['overview'] = a.overview
-        params['jobs'] = ' '.join(a.jobs)
-        params['pid'] = str(a.key.id())
-        docs.ContractorDoc.buildContractor(params)
 
         count += 1

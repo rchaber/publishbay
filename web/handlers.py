@@ -13,14 +13,12 @@
 import logging
 import time
 
-
 # related third party imports
 import webapp2
 from webapp2_extras.i18n import gettext as _
 
 # local application/library specific imports
 
-from boilerplate import forms as forms
 import bayforms as bayforms
 
 from boilerplate import models
@@ -30,17 +28,15 @@ from boilerplate.lib.basehandler import user_required
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
-from google.appengine.api import users
+# from google.appengine.api import users
 # from google.appengine.api import images
 
-import urllib2
+# import urllib2
 import urllib
 
-from pprint import pprint as pprint
+# from pprint import pprint as pprint
 
 from baymodels import models as bmodels
-
-from tools import docs as docs
 
 import config.utils as utils
 

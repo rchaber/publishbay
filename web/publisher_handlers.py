@@ -37,21 +37,13 @@ from pprint import pprint as pprint
 
 from baymodels import models as bmodels
 
-from tools import docs as docs
-from tools import tools as tools
-
 import config.utils as utils
-import config.search_config as search_config
 
 
 class ViewSavedContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler for viewing saved contractors
     """
-
-    _DEFAULT_DOC_LIMIT = 5  # default number of search results to display per page.
-    _OFFSET_LIMIT = 1000
-    _NAV_LEN = 5
 
     @user_required
     def get(self):
@@ -110,10 +102,6 @@ class ViewSavedAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
     Handler for viewing saved contractors
     """
 
-    _DEFAULT_DOC_LIMIT = 5  # default number of search results to display per page.
-    _OFFSET_LIMIT = 1000
-    _NAV_LEN = 5
-
     @user_required
     def get(self):
         """Handles GET requests to the paging by cursors sub-application.
@@ -150,7 +138,7 @@ class ViewSavedAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
             d['title'] = author.title
             d['overview'] = author.overview.replace('\r\n', ' ').replace('\n', ' ')
             d['jobs'] = author.jobs
-            if len(jobfilter) > 0:
+            if len(genrefilter) > 0:
                 if len(set(author.jobs).intersection(set(genrefilter))) > 0:
                     authors.append(d)
             else:
