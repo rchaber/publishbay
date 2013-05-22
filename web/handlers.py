@@ -187,18 +187,15 @@ class EditContactInfoHandler(BaseHandler):
                 self.form.zipcode.data = user_contacinfo.zipcode
                 self.form.phone.data = user_contacinfo.phone
 
-        return self.render_template('edit_pro_details.html', **params)
+        return self.render_template('edit_contactinfo.html', **params)
 
     def post(self):
         """ Get fields from POST dict """
 
-        k = models.User.get_by_id(long(self.user_id)).key
-        user = k.get()
-
-        user_contacinfo = bmodels.ContactInfo.get_by_userkey(k)
+        user_contacinfo = bmodels.ContactInfo.get_by_userkey(self.user_key)
         if not user_contacinfo:
             user_contacinfo = bmodels.ContactInfo()
-            user_contacinfo.user = k
+            user_contacinfo.user = self.user_key
 
         address1 = self.form.address1.data
         address2 = self.form.address2.data
@@ -215,11 +212,6 @@ class EditContactInfoHandler(BaseHandler):
             user_contacinfo.state = state
             user_contacinfo.zipcode = zipcode
             user_contacinfo.phone = phone
-
-            params = {}
-            params['username'] = user.username
-            params['name'] = user.name
-            params['last_name'] = user.last_name
 
             user_contacinfo.put()
             message += " " + _('Your contact info has been updated.')
@@ -250,7 +242,7 @@ class BasicSettingsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
         params = {}
 
         params['upload_url'] = blobstore.create_upload_url('/upload_picture')
-        params['display_full_name'] = False
+        params['display_full_name'] = True
         params['picture_url'] = ''
 
         if self.user:
@@ -271,9 +263,7 @@ class BasicSettingsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
         else:
             picture_key = ''
 
-        # k = models.User.get_by_id(long(self.user_id)).key
-        # user = k.get()
-        user = self.user_key.get()
+        print "post here1"
 
         user_basicsettings = bmodels.BasicSettings.get_by_userkey(self.user_key)
         if not user_basicsettings:
@@ -308,7 +298,7 @@ class BasicSettingsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
             return self.get()
 
 
-class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+class DisplayProDetailsHandler(BaseHandler):
     """
     Handler for Edit User Contact Info
     """
@@ -322,7 +312,6 @@ class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         params['profile_visibility'] = 'everyone'
         params['display_full_name'] = False
         params['english_level'] = 0
-        params['picture_url'] = ''
         params['overviewdata'] = ''
         params['joblist'] = ''
 
@@ -330,9 +319,6 @@ class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
             if user_pro_details:
                 params['there_is_profile'] = True
-                params['display_full_name'] = user_pro_details.display_full_name
-                if user_pro_details.picture_key and user_pro_details.picture_key != '':
-                    params['picture_url'] = '/serve/%s' % user_pro_details.picture_key
                 params['title'] = user_pro_details.title
                 params['overview'] = user_pro_details.overview
                 params['profile_visibility'] = user_pro_details.profile_visibility
@@ -344,7 +330,7 @@ class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         return self.render_template('display_pro_details.html', **params)
 
 
-class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+class EditProDetailsHandler(BaseHandler):
     """
     Handler for Edit User Contact Info
     """
@@ -369,10 +355,6 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
             if user_pro_details:
                 params['there_is_profile'] = True
-                self.form.display_full_name.data = user_pro_details.display_full_name
-                params['display_full_name'] = self.form.display_full_name.data
-                if user_pro_details.picture_key and user_pro_details.picture_key != '':
-                    params['picture_url'] = '/serve/%s' % user_pro_details.picture_key
                 self.form.title.data = user_pro_details.title
                 params['overviewdata'] = user_pro_details.overview
                 self.form.profile_visibility.data = user_pro_details.profile_visibility
@@ -397,28 +379,16 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
 
         jobs = self.request.POST.getall('jobs')
 
-        upload_picture = self.get_uploads()
-        if upload_picture:
-            picture_key = upload_picture[0].key()
-        else:
-            picture_key = ''
+        # k = models.User.get_by_id(long(self.user_id)).key
+        # user = k.get()
+        user = self.user_key.get()
+        print user
 
-        k = models.User.get_by_id(long(self.user_id)).key
-        user = k.get()
-
-        user_pro_details = bmodels.ProDetails.get_by_userkey(k)
+        user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
         if not user_pro_details:
             user_pro_details = bmodels.ProDetails()
-            user_pro_details.user = k
+            user_pro_details.user = self.user_key
 
-        # if picture changes, then the old one is deleted from Blobstore
-        if (picture_key != '' and picture_key != user_pro_details.picture_key) and user_pro_details:
-            try:
-                blobstore.delete(user_pro_details.picture_key)
-            except:
-                pass
-
-        display_full_name = (self.form.display_full_name.data == "True")
         overview = self.request.POST.get('overview').replace('\r\r\n', '\r\n')
 
         title = self.form.title.data
@@ -427,22 +397,11 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
 
         try:
             message = ''
-            user_pro_details.display_full_name = display_full_name
-            if picture_key != '':
-                user_pro_details.picture_key = picture_key
             user_pro_details.title = title
             user_pro_details.overview = overview
             user_pro_details.profile_visibility = profile_visibility
             user_pro_details.english_level = english_level
             user_pro_details.jobs = jobs
-
-            params = {}
-            params['username'] = user.username
-            params['name'] = user.name
-            params['last_name'] = user.last_name
-            params['title'] = title
-            params['overview'] = overview
-            params['jobs'] = ' '.join(jobs)
 
             user_pro_details.put()
             message += " " + _('Your contractor info has been updated.')

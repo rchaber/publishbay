@@ -14,8 +14,6 @@
                         <form id="form_contactinfo" action="{{ url|safe }}" enctype="multipart/form-data" method="post"> <!-- upload_url -->
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
 
-                            <legend>Contact info</legend>
-                            
                             {{ macros.field(form.address1, label=_("Address 1"), class="input-xxlarge focused") }}
                             {{ macros.field(form.address2, label=_("Address 2"), class="input-xxlarge focused") }}
                             {{ macros.field(form.city, label=_("City"), class="input-xlarge focused") }}

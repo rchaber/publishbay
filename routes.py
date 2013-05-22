@@ -17,7 +17,6 @@ _routes = [
     RedirectRoute('/social_login/<provider_name>/delete', handlers.DeleteSocialProviderHandler, name='delete-social-provider', strict_slash=True),
     RedirectRoute('/settings/prodetails', handlers.EditProDetailsHandler, name='edit-prodetails', strict_slash=True),
     RedirectRoute('/settings/display_prodetails', handlers.DisplayProDetailsHandler, name='display-prodetails', strict_slash=True),
-    RedirectRoute('/upload_picture', handlers.EditProDetailsHandler, name='upload-picture', strict_slash=True),
     RedirectRoute('/settings/display_publishinghouse', handlers.DisplayPublishingHouseHandler, name='display-publishinghouse', strict_slash=True),
     RedirectRoute('/settings/publishinghouse', handlers.EditPublishingHouseHandler, name='edit-publishinghouse', strict_slash=True),
     RedirectRoute('/upload_logo', handlers.EditPublishingHouseHandler, name='upload-logo', strict_slash=True),
@@ -27,6 +26,7 @@ _routes = [
     RedirectRoute('/settings/display_contactinfo', handlers.DisplayContactInfoHandler, name='display-contactinfo', strict_slash=True),
     RedirectRoute('/settings/contactinfo', handlers.EditContactInfoHandler, name='edit-contactinfo', strict_slash=True),
     RedirectRoute('/settings/basic', handlers.BasicSettingsHandler, name='basic-settings', strict_slash=True),
+    RedirectRoute('/upload_picture', handlers.BasicSettingsHandler, name='upload-picture', strict_slash=True),
 
     RedirectRoute('/browse/contractors', browse_handlers.BrowseContractorsHandler, name='browse-contractors', strict_slash=True),
     RedirectRoute('/browse/contractors/view', browse_handlers.ViewContractorsHandler, name='view-contractors', strict_slash=True),

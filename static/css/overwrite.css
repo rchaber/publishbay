@@ -137,6 +137,11 @@ legend {
 	border-bottom: 2px solid #e5e5e5;
 }
 
+legend + .control-group {
+	margin-top: 0;
+	-webkit-margin-top-collapse: separate;
+}
+
 .thumbnail {
 	border: 2px solid #ccc;
 }
@@ -453,7 +458,7 @@ dd {
 }
 
 .dl-horizontal {
-	margin-bottom: 30px;
+	margin-bottom: 15px;
 }
 
 .dl-horizontal dt {
