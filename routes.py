@@ -24,20 +24,18 @@ _routes = [
     RedirectRoute('/settings/display_authorprofile', handlers.DisplayAuthorProfileHandler, name='display-authorprofile', strict_slash=True),
     RedirectRoute('/settings/authorprofile', handlers.EditAuthorProfileHandler, name='edit-authorprofile', strict_slash=True),
 
+    RedirectRoute('/settings/display_contactinfo', handlers.DisplayContactInfoHandler, name='display-contactinfo', strict_slash=True),
+    RedirectRoute('/settings/contactinfo', handlers.EditContactInfoHandler, name='edit-contactinfo', strict_slash=True),
+    RedirectRoute('/settings/basic', handlers.BasicSettingsHandler, name='basic-settings', strict_slash=True),
+
     RedirectRoute('/browse/contractors', browse_handlers.BrowseContractorsHandler, name='browse-contractors', strict_slash=True),
-
     RedirectRoute('/browse/contractors/view', browse_handlers.ViewContractorsHandler, name='view-contractors', strict_slash=True),
-
     RedirectRoute('/browse/contractors/mark', handlers.SaveContractorHandler, name='save-contractor', strict_slash=True),
-
     RedirectRoute('/publisher/viewsavedcontractors', publisher_handlers.ViewSavedContractorsHandler, name='view-saved-contractors', strict_slash=True),
 
     RedirectRoute('/browse/authors', browse_handlers.BrowseAuthorsHandler, name='browse-authors', strict_slash=True),
-
     RedirectRoute('/browse/authors/view', browse_handlers.ViewAuthorsHandler, name='view-authors', strict_slash=True),
-
     RedirectRoute('/browse/authors/mark', handlers.SaveAuthorHandler, name='save-author', strict_slash=True),
-
     RedirectRoute('/publisher/viewsavedauthors', publisher_handlers.ViewSavedAuthorsHandler, name='view-saved-authors', strict_slash=True),
 
 ]

@@ -11,18 +11,18 @@
                     </div>
                     <div class="w-box-content cnt_b">
                         <div class="control-group">
-                            Fiction
-                            {% for i in genrelist_fiction %}
                             <div class="controls">
+                                <label><b>Fiction:</b></label>
+                                {% for i in genrelist_fiction %}
                                 <label><input type="checkbox" id="genre_{{ i }}" name="genre" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in genres %} checked = "checked" {% endif %}>{{ i }}</label>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
-                            Non-fiction
-                            {% for i in genrelist_nonfiction %}
-                            <div class="controls">
+                            <div class="controls" style="margin-top: 20px;">
+                                <label><b>Non-fiction:</b></label>
+                                {% for i in genrelist_nonfiction %}
                                 <label><input type="checkbox" id="genre_{{ i }}" name="genre" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in genres %} checked = "checked" {% endif %}>{{ i }}</label>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
                         <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
                     </div>

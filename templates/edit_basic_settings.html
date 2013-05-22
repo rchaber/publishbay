@@ -1,0 +1,88 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    {{ macros.left_sidebar("basic_settings") }}
+
+    <div class="span9">             
+        <div class="w-box">
+            <div class="w-box-header"><h4>{% trans %}Basic Settings{% endtrans %}</h4></div>
+            <div class="w-box-content cnt_ab">
+
+                <div id="edit_basic_settings" class="well form-vertical">
+                    <fieldset>
+                        <form id="form_basic_settings" action="{{ upload_url }}" enctype="multipart/form-data" method="post"> <!-- url|safe -->
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                            <div class="control-group">
+                                <label class="control-label">Display name</label>
+                                <label class="radio">
+                                    <input type="radio" name="display_full_name" id="display_full_name_true" value="True" {% if display_full_name %}checked=""{% endif %}>
+                                    <b>{{ first_name }}&nbsp;{{ last_name }}</b>&nbsp;-&nbsp;{% trans %}show your full name{% endtrans %}
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="display_full_name" id="display_full_name_false" value="False" {% if not display_full_name %}checked=""{% endif %}>
+                                    <b>{{ first_name }}&nbsp;{{ last_name[0]+'.' }}</b>&nbsp;-&nbsp;{% trans %}show your first name and last initial{% endtrans %}
+                                </label>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">Portrait</label>
+                                <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
+                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px; line-height: 50px;">
+                                        {% if picture_url == ''%}
+                                        <img src="/static/images/dummy_50x50.gif" alt="">
+                                        {% else %}
+                                        <img src="{{ picture_url }}" alt="">
+                                        {% endif %}
+                                    </div>
+                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"></div>
+                                    <span class="btn btn-small btn-file">
+                                        <span class="fileupload-new">Select a photo now</span>
+                                        <span class="fileupload-exists">Change</span>
+                                        <input type="file" name="file" id="file" />
+                                        <input type="hidden" name="upload_url" value="{{ upload_url }}"/>
+                                    </span>
+                                    <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                </div>
+                                <aside style="display: block; margin-top: -10px; padding-right: 20px;">
+                                    <h4 style="font-weight: normal; font-size: 16px; margin-bottom: 5px; margin-top: 13px;">You need a photo! </h4>
+                                    <p>Professionals with a friendly, professional-looking portrait are hired
+                                    <b>5 times more often</b> than those without a photo.</p>
+                                </aside>   
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="PB-btn PB-btn-primary">
+                                {% trans %}Update Basic Settings{% endtrans %}
+                                </button>
+                            </div>
+                        </form>
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block mediaJS %}
+    
+    <!-- file upload widget -->
+        <script src="/static/js/form/bootstrap-fileupload.min.js"></script>
+    
+    <script type="text/javascript">
+
+        $().ready(function() {
+            $("#form_basic_settings").validate({
+                submitHandler: function(form) {
+                        form.submit();
+                },
+                errorPlacement: function(error, element) {
+                    element.parent().parent().addClass("error");
+                    error.addClass("help-inline").appendTo( element.parent() );
+                }
+            });
+
+        });
+    </script>
+    {% endblock %}
+

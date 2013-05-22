@@ -1,0 +1,61 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    {{ macros.left_sidebar("contactinfo") }}
+
+    <div class="span9">             
+        <div class="w-box">
+            <div class="w-box-header"><h4>{% trans %}Edit contact info{% endtrans %}</h4></div>
+            <div class="w-box-content cnt_ab">
+
+                <div id="edit_contactinfo" class="well form-vertical">
+                    <fieldset>
+                        <form id="form_contactinfo" action="{{ url|safe }}" enctype="multipart/form-data" method="post"> <!-- upload_url -->
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
+                            <legend>Contact info</legend>
+                            
+                            {{ macros.field(form.address1, label=_("Address 1"), class="input-xxlarge focused") }}
+                            {{ macros.field(form.address2, label=_("Address 2"), class="input-xxlarge focused") }}
+                            {{ macros.field(form.city, label=_("City"), class="input-xlarge focused") }}
+                            {{ macros.field(form.state, label=_("State"), class="input-large focused") }}
+                            {{ macros.field(form.zipcode, label=_("ZIP"), class="input-large focused") }}
+                            {{ macros.field(form.phone, label=_("Phone"), class="input-large focused") }}
+
+                            <div class="form-actions">
+                                <button type="submit" class="PB-btn PB-btn-primary">
+                                {% trans %}Update Contractor Profile{% endtrans %}
+                                </button>
+                            </div>
+
+                        </form>
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block mediaJS %}
+    
+    <!-- file upload widget -->
+        <script src="/static/js/form/bootstrap-fileupload.min.js"></script>
+    
+    <script type="text/javascript">
+
+        $().ready(function() {
+            $("#form_contactinfo").validate({
+                submitHandler: function(form) {
+                        form.submit();
+                },
+                errorPlacement: function(error, element) {
+                    element.parent().parent().addClass("error");
+                    error.addClass("help-inline").appendTo( element.parent() );
+                }
+            });
+
+        });
+    </script>
+    {% endblock %}
+

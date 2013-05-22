@@ -136,6 +136,178 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
         self.send_blob(blob_info)
 
 
+class DisplayContactInfoHandler(BaseHandler):
+    """
+    Handler for Displaying User Contact Info
+    """
+
+    @user_required
+    def get(self):
+        """ Returns a simple HTML form for edit professional details """
+
+        params = {}
+
+        if self.user:
+            user_contacinfo = bmodels.ContactInfo.get_by_userkey(self.user_key)
+            if user_contacinfo:
+                params['there_is_contactinfo'] = True
+                params['address1'] = user_contacinfo.address1
+                params['address2'] = user_contacinfo.address2
+                params['city'] = user_contacinfo.city
+                params['state'] = user_contacinfo.state
+                params['zipcode'] = user_contacinfo.zipcode
+                params['phone'] = user_contacinfo.phone
+            else:
+                params['there_is_contactinfo'] = False
+
+        return self.render_template('display_contactinfo.html', **params)
+
+
+class EditContactInfoHandler(BaseHandler):
+    """
+    Handler for Edit User Contact Info
+    """
+
+    @user_required
+    def get(self):
+        """ Returns a simple HTML form for edit professional details """
+
+        params = {}
+
+        params['there_is_contactinfo'] = False
+
+        if self.user:
+            user_contacinfo = bmodels.ContactInfo.get_by_userkey(self.user_key)
+            if user_contacinfo:
+                params['there_is_contactinfo'] = True
+                self.form.address1.data = user_contacinfo.address1
+                self.form.address2.data = user_contacinfo.address2
+                self.form.city.data = user_contacinfo.city
+                self.form.state.data = user_contacinfo.state
+                self.form.zipcode.data = user_contacinfo.zipcode
+                self.form.phone.data = user_contacinfo.phone
+
+        return self.render_template('edit_pro_details.html', **params)
+
+    def post(self):
+        """ Get fields from POST dict """
+
+        k = models.User.get_by_id(long(self.user_id)).key
+        user = k.get()
+
+        user_contacinfo = bmodels.ContactInfo.get_by_userkey(k)
+        if not user_contacinfo:
+            user_contacinfo = bmodels.ContactInfo()
+            user_contacinfo.user = k
+
+        address1 = self.form.address1.data
+        address2 = self.form.address2.data
+        city = self.form.city.data
+        state = self.form.state.data.upper()
+        zipcode = self.form.zipcode.data
+        phone = self.form.phone.data
+
+        try:
+            message = ''
+            user_contacinfo.address1 = address1
+            user_contacinfo.address2 = address2
+            user_contacinfo.city = city
+            user_contacinfo.state = state
+            user_contacinfo.zipcode = zipcode
+            user_contacinfo.phone = phone
+
+            params = {}
+            params['username'] = user.username
+            params['name'] = user.name
+            params['last_name'] = user.last_name
+
+            user_contacinfo.put()
+            message += " " + _('Your contact info has been updated.')
+
+            self.add_message(message, 'success')
+            self.redirect('/settings/profile')
+
+        except (AttributeError, KeyError, ValueError), e:
+            logging.error('Error updating contact info: ' + str(e))
+            message = _('Unable to update contact info. Please try again later.')
+            self.add_message(message, 'error')
+            return self.get()
+
+    @webapp2.cached_property
+    def form(self):
+        return bayforms.EditContactInfo(self)
+
+
+class BasicSettingsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    """
+    Handler for Edit Basic Settings
+    """
+
+    @user_required
+    def get(self):
+        """ Returns a simple HTML form for edit basic settings """
+
+        params = {}
+
+        params['upload_url'] = blobstore.create_upload_url('/upload_picture')
+        params['display_full_name'] = False
+        params['picture_url'] = ''
+
+        if self.user:
+            user_basicsettings = bmodels.BasicSettings.get_by_userkey(self.user_key)
+            if user_basicsettings:
+                params['display_full_name'] = user_basicsettings.display_full_name
+                if user_basicsettings.picture_key and user_basicsettings.picture_key != '':
+                    params['picture_url'] = '/serve/%s' % user_basicsettings.picture_key
+
+        return self.render_template('edit_basic_settings.html', **params)
+
+    def post(self):
+        """ Get fields from POST dict """
+
+        upload_picture = self.get_uploads()
+        if upload_picture:
+            picture_key = upload_picture[0].key()
+        else:
+            picture_key = ''
+
+        # k = models.User.get_by_id(long(self.user_id)).key
+        # user = k.get()
+        user = self.user_key.get()
+
+        user_basicsettings = bmodels.BasicSettings.get_by_userkey(self.user_key)
+        if not user_basicsettings:
+            user_basicsettings = bmodels.BasicSettings()
+            user_basicsettings.user = self.user_key
+
+        # if picture changes, then the old one is deleted from Blobstore
+        if (picture_key != '' and picture_key != user_basicsettings.picture_key) and user_basicsettings:
+            try:
+                blobstore.delete(user_basicsettings.picture_key)
+            except:
+                pass
+
+        display_full_name = (self.request.POST.get('display_full_name') == "True")
+
+        try:
+            message = ''
+            user_basicsettings.display_full_name = display_full_name
+            if picture_key != '':
+                user_basicsettings.picture_key = picture_key
+
+            user_basicsettings.put()
+            message += " " + _('Basic settings have been updated.')
+
+            self.add_message(message, 'success')
+            self.redirect('/settings/profile')
+
+        except (AttributeError, KeyError, ValueError), e:
+            logging.error('Error updating basic settings: ' + str(e))
+            message = _('Unable to update basic settings. Please try again later.')
+            self.add_message(message, 'error')
+            return self.get()
+
+
 class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler for Edit User Contact Info
@@ -166,12 +338,6 @@ class DisplayProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
                 params['profile_visibility'] = user_pro_details.profile_visibility
                 params['english_level'] = user_pro_details.english_level
                 params['joblist'] = urllib.unquote(', '.join(user_pro_details.jobs))
-                params['address1'] = user_pro_details.address1
-                params['address2'] = user_pro_details.address2
-                params['city'] = user_pro_details.city
-                params['state'] = user_pro_details.state
-                params['zipcode'] = user_pro_details.zipcode
-                params['phone'] = user_pro_details.phone
             else:
                 params['there_is_profile'] = False
 
@@ -213,12 +379,6 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
                 self.form.english_level.data = user_pro_details.english_level
                 params['english_level'] = user_pro_details.english_level
                 params['joblist'] = user_pro_details.jobs
-                self.form.address1.data = user_pro_details.address1
-                self.form.address2.data = user_pro_details.address2
-                self.form.city.data = user_pro_details.city
-                self.form.state.data = user_pro_details.state
-                self.form.zipcode.data = user_pro_details.zipcode
-                self.form.phone.data = user_pro_details.phone
 
         a = utils.split_3cols(utils.joblist)
         params['joblist_left'] = a['left']
@@ -264,12 +424,6 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         title = self.form.title.data
         profile_visibility = self.form.profile_visibility.data
         english_level = int(self.request.POST.get('english_level'))
-        address1 = self.form.address1.data
-        address2 = self.form.address2.data
-        city = self.form.city.data
-        state = self.form.state.data.upper()
-        zipcode = self.form.zipcode.data
-        phone = self.form.phone.data
 
         try:
             message = ''
@@ -281,12 +435,6 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             user_pro_details.profile_visibility = profile_visibility
             user_pro_details.english_level = english_level
             user_pro_details.jobs = jobs
-            user_pro_details.address1 = address1
-            user_pro_details.address2 = address2
-            user_pro_details.city = city
-            user_pro_details.state = state
-            user_pro_details.zipcode = zipcode
-            user_pro_details.phone = phone
 
             params = {}
             params['username'] = user.username
@@ -295,17 +443,16 @@ class EditProDetailsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             params['title'] = title
             params['overview'] = overview
             params['jobs'] = ' '.join(jobs)
-            # docs.ContractorDoc.buildContractor(params)
 
             user_pro_details.put()
-            message += " " + _('Your contact info has been updated.')
+            message += " " + _('Your contractor info has been updated.')
 
             self.add_message(message, 'success')
             self.redirect('/settings/profile')
 
         except (AttributeError, KeyError, ValueError), e:
-            logging.error('Error updating contact info: ' + str(e))
-            message = _('Unable to update contact info. Please try again later.')
+            logging.error('Error updating contractor info: ' + str(e))
+            message = _('Unable to update contractor info. Please try again later.')
             self.add_message(message, 'error')
             return self.get()
 

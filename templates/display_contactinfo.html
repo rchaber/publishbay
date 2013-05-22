@@ -1,0 +1,49 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    {{ macros.left_sidebar("contactinfo") }}
+
+    <div class="span9">             
+        <div class="w-box">
+            <div class="w-box-header">
+                <h4>{% trans %}My contact info{% endtrans %}</h4>
+                <div class="pull-right">
+                    {% if there_is_contactinfo %}
+                    <a href="{{ uri_for('edit-contactinfo') }}" class="btn btn-mini">Edit</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="w-box-content cnt_ab">
+                <div class="well form-vertical">
+                    {% if there_is_contactinfo %}
+                    <div>
+                        <legend>Contact info</legend>
+                        <dl class="dl-horizontal">
+                            <dt>Address</dt>
+                            <dd>{{ address1 }}</dd>
+                            <dd>{{ address2 }}</dd>
+                            <dd>{{ city }}&nbsp;-&nbsp;{{ state }}</dd>
+                            <dd>{{ zipcode }}</dd>
+                        </dl>
+                        <dl class="dl-horizontal">
+                            <dt>Phone</dt>
+                            <dd>{{ phone }}</dd>
+                        </dl>
+                    </div>
+                    {% else %}
+                    <div class="row-fluid">
+                        <div class="span6 offset3">
+                            <a href="{{ uri_for('edit-contactinfo') }}" class="PB-btn PB-btn-primary PB-btn-jumbo">Enter Contact Info</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    {% endblock %}
+

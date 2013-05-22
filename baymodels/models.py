@@ -11,7 +11,7 @@ genres_fiction = utils.genres_fiction
 genres_nonfiction = utils.genres_nonfiction
 
 
-class BasicProfile(ndb.Model):
+class BasicSettings(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     username = ndb.ComputedProperty(lambda self: self.user.get().username)
     name = ndb.ComputedProperty(lambda self: self.user.get().name)
@@ -24,6 +24,33 @@ class BasicProfile(ndb.Model):
     @classmethod
     def get_by_userkey(cls, k):
         return cls.query(cls.user == k).get()
+
+    @classmethod
+    def get_by_username(cls, u):
+        return cls.query(cls.username == u).get()
+
+
+class ContactInfo(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    username = ndb.ComputedProperty(lambda self: self.user.get().username)
+    name = ndb.ComputedProperty(lambda self: self.user.get().name)
+    last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
+    address1 = ndb.StringProperty()
+    address2 = ndb.StringProperty()
+    city = ndb.StringProperty()
+    state = ndb.StringProperty()
+    zipcode = ndb.StringProperty()
+    phone = ndb.StringProperty()
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    updated_on = ndb.DateTimeProperty(auto_now=True)
+
+    @classmethod
+    def get_by_userkey(cls, k):
+        return cls.query(cls.user == k).get()
+
+    @classmethod
+    def get_by_username(cls, u):
+        return cls.query(cls.username == u).get()
 
 
 class PublishingHouse(ndb.Model):
@@ -52,12 +79,6 @@ class ProDetails(ndb.Model):
     english_level = ndb.IntegerProperty(choices=[0, 1, 2, 3, 4, 5])
     jobs = ndb.StringProperty(choices=joblist, repeated=True)
     profile_visibility = ndb.StringProperty(choices=['everyone', 'pb_users_only', 'hidden'])
-    address1 = ndb.StringProperty()
-    address2 = ndb.StringProperty()
-    city = ndb.StringProperty()
-    state = ndb.StringProperty()
-    zipcode = ndb.StringProperty()
-    phone = ndb.StringProperty()
     picture_key = ndb.BlobKeyProperty()
     ph_contractor = ndb.KeyProperty(kind=PublishingHouse)
     created_on = ndb.DateTimeProperty(auto_now_add=True)
@@ -90,7 +111,7 @@ class AuthorProfile(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     name = ndb.ComputedProperty(lambda self: self.user.get().name)
     last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
-    display_full_name = ndb.ComputedProperty(lambda self: ProDetails.get_by_userkey(self.user.get().key).display_full_name if ProDetails.get_by_userkey(self.user.get().key) else True)
+    display_full_name = ndb.ComputedProperty(lambda self: BasicSettings.get_by_userkey(self.user.get().key).display_full_name if BasicSettings.get_by_userkey(self.user.get().key) else True)
     title = ndb.StringProperty()
     pseudonyms = ndb.StringProperty(repeated=True)
     overview = ndb.TextProperty()

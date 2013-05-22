@@ -27,8 +27,14 @@
                 <div class="w-box-header">
                     <h4>Saved contractors</h4>
                 </div>
-                <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
-                    <div class="record-count">Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;contractors</div>
+                <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px; min-height: 60px;">
+                    <div class="record-count">
+                        {% if count > 0 %}
+                        Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;contractors
+                        {% else %}
+                        You have no saved contractors
+                        {% endif %}
+                    </div>
                     <ul>
                     {% for c in contractors %}
                         <li>
@@ -57,7 +63,12 @@
                         </li>
                     {% endfor %}
                     </ul>
-                    <div class="record-count" style="float: none;">Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;contractors</div>
+                    
+                    <div class="record-count" style="float: none;">
+                        {% if count > 0 %}
+                        Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;contractors
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
