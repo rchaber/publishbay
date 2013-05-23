@@ -33,7 +33,9 @@
             <div class="w-box">
                 <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
                     <div class="record-count">{{ count }}&nbsp;authors</div>
+                    {% if authors|length > 0 %}
                     {{ macros.pagination(previous, next, marks) }}
+                    {% endif %}
                     <ul>
                     {% for a in authors %}
                         <li>
@@ -66,7 +68,9 @@
                         </li>
                     {% endfor %}
                     </ul>
+                    {% if authors|length > 0 %}
                     {{ macros.pagination(previous, next, marks) }}
+                    {% endif %}
                 </div>
             </div>
         </div>

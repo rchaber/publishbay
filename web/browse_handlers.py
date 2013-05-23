@@ -96,13 +96,13 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
             d['jobs'] = i.jobs
             contractors.append(d)
 
-        paging = utils.pagination(number_of_pages, new_page, 5)
+        paging = utils.pagination(number_of_pages, new_page, 5) if len(contractors) > 0 else [[1], 0]
 
         params['count'] = count
         params['contractors'] = contractors
 
-        params['marks'] = paging[0]
-        params['active'] = 'mark_' + str(paging[0][paging[1]])
+        params['marks'] = paging[0] if len(paging) > 0 else 'no_marks'
+        params['active'] = 'mark_' + str(paging[0][paging[1]]) if len(paging) > 0 else 'no_marks'
         params['previous'] = str(new_page - 1) if new_page > 1 else None
         params['next'] = str(new_page + 1) if new_page < number_of_pages else None
 
@@ -208,13 +208,13 @@ class BrowseAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
             d['ghostwrites'] = i.ghostwrites
             authors.append(d)
 
-        paging = utils.pagination(number_of_pages, new_page, 5)
+        paging = utils.pagination(number_of_pages, new_page, 5) if len(authors) > 0 else [[1], 0]
 
         params['count'] = count
         params['authors'] = authors
 
-        params['marks'] = paging[0]
-        params['active'] = 'mark_' + str(paging[0][paging[1]])
+        params['marks'] = paging[0] if len(paging) > 0 else 'no_marks'
+        params['active'] = 'mark_' + str(paging[0][paging[1]]) if len(paging) > 0 else 'no_marks'
         params['previous'] = str(new_page - 1) if new_page > 1 else None
         params['next'] = str(new_page + 1) if new_page < number_of_pages else None
 

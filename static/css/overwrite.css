@@ -681,6 +681,10 @@ div.list-name a {
 	margin-bottom: 36px;
 }
 
+.w-box-content {
+	min-height: 60px;
+}
+
 .w-box-content.cnt_browse {
 	padding: 0 20px;
 }
