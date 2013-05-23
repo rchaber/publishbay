@@ -18,29 +18,6 @@
                 <div class="well form-vertical">
                     {% if there_is_profile %}
                     <div>
-                        <legend>General</legend>
-                        <dl class="dl-horizontal">
-                            <dt>Display name</dt>
-                            <dd>
-                                {% if display_full_name %}
-                                Full name: {{ first_name }}&nbsp;{{ last_name }}
-                                {% else %}
-                                First name and last initial: {{ first_name }}&nbsp;{{ last_name[0]+'.' }}
-                                {% endif %}
-                            </dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt>Portrait</dt>
-                            <dd>
-                                <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; line-height: 50px; vertical-align: middle; text-align: center;">
-                                    {% if picture_url == ''%}
-                                    <img src="/static/images/dummy_50x50.gif" alt="">
-                                    {% else %}
-                                    <img src="{{ picture_url }}" alt="" style="display: inline-block;">
-                                    {% endif %}
-                                </div>
-                            </dd>
-                        </dl>
                         <dl class="dl-horizontal">
                             <dt>Title</dt>
                             <dd>{{ title }}</dd>
@@ -77,18 +54,6 @@
                                     {% trans %}Hidden{% endtrans %}&nbsp;-&nbsp;{% trans %}Clients can see your profile only if you have applied to their job.{% endtrans %}
                                 {% endif %}
                             </dd>
-                        </dl>
-                        <legend>Contact info</legend>
-                        <dl class="dl-horizontal">
-                            <dt>Address</dt>
-                            <dd>{{ address1 }}</dd>
-                            <dd>{{ address2 }}</dd>
-                            <dd>{{ city }}&nbsp;-&nbsp;{{ state }}</dd>
-                            <dd>{{ zipcode }}</dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt>Phone</dt>
-                            <dd>{{ phone }}</dd>
                         </dl>
                     </div>
                     {% else %}

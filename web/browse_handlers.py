@@ -143,9 +143,10 @@ class ViewContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHand
             params['overview'] = contractor.overview
             params['english_level'] = contractor.english_level
             params['joblist'] = contractor.jobs
-            params['city'] = contractor.city
-            params['state'] = contractor.state
             params['contractor_id'] = contractor_id
+            c_contactinfo = bmodels.ContactInfo.get_by_userkey(contractor.user)
+            params['city'] = c_contactinfo.city if c_contactinfo else ''
+            params['state'] = c_contactinfo.state if c_contactinfo else ''
 
         return self.render_template('browse/view_contractor.html', **params)
 
