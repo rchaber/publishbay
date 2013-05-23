@@ -10,14 +10,14 @@
                         <h4>Filter by job</h4>
                     </div>
                     <div class="w-box-content cnt_b">
-                        <div class="control-group">
+                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
+                        <div class="control-group" style="margin-top: 15px;">
                             {% for i in joblist %}
                             <div class="controls">
                                 <label><input type="checkbox" id="job_{{ i }}" name="jobs" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in jobs %} checked = "checked" {% endif %}>{{ i }}</label>
                             </div>
                             {% endfor %}
                         </div>
-                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
                     </div>
                 </div>
             </div>

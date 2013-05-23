@@ -10,7 +10,8 @@
                         <h4>Filter by genre</h4>
                     </div>
                     <div class="w-box-content cnt_b">
-                        <div class="control-group">
+                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
+                        <div class="control-group" style="margin-top: 15px;">
                             <div class="controls">
                                 <label><b>Fiction:</b></label>
                                 {% for i in genrelist_fiction %}
@@ -24,7 +25,6 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
                     </div>
                 </div>
             </div>
@@ -87,12 +87,12 @@
             $(".{{ active }}").addClass('active');
 
             $('#update').click(function(){
-                var a = $('input[name="jobs"]').serialize();
+                var a = $('input[name="genre"]').serialize();
                 window.location.href = "/browse/authors?" + a;
             })
 
             $('.bookmark').click(function(i){
-                var a = $('input[name="jobs"]').serialize();
+                var a = $('input[name="genre"]').serialize();
                 var b = $(this).attr('id').replace('page', '');
                 window.location.href = "/browse/authors?" + a + '&page=' + b;
             });
