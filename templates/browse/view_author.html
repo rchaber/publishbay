@@ -2,7 +2,7 @@
 
     {% block content %}
 
-    <div class="span12" style="margin-left:0; margin-top: 15px;">
+    <div class="span12" style="margin-left:0;">
         <div class="span3" style="margin-left: 0;">
             <div class="sidebar">
                 <div class="w-box w-box-orange">
@@ -33,7 +33,7 @@
                         <div>
                             <dl class="dl-horizontal">
                                 <dt>
-                                    <div class="fileupload-new" style="width: 50px; height: 50px; vertical-align: middle; text-align: center;">
+                                    <div class="fileupload-new" style="max-height: 50px; max-width: 50px; vertical-align: middle; text-align: center;">
                                         {% if picture_url == '' or not picture_url %}
                                         <img src="/static/images/dummy_50x50.gif" alt="">
                                         {% else %}

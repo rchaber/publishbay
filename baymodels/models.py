@@ -188,3 +188,8 @@ class Marked_contractors(ndb.Model):
 class Marked_authors(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     marked = ndb.KeyProperty(kind=AuthorProfile)
+
+
+class Marked_publishinghouses(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    marked = ndb.KeyProperty(kind=PublishingHouse)

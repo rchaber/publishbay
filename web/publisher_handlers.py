@@ -137,9 +137,9 @@ class ViewSavedAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
                 d['picture_url'] = ''
             d['title'] = author.title
             d['overview'] = author.overview.replace('\r\n', ' ').replace('\n', ' ')
-            d['jobs'] = author.jobs
+            d['genres'] = author.genres
             if len(genrefilter) > 0:
-                if len(set(author.jobs).intersection(set(genrefilter))) > 0:
+                if len(set(author.genres).intersection(set(genrefilter))) > 0:
                     authors.append(d)
             else:
                 authors.append(d)
@@ -153,3 +153,57 @@ class ViewSavedAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
         params['genres'] = genrefilter
 
         return self.render_template('publisher/view_saved_authors.html', **params)
+
+
+class ViewSavedPublishingHousesHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    """
+    Handler for viewing saved publishing houses
+    """
+
+    @user_required
+    def get(self):
+        """
+        It doesn't uses cursors. Instead, it uses offset along with a paginate custom function to navigate through the results.
+        """
+
+        PAGE_SIZE = 10
+
+        publishinghouses = []
+        params = {}
+        items = []
+
+        genrefilter = self.request.GET.getall('genre')
+        print genrefilter
+        print len(genrefilter)
+
+        q = bmodels.Marked_publishinghouses.query(bmodels.Marked_publishinghouses.user == self.user_key)
+        count = q.count()
+        items = q.fetch()
+
+        for i in items:
+            d = {}
+            publishinghouse = i.marked.get()
+            d['publishinghouse_id'] = i.marked.get().key.id()
+            d['name'] = publishinghouse.name
+            if publishinghouse.logo_key != '' and publishinghouse.logo_key:
+                d['logo_url'] = '/serve/%s' % publishinghouse.logo_key
+            else:
+                d['logo_url'] = ''
+            d['tagline'] = publishinghouse.tagline
+            d['description'] = publishinghouse.description.replace('\r\n', ' ').replace('\n', ' ')
+            d['genres'] = publishinghouse.genres
+            if len(genrefilter) > 0:
+                if len(set(publishinghouse.jobs).intersection(set(genrefilter))) > 0:
+                    publishinghouses.append(d)
+            else:
+                publishinghouses.append(d)
+
+        params['count'] = count
+        params['filter_count'] = len(publishinghouses)
+        params['publishinghouses'] = publishinghouses
+
+        params['genrelist_fiction'] = utils.genres_fiction
+        params['genrelist_nonfiction'] = utils.genres_nonfiction
+        params['genres'] = genrefilter
+
+        return self.render_template('publisher/view_saved_publishinghouses.html', **params)

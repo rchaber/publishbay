@@ -40,7 +40,7 @@
                         <li>
                     
                         {% if c.picture_url != '' and c.picture %}
-                        <img src="{{ c.picture_url }}" alt="" style="height: 50px;">
+                        <img src="{{ c.picture_url }}" alt="" style="max-height: 50px; max-width: 50px;">
                         {% else %}
                         <img src="/static/images/dummy_50x50.gif" alt="">
                         {% endif %}

@@ -19,7 +19,6 @@ _routes = [
     RedirectRoute('/settings/display_prodetails', handlers.DisplayProDetailsHandler, name='display-prodetails', strict_slash=True),
     RedirectRoute('/settings/display_publishinghouse', handlers.DisplayPublishingHouseHandler, name='display-publishinghouse', strict_slash=True),
     RedirectRoute('/settings/publishinghouse', handlers.EditPublishingHouseHandler, name='edit-publishinghouse', strict_slash=True),
-    RedirectRoute('/upload_logo', handlers.EditPublishingHouseHandler, name='upload-logo', strict_slash=True),
     RedirectRoute('/settings/display_authorprofile', handlers.DisplayAuthorProfileHandler, name='display-authorprofile', strict_slash=True),
     RedirectRoute('/settings/authorprofile', handlers.EditAuthorProfileHandler, name='edit-authorprofile', strict_slash=True),
 
@@ -27,6 +26,7 @@ _routes = [
     RedirectRoute('/settings/contactinfo', handlers.EditContactInfoHandler, name='edit-contactinfo', strict_slash=True),
     RedirectRoute('/settings/basic', handlers.BasicSettingsHandler, name='basic-settings', strict_slash=True),
     RedirectRoute('/upload_picture', handlers.BasicSettingsHandler, name='upload-picture', strict_slash=True),
+    RedirectRoute('/upload_logo', handlers.EditPublishingHouseHandler, name='upload-logo', strict_slash=True),
 
     RedirectRoute('/browse/contractors', browse_handlers.BrowseContractorsHandler, name='browse-contractors', strict_slash=True),
     RedirectRoute('/browse/contractors/view', browse_handlers.ViewContractorsHandler, name='view-contractors', strict_slash=True),
@@ -37,6 +37,11 @@ _routes = [
     RedirectRoute('/browse/authors/view', browse_handlers.ViewAuthorsHandler, name='view-authors', strict_slash=True),
     RedirectRoute('/browse/authors/mark', handlers.SaveAuthorHandler, name='save-author', strict_slash=True),
     RedirectRoute('/publisher/viewsavedauthors', publisher_handlers.ViewSavedAuthorsHandler, name='view-saved-authors', strict_slash=True),
+
+    RedirectRoute('/browse/publishinghouses', browse_handlers.BrowsePublishingHousesHandler, name='browse-publishinghouses', strict_slash=True),
+    RedirectRoute('/browse/publishinghouses/view', browse_handlers.ViewPublishingHousesHandler, name='view-publishinghouses', strict_slash=True),
+    RedirectRoute('/browse/publishinghouses/mark', handlers.SavePublishingHouseHandler, name='save-publishinghouse', strict_slash=True),
+    RedirectRoute('/publisher/viewsavedpublishinghouses', publisher_handlers.ViewSavedPublishingHousesHandler, name='view-saved-publishinghouses', strict_slash=True),
 
 ]
 

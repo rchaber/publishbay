@@ -2,7 +2,7 @@
 
     {% block content %}
 
-    <div class="span12" style="margin-left:0; margin-top: 15px;">
+    <div class="span12" style="margin-left:0;">
         <div class="span3" style="margin-left: 0;">
             <div class="sidebar">
                 <div class="w-box w-box-orange">
@@ -33,26 +33,26 @@
                     {% for c in contractors %}
                         <li>
                     
-                        {% if c.picture_url != '' and c.picture %}
-                        <img src="{{ c.picture_url }}" alt="" style="height: 50px;">
-                        {% else %}
-                        <img src="/static/images/dummy_50x50.gif" alt="">
-                        {% endif %}
-                        
-                        <div class="list-name"><a href="/browse/contractors/view?pid={{ c.profile_id }}">{{ c.name_to_display }}</a></div>
+                            {% if c.picture_url != '' and c.picture %}
+                            <img src="{{ c.picture_url }}" alt="" style="max-height: 50px; max-width: 50px;">
+                            {% else %}
+                            <img src="/static/images/dummy_50x50.gif" alt="">
+                            {% endif %}
+                            
+                            <div class="list-name"><a href="/browse/contractors/view?pid={{ c.profile_id }}">{{ c.name_to_display }}</a></div>
 
-                        <div class="list-title">{{ c.title }}</div>
+                            <div class="list-title">{{ c.title }}</div>
 
-                        <div class="list-info">
-                        {% if c.overview.split(' ')|length <= 40 %}
-                        {{ c.overview }}
-                        {% else %}
-                        <div class='jsTruncated'>{{ ' '.join(c.overview.split(' ')[0:40]) }} ...<span class='lessmore'> more</span></div>
-                        <div class='jsFull isHidden'>{{ c.overview }}<br><span class='lessmore'>less</span></div>
-                        {% endif %}
-                        </div>
+                            <div class="list-info">
+                            {% if c.overview.split(' ')|length <= 40 %}
+                            {{ c.overview }}
+                            {% else %}
+                            <div class='jsTruncated'>{{ ' '.join(c.overview.split(' ')[0:40]) }} ...<span class='lessmore'> more</span></div>
+                            <div class='jsFull isHidden'>{{ c.overview }}<br><span class='lessmore'>less</span></div>
+                            {% endif %}
+                            </div>
 
-                        <div class="list-tags">{% for i in c.jobs|sort %}<span class="label label-info">{{ i }} </span>{% endfor %}</div>
+                            <div class="list-tags">{% for i in c.jobs|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</div>
 
                         </li>
                     {% endfor %}

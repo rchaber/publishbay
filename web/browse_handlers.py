@@ -260,3 +260,121 @@ class ViewAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler)
             params['pseudonyms'] = ', '.join(author.pseudonyms)
 
         return self.render_template('browse/view_author.html', **params)
+
+
+"""
+Publishing House model:
+owner = ndb.KeyProperty(kind=models.User)
+name = ndb.StringProperty()
+tagline = ndb.StringProperty()
+description = ndb.TextProperty()
+logo_key = ndb.BlobKeyProperty()
+genres = ndb.StringProperty(repeated=True)
+show_in_job_posts = ndb.BooleanProperty(default=False)
+partners = ndb.KeyProperty(kind=models.User, repeated=True)
+
+@classmethod
+def get_by_ownerkey(cls, k):
+    return cls.query(cls.owner == k).get()
+"""
+class BrowsePublishingHousesHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    """
+    Handler for browsing and searching publishing houses
+    """
+
+    @user_required
+    def get(self):
+        """
+        It doesn't uses cursors. Instead, it uses offset along with a paginate custom function to navigate through the results.
+        """
+
+        PAGE_SIZE = 5
+
+        publishinghouses = []
+        params = {}
+        items = []
+
+        genrefilter = self.request.GET.getall('genre')
+
+        offset = 0
+
+        new_page = self.request.GET.get('page')
+        if new_page:
+            new_page = int(new_page)
+            offset = int(new_page - 1) * PAGE_SIZE
+        else:
+            new_page = 1
+
+        if genrefilter:
+            query = bmodels.PublishingHouse.query(bmodels.PublishingHouse.genres.IN(genrefilter))
+        else:
+            query = bmodels.PublishingHouse.query()
+
+        count = query.count()
+        items = query.fetch(PAGE_SIZE, offset=offset)
+
+        # the following line returns the equivalent to math.ceil(float), just saving from importing another lib
+        number_of_pages = count/PAGE_SIZE if count % PAGE_SIZE == 0 else count/PAGE_SIZE + 1
+
+        for i in items:
+            d = {}
+            d['name'] = i.name
+            d['publishinghouse_id'] = i.key.id()
+            if i.logo_key != '':
+                d['logo_url'] = '/serve/%s' % i.logo_key
+            else:
+                d['logo_url'] = ''
+            d['tagline'] = i.tagline
+            d['description'] = i.description.replace('\r\n', ' ').replace('\n', ' ')
+            d['genres'] = i.genres
+            publishinghouses.append(d)
+
+        paging = utils.pagination(number_of_pages, new_page, 5) if len(publishinghouses) > 0 else [[1], 0]
+
+        params['count'] = count
+        params['publishinghouses'] = publishinghouses
+
+        params['marks'] = paging[0] if len(paging) > 0 else 'no_marks'
+        params['active'] = 'mark_' + str(paging[0][paging[1]]) if len(paging) > 0 else 'no_marks'
+        params['previous'] = str(new_page - 1) if new_page > 1 else None
+        params['next'] = str(new_page + 1) if new_page < number_of_pages else None
+
+        params['genrelist_fiction'] = utils.genres_fiction
+        params['genrelist_nonfiction'] = utils.genres_nonfiction
+        params['genres'] = genrefilter
+
+        return self.render_template('browse/browse_publishinghouses.html', **params)
+
+    def post(self):
+        pass
+
+
+class ViewPublishingHousesHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+    """
+    Handler for viewing publishing houses pages
+    """
+
+    @user_required
+    def get(self):
+
+        publishinghouse_id = self.request.GET.get('phid')
+
+        publishinghouse = bmodels.PublishingHouse.get_by_id(int(publishinghouse_id))
+
+        params = {}
+
+        q = bmodels.Marked_publishinghouses.query(bmodels.Marked_publishinghouses.user == self.user_key, bmodels.Marked_publishinghouses.marked == publishinghouse.key).get()
+
+        params['marked'] = True if q else False
+
+        if publishinghouse:
+            params['name'] = publishinghouse.name
+            params['tagline'] = publishinghouse.tagline
+            params['description'] = publishinghouse.description
+            if publishinghouse.logo_key and publishinghouse.logo_key != '':
+                params['logo_url'] = '/serve/%s' % publishinghouse.logo_key
+            params['publishinghouse_id'] = publishinghouse_id
+            params['genres'] = publishinghouse.genres
+
+        return self.render_template('browse/view_publishinghouse.html', **params)
+

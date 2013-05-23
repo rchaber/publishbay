@@ -27,7 +27,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="name">Tagline</label>
                                 <div class="controls">
-                                    <input class="input-xlarge focused" id="tagline" name="tagline" type="text" value="{{ tagline }}">
+                                    <input class="input-xxlarge focused" id="tagline" name="tagline" type="text" value="{{ tagline }}">
                                 </div>
                             </div>
 
@@ -71,7 +71,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in fiction_genres_left %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -79,7 +79,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in fiction_genres_center %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -87,7 +87,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in fiction_genres_right %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -96,7 +96,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in nonfiction_genres_left %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -104,7 +104,7 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in nonfiction_genres_center %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
@@ -112,13 +112,13 @@
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in nonfiction_genres_right %}
                                         <label>
-                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in pb_genres_list %}checked="checked"{% endif %}>
+                                            <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres %}checked="checked"{% endif %}>
                                             {{ genre }}
                                         </label>
                                         {% endfor %}
                                     </div>
                                 </div>
-                                <input style="display: none;" id="checked_genres" name="checked_genres" type="text" value="" />
+                                <!-- <input style="display: none;" id="checked_genres" name="checked_genres" type="text" value="" /> -->
                             </div>
 
                             <div class="control-group">
@@ -163,7 +163,7 @@
         $().ready(function() {
             $("#form_publishing_house").validate({
                 submitHandler: function(form) {
-                        $('#checked_genres').attr('value', $('input[name="genres"]').serialize());
+                        // $('#checked_genres').attr('value', $('input[name="genres"]').serialize());
                         form.submit();
                 },
                 errorPlacement: function(error, element) {

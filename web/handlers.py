@@ -434,7 +434,7 @@ class DisplayPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, B
         params['name'] = ''
         params['tagline'] = ''
         params['description'] = ''
-        params['ph_genres_list'] = ''
+        params['genres'] = ''
         params['show_in_job_posts'] = ''
         params['logo_url'] = ''
         params['there_is_ph'] = False
@@ -448,10 +448,10 @@ class DisplayPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, B
                 params['description'] = publishing_house.description
                 if publishing_house.logo_key and publishing_house.logo_key != '':
                     params['logo_url'] = '/serve/%s' % publishing_house.logo_key
-                params['ph_genres_list'] = urllib.unquote(', '.join(publishing_house.genres))
+                params['genres'] = urllib.unquote(', '.join(publishing_house.genres))
                 params['show_in_job_posts'] = publishing_house.show_in_job_posts
 
-        print params['ph_genres_list']
+        print params['genres']
         return self.render_template('display_publishing_house.html', **params)
 
 
@@ -470,7 +470,7 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
         params['name'] = ''
         params['tagline'] = ''
         params['description'] = ''
-        params['pb_genres_list'] = ''
+        params['genres'] = ''
         params['show_in_job_posts'] = ''
         params['logo_url'] = ''
         params['there_is_ph'] = False
@@ -484,7 +484,7 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
                 params['description'] = publishing_house.description
                 if publishing_house.logo_key and publishing_house.logo_key != '':
                     params['logo_url'] = '/serve/%s' % publishing_house.logo_key
-                params['pb_genres_list'] = publishing_house.genres
+                params['genres'] = publishing_house.genres
                 params['show_in_job_posts'] = publishing_house.show_in_job_posts
 
         params['fiction_genres_left'] = utils.split_3cols(utils.genres_fiction)['left']
@@ -502,7 +502,7 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
         # if not self.form.validate():
             # return self.get()
 
-        checked_genres = self.request.POST.get('checked_genres').replace('&', '').replace('+', ' ').replace('%26', '&').split('genres=')[1:]
+        checked_genres = self.request.POST.getall('genres')
 
         upload_logo = self.get_uploads()
         if upload_logo:
@@ -510,12 +510,10 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
         else:
             logo_key = ''
 
-        k = models.User.get_by_id(long(self.user_id)).key
-
-        publishing_house = bmodels.PublishingHouse.get_by_ownerkey(k)
+        publishing_house = bmodels.PublishingHouse.get_by_ownerkey(self.user_key)
         if not publishing_house:
             publishing_house = bmodels.PublishingHouse()
-            publishing_house.owner = k
+            publishing_house.owner = self.user_key
 
         # if logo changes, then the old one is deleted from Blobstore
         if (logo_key != '' and logo_key != publishing_house.logo_key) and publishing_house:
@@ -706,4 +704,24 @@ class SaveAuthorHandler(BaseHandler):
             q.key.delete()
             js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3')"
         print "here2"
+        self.response.out.write(js)
+
+
+class SavePublishingHouseHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+        publishinghouse_id = self.request.GET.get('publishinghouse_id')
+        publishinghouse = bmodels.PublishingHouse.get_by_id(int(publishinghouse_id))
+        q = bmodels.Marked_publishinghouses.query(bmodels.Marked_publishinghouses.user == self.user_key, bmodels.Marked_publishinghouses.marked == publishinghouse.key).get()
+        js = ''
+        if not q:
+            mark = bmodels.Marked_publishinghouses()
+            mark.user = self.user_key
+            mark.marked = publishinghouse.key
+            mark.put()
+            js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1')"
+        else:
+            q.key.delete()
+            js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3')"
         self.response.out.write(js)
