@@ -7,7 +7,6 @@
     <div class="span9">             
         <div class="w-box">
             <div class="w-box-header">
-                <h4>{% trans %}My contact info{% endtrans %}</h4>
                 <div class="pull-right">
                     {% if there_is_contactinfo %}
                     <a href="{{ uri_for('edit-contactinfo') }}" class="btn btn-mini">Edit</a>
@@ -18,6 +17,7 @@
                 <div class="well form-vertical">
                     {% if there_is_contactinfo %}
                     <div>
+                        <legend>{% trans %}My Contact Info{% endtrans %}</legend>
                         <dl class="dl-horizontal">
                             <dt>Address</dt>
                             <dd>{{ address1 }}</dd>

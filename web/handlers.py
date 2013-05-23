@@ -448,7 +448,7 @@ class DisplayPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, B
                 params['description'] = publishing_house.description
                 if publishing_house.logo_key and publishing_house.logo_key != '':
                     params['logo_url'] = '/serve/%s' % publishing_house.logo_key
-                params['genres'] = urllib.unquote(', '.join(publishing_house.genres))
+                params['genres'] = publishing_house.genres
                 params['show_in_job_posts'] = publishing_house.show_in_job_posts
 
         print params['genres']
@@ -568,7 +568,7 @@ class DisplayAuthorProfileHandler(BaseHandler):
                 params['title'] = author_profile.title
                 params['overview'] = author_profile.overview
                 params['pseudonyms'] = urllib.unquote(', '.join(author_profile.pseudonyms))
-                params['genres_list'] = urllib.unquote(', '.join(author_profile.genres))
+                params['genres_list'] = author_profile.genres
                 params['ghostwrites'] = author_profile.ghostwrites
 
         return self.render_template('display_author_profile.html', **params)
@@ -630,7 +630,6 @@ class EditAuthorProfileHandler(BaseHandler):
 
         try:
             message = ''
-            author_profile.name = self.request.POST.get('name')
             author_profile.title = self.request.POST.get('title')
             author_profile.overview = self.request.POST.get('overview').replace('\r\r\n', '\r\n')
             author_profile.ghostwrites = (self.request.POST.get('ghostwrites') == "True")

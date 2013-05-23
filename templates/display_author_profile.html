@@ -7,7 +7,6 @@
     <div class="span9">             
         <div class="w-box">
             <div class="w-box-header">
-                <h4>{% trans %}My author profile{% endtrans %}</h4>
                 <div class="pull-right">
                     {% if there_is_author_profile %}
                     <a href="{{ uri_for('edit-authorprofile') }}" class="btn btn-mini">Edit</a>
@@ -18,7 +17,7 @@
                 <div class="well form-vertical">
                     {% if there_is_author_profile %}
                     <div>
-                        <legend>Author Profile Info</legend>
+                        <legend>{% trans %}My Author Profile{% endtrans %}</legend>
                         <dl class="dl-horizontal">
                             <dt>Statement</dt>
                             <dd>{{ title }}</dd>
@@ -33,7 +32,7 @@
                         </dl>
                         <dl class="dl-horizontal">
                             <dt>Work genres</dt>
-                            <dd>{{ genres_list }}</dd>
+                            <dd>{% for i in genres_list|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</dd>
                         </dl>
                         <dl class="dl-horizontal">
                             <dt>Ghostwriting</dt>
