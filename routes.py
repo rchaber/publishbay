@@ -8,6 +8,7 @@ from webapp2_extras.routes import RedirectRoute
 from web import handlers
 from web import browse_handlers
 from web import publisher_handlers
+from web import author_handlers
 secure_scheme = 'https'
 
 _routes = [
@@ -42,6 +43,8 @@ _routes = [
     RedirectRoute('/browse/publishinghouses/view', browse_handlers.ViewPublishingHousesHandler, name='view-publishinghouses', strict_slash=True),
     RedirectRoute('/browse/publishinghouses/mark', handlers.SavePublishingHouseHandler, name='save-publishinghouse', strict_slash=True),
     RedirectRoute('/publisher/viewsavedpublishinghouses', publisher_handlers.ViewSavedPublishingHousesHandler, name='view-saved-publishinghouses', strict_slash=True),
+
+    RedirectRoute('/author/editmanuscript', author_handlers.EditManuscriptHandler, name='edit-manuscript', strict_slash=True),
 
 ]
 

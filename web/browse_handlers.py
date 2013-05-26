@@ -262,21 +262,6 @@ class ViewAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler)
         return self.render_template('browse/view_author.html', **params)
 
 
-"""
-Publishing House model:
-owner = ndb.KeyProperty(kind=models.User)
-name = ndb.StringProperty()
-tagline = ndb.StringProperty()
-description = ndb.TextProperty()
-logo_key = ndb.BlobKeyProperty()
-genres = ndb.StringProperty(repeated=True)
-show_in_job_posts = ndb.BooleanProperty(default=False)
-partners = ndb.KeyProperty(kind=models.User, repeated=True)
-
-@classmethod
-def get_by_ownerkey(cls, k):
-    return cls.query(cls.owner == k).get()
-"""
 class BrowsePublishingHousesHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler for browsing and searching publishing houses

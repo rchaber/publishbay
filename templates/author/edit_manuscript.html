@@ -1,0 +1,201 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    <div class="span12" style="margin-left:0;">
+        <div class="span3" style="margin-left: 0;">
+            <div class="sidebar">
+                <div class="w-box w-box-orange">
+                    <div class="w-box-header">
+                        <h4>Etc</h4>
+                    </div>
+                    <div class="w-box-content cnt_b">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span9">             
+            <div class="w-box">
+                <div class="w-box-header"><h4>{% trans %}Manuscript{% endtrans %}</h4></div>
+                <div class="w-box-content cnt_ab">
+
+                    <div id="edit_manuscript" class="well form-vertical">
+                        <fieldset>
+                            <form id="form_manuscript" action="{{ url|safe }}" method="post">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                                <legend>Manuscript Info</legend>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="title">Title</label>
+                                    <div class="controls">
+                                        <input class="input-xxlarge focused" id="title" name="title" type="text" value="{{ title }}">
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label">Summary</label>
+                                    <div class="controls">
+                                        <textarea class="input-xxlarge focused" cols="50" id="summary" name="summary" rows="8" style="resize: vertical;">{{ summary }}</textarea>
+                                    </div>
+                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
+                                        <p>Include a short summary of your this manuscript and/or relevant information. Make sure to check for spelling and grammar errors!
+                                            <span id="countdown" style="float: right; font-weight: bold;"></span>
+                                        </p>
+                                    </div>   
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label">Select genres that best fit this manuscript (optional)</label>
+                                    <div style = "overflow: auto; border: 2px solid #CCC; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                                        <label style="clear: both; padding-top: 5px;">Fiction:</label>
+                                        <div class="controls" style="float: left; width: 200px;">
+                                            {% for genre in fiction_genres_left %}
+                                            <label>
+                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
+                                                {{ genre }}
+                                            </label>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="controls" style="float: left; width: 200px;">
+                                            {% for genre in fiction_genres_center %}
+                                            <label>
+                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
+                                                {{ genre }}
+                                            </label>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="controls" style="float: left; width: 200px;">
+                                            {% for genre in fiction_genres_right %}
+                                            <label>
+                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
+                                                {{ genre }}
+                                            </label>
+                                            {% endfor %}
+                                        </div>
+                                        <label style="clear: both; padding-top: 5px;">Non-fiction:</label>
+                                        <div class="controls" style="float: left; width: 200px;">
+                                            {% for genre in nonfiction_genres_left %}
+                                            <label>
+                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
+                                                {{ genre }}
+                                            </label>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="controls" style="float: left; width: 200px;">
+                                            {% for genre in nonfiction_genres_center %}
+                                            <label>
+                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
+                                                {{ genre }}
+                                            </label>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="controls" style="float: left; width: 200px;">
+                                            {% for genre in nonfiction_genres_right %}
+                                            <label>
+                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
+                                                {{ genre }}
+                                            </label>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <input style="display: none;" id="checked_genres" name="checked_genres" type="text" value="" />
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label">Manuscript Sample</label>
+                                    <div class="controls">
+                                        <textarea name="wysiwyg" id="wysiwyg" class="ckeditor input-xxlarge focused" cols="50" rows="10" style="resize: vertical;">{{ manuscript_sample }}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label">Can be viewed by</label>
+                                    <label class="radio">
+                                        <input type="radio" name="display_manuscript" id="display_manuscript_users" value="True" {% if display_manuscript %}checked=""{% endif %}>
+                                        {% trans %}PublishBay users logged in{% endtrans %}
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="display_manuscript" id="display_manuscript_submissions" value="False" {% if not display_manuscript %}checked=""{% endif %}>
+                                        {% trans %}Submissions only{% endtrans %}
+                                    </label>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" style="margin-bottom: 0">Original material:</label>
+                                        <div class="controls">
+                                            <input type="checkbox" id="ghostwrites" name="ghostwrites" value="True" {% if ghostwrites %}checked="checked"{% endif %}>
+                                            <p>I hereby certify that the work submitted in my manuscript and related sample is entirely of my own hand, or, where produced in collaboration with others, has been clearly identified as such.</p>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="co_authors">Co-authors</label>
+                                    <div class="controls">
+                                        <input class="input-xxlarge focused" id="co_authors" name="co_authors" type="text" value="{{ co_authors }}">
+                                    </div>
+                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
+                                        <p>Enter different co-authors separated by comma.</p>
+                                    </div>   
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="PB-btn PB-btn-primary">
+                                    {% if is_new_manuscript %}
+                                        {% trans %}Add Manuscript{% endtrans %}
+                                    {% else %}
+                                        {% trans %}Update Manuscript{% endtrans %}
+                                    {% endif %}
+                                    </button>
+                                </div>
+                            </form>
+                        </fieldset>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block mediaJS %}
+
+    <script src="/static/js/lib/ckeditor/ckeditor.js"></script>
+
+    <script type="text/javascript">
+
+        function updateCountdown() {
+        // 5000 is the max description length
+        var remaining = 5000 - $('#summary').val().length;
+        $('#countdown').text(remaining + {% trans %}' characters left.'{% endtrans %});
+        }
+
+        $().ready(function() {
+            // $("#form_manuscript").validate({
+            //     submitHandler: function(form) {
+            //             // $('#checked_genres').attr('value', $('input[name="genres"]').serialize());
+            //             form.submit();
+            //     },
+            //     errorPlacement: function(error, element) {
+            //         element.parent().parent().addClass("error");
+            //         error.addClass("help-inline").appendTo( element.parent() );
+            //     }
+            // });
+
+            updateCountdown();
+            $('#summary').change(updateCountdown);
+            $('#summary').keyup(updateCountdown);
+
+            CKEDITOR.replace( 'wysiwyg', {
+                toolbar: 'Basic',
+                language: 'en'
+            });
+
+            CKEDITOR.config.removePlugins = 'elementspath';
+
+        });
+
+    </script>
+
+    {% endblock %}
