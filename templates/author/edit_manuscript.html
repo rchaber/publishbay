@@ -111,21 +111,12 @@
                                 <div class="control-group">
                                     <label class="control-label">Can be viewed by</label>
                                     <label class="radio">
-                                        <input type="radio" name="display_manuscript" id="display_manuscript_users" value="True" {% if display_manuscript %}checked=""{% endif %}>
+                                        <input type="radio" name="display_manuscript" id="display_manuscript_users" value="True" {% if display_manuscript == "pb_users" %}checked=""{% endif %}>
                                         {% trans %}PublishBay users logged in{% endtrans %}
                                     </label>
                                     <label class="radio">
-                                        <input type="radio" name="display_manuscript" id="display_manuscript_submissions" value="False" {% if not display_manuscript %}checked=""{% endif %}>
+                                        <input type="radio" name="display_manuscript" id="display_manuscript_submissions" value="False" {% if display_manuscript == "submissions" %}checked=""{% endif %}>
                                         {% trans %}Submissions only{% endtrans %}
-                                    </label>
-                                </div>
-
-                                <div class="control-group">
-                                    <label class="control-label" style="margin-bottom: 0">Original material:</label>
-                                        <div class="controls">
-                                            <input type="checkbox" id="ghostwrites" name="ghostwrites" value="True" {% if ghostwrites %}checked="checked"{% endif %}>
-                                            <p>I hereby certify that the work submitted in my manuscript and related sample is entirely of my own hand, or, where produced in collaboration with others, has been clearly identified as such.</p>
-                                        </div>
                                     </label>
                                 </div>
 
@@ -137,6 +128,15 @@
                                     <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
                                         <p>Enter different co-authors separated by comma.</p>
                                     </div>   
+                                </div>
+
+                                <div class="control-group">
+                                    <div class="form-warning">
+                                        <div class="controls">
+                                            <input type="checkbox" id="ownership" name="ownership" value="True" style="margin-right: 5px;">
+                                            I certify that the work submitted in my manuscript and related sample is entirely of my own hand, or, if produced in collaboration with others, has been clearly identified as such.
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-actions">
@@ -193,6 +193,31 @@
             });
 
             CKEDITOR.config.removePlugins = 'elementspath';
+
+            CKEDITOR.config.removeButtons = 'Link';
+
+            CKEDITOR.config.toolbar = [
+                { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+                { name: 'document', items: [ 'Source', '-', 'NewPage', 'Preview', '-', 'Templates' ] },
+                // '/',
+                { name: 'basicstyles', items: [ 'Bold', 'Italic' ] }
+            ];
+
+            // CKEDITOR.config.toolbarGroups = [
+            //     { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+            //     { name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
+            //     { name: 'links' },
+            //     { name: 'insert' },
+            //     { name: 'forms' },
+            //     { name: 'tools' },
+            //     { name: 'document',    groups: [ 'mode', 'document', 'doctools' ] },
+            //     { name: 'others' },
+            //     '/',
+            //     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+            //     { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align' ] },
+            //     { name: 'styles' },
+            //     { name: 'colors' }
+            // ];
 
         });
 

@@ -64,7 +64,7 @@ class EditManuscriptHandler(BaseHandler):
             params['summary'] = manuscript.summary
             params['sample'] = manuscript.sample
             params['genres_list'] = manuscript.genres
-            params['display'] = manuscript.display
+            params['display_manuscript'] = manuscript.display
             params['co_authors'] = ', '.join(manuscript.co_authors)
             params['ownership'] = False
         else:
@@ -72,7 +72,7 @@ class EditManuscriptHandler(BaseHandler):
             params['summary'] = ''
             params['sample'] = ''
             params['genres_list'] = ''
-            params['display'] = 'pb_users'
+            params['display_manuscript'] = 'pb_users'
             params['co_authors'] = ''
             params['ownership'] = False
 
