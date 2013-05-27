@@ -67,6 +67,7 @@ class EditManuscriptHandler(BaseHandler):
             params['display_manuscript'] = manuscript.display
             params['co_authors'] = ', '.join(manuscript.co_authors)
             params['ownership'] = False
+            params['is_new_manuscript'] = False
         else:
             params['title'] = ''
             params['summary'] = ''
@@ -75,6 +76,7 @@ class EditManuscriptHandler(BaseHandler):
             params['display_manuscript'] = 'pb_users'
             params['co_authors'] = ''
             params['ownership'] = False
+            params['is_new_manuscript'] = True
 
         params['fiction_genres_left'] = utils.split_3cols(utils.genres_fiction)['left']
         params['fiction_genres_center'] = utils.split_3cols(utils.genres_fiction)['center']

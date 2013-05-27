@@ -81,13 +81,19 @@ header {
 }
 
 .error.help-inline {
-	margin-top: -12px;
+	margin-top: -10px;
 	font-size: 11px;
 	float: left;
 	margin-bottom: 0;
 }
 
-.control-group.error .controls .error.help-inline {
+.error.help-inline.label-line {
+	margin-top: -23px;
+	float: right;
+}
+
+/*
+.control-group.error .controls {
 	float: none;
 	margin-bottom: 0;
 	font-size: 11px;
@@ -98,6 +104,7 @@ header {
 	top: 11px;
 	right: 232px;
 }
+*/
 
 textarea {
 	width: 200;

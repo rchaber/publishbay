@@ -38,7 +38,7 @@
                                     <div class="controls">
                                         <textarea class="full-width focused" cols="50" id="summary" name="summary" rows="8" style="resize: vertical;">{{ summary }}</textarea>
                                     </div>
-                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
+                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 630px; margin-bottom: 20px;">
                                         <p>Include a short summary of your this manuscript and/or relevant information. Make sure to check for spelling and grammar errors!
                                             <span id="countdown" style="float: right; font-weight: bold;"></span>
                                         </p>
@@ -48,7 +48,7 @@
                                 <div class="control-group">
                                     <label class="control-label">Select genres that best fit this manuscript (optional)</label>
                                     <div style = "overflow: auto; border: 2px solid #CCC; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
-                                        <label style="clear: both; padding-top: 5px;">Fiction:</label>
+                                        <label style="clear: both; padding-top: 5px; font-weight: bold;">Fiction:</label>
                                         <div class="controls" style="float: left; width: 200px;">
                                             {% for genre in fiction_genres_left %}
                                             <label>
@@ -73,7 +73,7 @@
                                             </label>
                                             {% endfor %}
                                         </div>
-                                        <label style="clear: both; padding-top: 5px;">Non-fiction:</label>
+                                        <label style="clear: both; padding-top: 5px; font-weight: bold;">Non-fiction:</label>
                                         <div class="controls" style="float: left; width: 200px;">
                                             {% for genre in nonfiction_genres_left %}
                                             <label>
@@ -115,7 +115,7 @@
                                 </div>
 
                                 <div class="control-group">
-                                    <label class="control-label" for="co_authors">Co-authors</label>
+                                    <label class="control-label" for="co_authors">Co-authors (optional)</label>
                                     <div class="controls">
                                         <input class="full-width focused" id="co_authors" name="co_authors" type="text" value="{{ co_authors }}">
                                     </div>
@@ -138,7 +138,7 @@
                                     <div class="form-warning">
                                         <div class="controls">
                                             <input type="checkbox" id="ownership" name="ownership" value="True" style="margin-right: 5px;">
-                                            I certify that the work submitted in my manuscript and related sample is entirely of my own hand, or, if produced in collaboration with others, has been clearly identified as such.
+                                            <b>I certify that the work here submitted is entirely of my own hand, or, if produced in collaboration with others, has been clearly identified as such.</b>
                                         </div>
                                     </div>
                                 </div>
@@ -166,6 +166,7 @@
     {% block mediaJS %}
 
     <script src="/static/js/lib/ckeditor/ckeditor.js"></script>
+    <script src="/static/js/lib/jquery-validation/jquery.validate.js"></script>
 
     <style type="text/css">
         .cke_chrome {
@@ -192,7 +193,6 @@
         }
     </style>
 
-
     <script type="text/javascript">
 
         function updateCountdown() {
@@ -202,16 +202,18 @@
         }
 
         $().ready(function() {
-            // $("#form_manuscript").validate({
-            //     submitHandler: function(form) {
-            //             // $('#checked_genres').attr('value', $('input[name="genres"]').serialize());
-            //             form.submit();
-            //     },
-            //     errorPlacement: function(error, element) {
-            //         element.parent().parent().addClass("error");
-            //         error.addClass("help-inline").appendTo( element.parent() );
-            //     }
-            // });
+            $("#form_manuscript").validate({
+                rules: {
+                    title: "required",
+                },
+                submitHandler: function(form) {
+                        form.submit();
+                },
+                errorPlacement: function(error, element) {
+                    element.parent().parent().addClass("error");
+                    error.addClass("help-inline label-line").prependTo( element.parent() );
+                }
+            });
 
             updateCountdown();
             $('#summary').change(updateCountdown);
