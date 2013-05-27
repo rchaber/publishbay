@@ -23,19 +23,20 @@
                         <fieldset>
                             <form id="form_manuscript" action="{{ url|safe }}" method="post">
                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
                                 <legend>Manuscript Info</legend>
 
                                 <div class="control-group">
                                     <label class="control-label" for="title">Title</label>
                                     <div class="controls">
-                                        <input class="input-xxlarge focused" id="title" name="title" type="text" value="{{ title }}">
+                                        <input class="full-width focused" id="title" name="title" type="text" value="{{ title }}">
                                     </div>
                                 </div>
 
                                 <div class="control-group">
                                     <label class="control-label">Summary</label>
                                     <div class="controls">
-                                        <textarea class="input-xxlarge focused" cols="50" id="summary" name="summary" rows="8" style="resize: vertical;">{{ summary }}</textarea>
+                                        <textarea class="full-width focused" cols="50" id="summary" name="summary" rows="8" style="resize: vertical;">{{ summary }}</textarea>
                                     </div>
                                     <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
                                         <p>Include a short summary of your this manuscript and/or relevant information. Make sure to check for spelling and grammar errors!
@@ -46,7 +47,7 @@
 
                                 <div class="control-group">
                                     <label class="control-label">Select genres that best fit this manuscript (optional)</label>
-                                    <div style = "overflow: auto; border: 2px solid #CCC; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                                    <div style = "overflow: auto; border: 2px solid #CCC; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
                                         <label style="clear: both; padding-top: 5px;">Fiction:</label>
                                         <div class="controls" style="float: left; width: 200px;">
                                             {% for genre in fiction_genres_left %}
@@ -102,15 +103,8 @@
                                 </div>
 
                                 <div class="control-group">
-                                    <label class="control-label">Manuscript Sample</label>
-                                    <div class="controls">
-                                        <textarea name="wysiwyg" id="wysiwyg" class="ckeditor input-xxlarge focused" cols="50" rows="10" style="resize: vertical;">{{ manuscript_sample }}</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="control-group">
                                     <label class="control-label">Can be viewed by</label>
-                                    <label class="radio">
+                                    <label class="radio" style="float: left; margin-right: 40px;">
                                         <input type="radio" name="display_manuscript" id="display_manuscript_users" value="True" {% if display_manuscript == "pb_users" %}checked=""{% endif %}>
                                         {% trans %}PublishBay users logged in{% endtrans %}
                                     </label>
@@ -123,12 +117,22 @@
                                 <div class="control-group">
                                     <label class="control-label" for="co_authors">Co-authors</label>
                                     <div class="controls">
-                                        <input class="input-xxlarge focused" id="co_authors" name="co_authors" type="text" value="{{ co_authors }}">
+                                        <input class="full-width focused" id="co_authors" name="co_authors" type="text" value="{{ co_authors }}">
                                     </div>
                                     <div style="font-size: 11px; display: block; line-height: 15px; width: 540px;">
                                         <p>Enter different co-authors separated by comma.</p>
                                     </div>   
                                 </div>
+
+                                <legend>Manuscript Sample</legend>
+
+                                <div class="control-group" style="margin-bottom: 20px;">
+                                    <div class="controls">
+                                        <textarea name="wysiwyg" id="wysiwyg" class="ckeditor full-width focused" cols="50" rows="30" style="resize: vertical;">{{ manuscript_sample }}</textarea>
+                                    </div>
+                                </div>
+
+                                <legend>Ownership Statement</legend>
 
                                 <div class="control-group">
                                     <div class="form-warning">
@@ -163,6 +167,32 @@
 
     <script src="/static/js/lib/ckeditor/ckeditor.js"></script>
 
+    <style type="text/css">
+        .cke_chrome {
+            border: 2px solid #CCC;
+            border-radius: 4px;
+        }
+
+        .cke_inner {
+            border-radius: 4px;
+        }
+
+        .cke_top {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        .cke_bottom {
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+    </style>
+
+
     <script type="text/javascript">
 
         function updateCountdown() {
@@ -186,38 +216,6 @@
             updateCountdown();
             $('#summary').change(updateCountdown);
             $('#summary').keyup(updateCountdown);
-
-            CKEDITOR.replace( 'wysiwyg', {
-                toolbar: 'Basic',
-                language: 'en'
-            });
-
-            CKEDITOR.config.removePlugins = 'elementspath';
-
-            CKEDITOR.config.removeButtons = 'Link';
-
-            CKEDITOR.config.toolbar = [
-                { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-                { name: 'document', items: [ 'Source', '-', 'NewPage', 'Preview', '-', 'Templates' ] },
-                // '/',
-                { name: 'basicstyles', items: [ 'Bold', 'Italic' ] }
-            ];
-
-            // CKEDITOR.config.toolbarGroups = [
-            //     { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-            //     { name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
-            //     { name: 'links' },
-            //     { name: 'insert' },
-            //     { name: 'forms' },
-            //     { name: 'tools' },
-            //     { name: 'document',    groups: [ 'mode', 'document', 'doctools' ] },
-            //     { name: 'others' },
-            //     '/',
-            //     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-            //     { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align' ] },
-            //     { name: 'styles' },
-            //     { name: 'colors' }
-            // ];
 
         });
 

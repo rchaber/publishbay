@@ -227,6 +227,7 @@ span.password_strength {
 .form-vertical .controls {
 	line-height: 30px;
 	font-size: 14px;
+	overflow: visible;
 }
 
 .form-vertical .controls a {
@@ -282,6 +283,11 @@ input[type="radio"], input[type="checkbox"] {
 	line-height: normal;
 }
 
+input.full-width, textarea.full-width {
+	width: 97.5%;
+	margin-bottom: 0;
+}
+
 .social-login-icons a.social-btn {
 	border-radius: 4px;
 }
@@ -306,7 +312,7 @@ form#delete_social {
 
 .form-warning {
 	background-color: #FFFFE2;
-	border: 1px solid #E7E4C2;
+	border: 2px solid #E7E4C2;
 	border-radius: 4px;
 	color: #333;
 	display: inline-block;
@@ -426,7 +432,7 @@ input[type="radio"] label {
 
 .control-group {
 	margin-bottom: 10px;
-	overflow: auto;
+	overflow: visible;
 }
 
 .label {
