@@ -1,7 +1,6 @@
     {% extends base_layout %}
 
     {% block content %}
-
     <div class="span12" style="margin-left:0;">
         <div class="span3" style="margin-left: 0;">
             <div class="sidebar">
@@ -144,7 +143,7 @@
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="submit" class="PB-btn PB-btn-primary">
+                                    <button type="submit" class="PB-btn PB-btn-primary" id="submit-button">
                                     {% if is_new_manuscript %}
                                         {% trans %}Add Manuscript{% endtrans %}
                                     {% else %}
@@ -202,12 +201,18 @@
         }
 
         $().ready(function() {
+            
             $("#form_manuscript").validate({
                 rules: {
                     title: "required",
                 },
                 submitHandler: function(form) {
+                    if ($('input[name="ownership"]:checked').length == 0) {
+                        bootbox.alert('You must check the ownership statement');
+                    } 
+                    else {
                         form.submit();
+                    }
                 },
                 errorPlacement: function(error, element) {
                     element.parent().parent().addClass("error");
@@ -220,6 +225,10 @@
             $('#summary').keyup(updateCountdown);
 
         });
+
+        // to get source text inside wysiwyg editor
+        // var a = $('iframe').contents()
+        // a.find('.cke_editable')[0].innerHTML
 
     </script>
 
