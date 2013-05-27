@@ -38,16 +38,7 @@
 {% block mediaJS %}
     <script type="text/javascript">
         $().ready(function() {
-            $("[for='l_password']").append('&nbsp;&nbsp;<a href="/password-reset/" style="font-size: 13px; color: #4183C4;"><b>(forgot password)</b></a>');
-            $("#form_login_user").validate({
-                submitHandler: function(form) {
-                          form.submit();
-                },
-                errorPlacement: function(error, element) {
-                    element.parent().parent().addClass("error");
-                    error.addClass("help-inline").appendTo( element.parent() );
-                }
-            });
+            $("[for='l_password'].control-label").append('&nbsp;&nbsp;<a href="/password-reset/" style="font-size: 13px; color: #4183C4;"><b>(forgot password)</b></a>');
             $("#l_username").focus()
         });
     </script>
