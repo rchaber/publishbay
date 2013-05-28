@@ -143,7 +143,7 @@
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="submit" class="PB-btn PB-btn-primary" id="submit-button">
+                                    <button type="button" class="PB-btn PB-btn-primary" id="submit-button">
                                     {% if is_new_manuscript %}
                                         {% trans %}Add Manuscript{% endtrans %}
                                     {% else %}
@@ -201,11 +201,17 @@
         }
 
         $().ready(function() {
+
+            $('#submit-button').click(function(){
+                CKEDITOR.instances.wysiwyg.updateElement();
+                $("#form_manuscript").submit();
+            });
             
             $("#form_manuscript").validate({
                 rules: {
                     title: "required",
-                    summary: "required"
+                    summary: "required",
+                    wysiwyg: "required"
                 },
                 submitHandler: function(form) {
                     if ($('input[name="ownership"]:checked').length == 0) {
@@ -226,20 +232,6 @@
             $('#summary').keyup(updateCountdown);
 
         });
-
-        // to get source text inside wysiwyg editor
-        // var a = $('iframe').contents()
-        // a.find('.cke_editable')[0].innerHTML
-        // or:
-        // CKEDITOR.instances.wysiwyg.getData();
-        // or update the textarea element before validating:
-        // CKEDITOR.instances.wysiwyg.updateElement();
-
-        // $('#foo').bind('click', function() {
-        //   alert('User clicked on "foo."');
-        // });
-
-        // or make button submit click --> function --> then force submit()
 
     </script>
 
