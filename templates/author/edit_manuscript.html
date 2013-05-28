@@ -210,11 +210,16 @@
             $("#form_manuscript").validate({
                 rules: {
                     title: "required",
-                    summary: "required",
-                    wysiwyg: "required"
+                    summary: "required"
                 },
                 submitHandler: function(form) {
-                    if ($('input[name="ownership"]:checked').length == 0) {
+                    var re = /([<]\/?\b\w*\b[>])|(\&nbsp\;)|(\s*)/g;  // regex to remove tags and spaces (whitespaces and &nbsp;)
+                    var manuscript_content = $('[name="wysiwyg"]').val();
+                    var manuscript_stripped = manuscript_content.replace(re, '');
+                    if (manuscript_stripped == "") {
+                        bootbox.alert('You must fill in a manuscript sample');
+                    }
+                    else if ($('input[name="ownership"]:checked').length == 0) {
                         bootbox.alert('You must check the ownership statement');
                     }
                     else {
