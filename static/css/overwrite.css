@@ -729,3 +729,19 @@ div.list-name a {
 #mark.marked {
 	background: #72CFFD;
 }
+
+.modal.fade.in {
+	top: 25%;
+}
+
+.modal-body {
+	position: relative;
+	max-height: 400px;
+	padding: 15px;
+	overflow-y: auto;
+	font-family: 'Helvetica Neue', arial, freesans, clean, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+
