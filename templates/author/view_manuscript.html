@@ -1,0 +1,80 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    <div class="span12" style="margin-left:0;">
+        <div class="span3" style="margin-left: 0;">
+            <div class="sidebar">
+                <div class="w-box w-box-orange">
+                    <div class="w-box-header">
+                        <h4>Etc</h4>
+                    </div>
+                    <div class="w-box-content cnt_b">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span9">             
+            <div class="w-box">
+                <div class="w-box-header">
+                    <h4>{% trans %}Manuscript{% endtrans %}</h4>
+                    <div class="pull-right">
+                        <a href="{{ uri_for('edit-manuscript') }}?manuscript_id={{ manuscript_id }}" class="btn btn-mini">Edit</a>
+                    </div>
+                </div>
+                <div class="w-box-content cnt_ab">
+                    <div class="well form-vertical">
+                        <div>
+                            <dl class="dl-horizontal">
+                                <dt>
+                                </dt>
+                                <dd class="list-name">{{ title }}</dd>
+                                <dd class="list-title">{{ tagline }}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Summary</dt>
+                                <dd><pre>{{ summary }}</pre></dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Co-authors</dt>
+                                <dd>{{ co_authors }}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Genres</dt>
+                                <dd>{% for g in genres %}
+                                    <span class="label label-info">{{ g }}</span>
+                                    {% endfor %}
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Sample</dt>
+                            </dl>
+                        </div>
+                        <div class="manuscript-sample">
+                            {{ sample }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    <script type="text/javascript">
+
+        $().ready(function() {
+            $("#mark").click( function() {
+                $.ajax({
+                    url: "{{ uri_for('save-publishinghouse') }}",
+                    type: "GET",
+                    data: { publishinghouse_id: "{{publishinghouse_id}}" },
+                    dataType: "script"
+                })
+                
+            });
+
+        });
+    </script>
+    {% endblock %}
+

@@ -33,6 +33,16 @@
                                 </div>
 
                                 <div class="control-group">
+                                    <label class="control-label" for="tagline">Tagline</label>
+                                    <div class="controls">
+                                        <input class="full-width focused" id="tagline" name="tagline" type="text" value="{{ tagline }}">
+                                    </div>
+                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 630px; margin-bottom: 20px;">
+                                        <p>A memorable phrase that sums up the tone and premise of your manuscript.</p>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
                                     <label class="control-label">Summary</label>
                                     <div class="controls">
                                         <textarea class="full-width focused" cols="50" id="summary" name="summary" rows="8" style="resize: vertical;">{{ summary }}</textarea>
@@ -104,11 +114,11 @@
                                 <div class="control-group">
                                     <label class="control-label">Can be viewed by</label>
                                     <label class="radio" style="float: left; margin-right: 40px;">
-                                        <input type="radio" name="display_manuscript" id="display_manuscript_users" value="True" {% if display_manuscript == "pb_users" %}checked=""{% endif %}>
+                                        <input type="radio" name="display_manuscript" id="display_manuscript_users" value="pb_users" {% if display_manuscript == "pb_users" %}checked=""{% endif %}>
                                         {% trans %}PublishBay users logged in{% endtrans %}
                                     </label>
                                     <label class="radio">
-                                        <input type="radio" name="display_manuscript" id="display_manuscript_submissions" value="False" {% if display_manuscript == "submissions" %}checked=""{% endif %}>
+                                        <input type="radio" name="display_manuscript" id="display_manuscript_submissions" value="submissions" {% if display_manuscript == "submissions" %}checked=""{% endif %}>
                                         {% trans %}Submissions only{% endtrans %}
                                     </label>
                                 </div>
@@ -127,7 +137,7 @@
 
                                 <div class="control-group" style="margin-bottom: 20px;">
                                     <div class="controls">
-                                        <textarea name="wysiwyg" id="wysiwyg" class="ckeditor full-width focused" cols="50" rows="30" style="resize: vertical;">{{ manuscript_sample }}</textarea>
+                                        <textarea name="wysiwyg" id="wysiwyg" class="ckeditor full-width focused" cols="50" rows="30" style="resize: vertical;"></textarea>
                                     </div>
                                 </div>
 
@@ -141,6 +151,10 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                {% if not is_new_manuscript %}
+                                <input id="manuscript_id" name="manuscript_id" type="text" value="{{ manuscript_id }}" style="display: none;">
+                                {% endif %}
 
                                 <div class="form-actions">
                                     <button type="button" class="PB-btn PB-btn-primary" id="submit-button">
@@ -202,6 +216,10 @@
 
         $().ready(function() {
 
+            var t=setTimeout(function(){
+                CKEDITOR.instances.wysiwyg.setData( '{{ sample }}' );
+            },100)
+
             $('#submit-button').click(function(){
                 CKEDITOR.instances.wysiwyg.updateElement();
                 $("#form_manuscript").submit();
@@ -210,7 +228,8 @@
             $("#form_manuscript").validate({
                 rules: {
                     title: "required",
-                    summary: "required"
+                    summary: "required",
+                    tagline: "required"
                 },
                 submitHandler: function(form) {
                     var re = /([<]\/?\b\w*\b[>])|(\&nbsp\;)|(\s*)/g;  // regex to remove tags and spaces (whitespaces and &nbsp;)

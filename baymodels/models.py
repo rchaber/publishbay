@@ -198,6 +198,7 @@ class Marked_publishinghouses(ndb.Model):
 class Manuscript(ndb.Model):
     author = ndb.KeyProperty(kind=models.User)
     title = ndb.StringProperty()
+    tagline = ndb.StringProperty()
     summary = ndb.TextProperty()
     sample = ndb.TextProperty()
     genres = ndb.StringProperty(repeated=True)

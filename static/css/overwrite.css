@@ -494,6 +494,13 @@ dd pre {
 	margin-bottom: 0;
 }
 
+.manuscript-sample {
+	padding: 10px;
+	border: 1px solid #CCC;
+	height: 400px;
+	overflow: scroll;
+}
+
 .btn {
 	line-height: 20px;
 }

@@ -45,6 +45,8 @@ _routes = [
     RedirectRoute('/publisher/viewsavedpublishinghouses', publisher_handlers.ViewSavedPublishingHousesHandler, name='view-saved-publishinghouses', strict_slash=True),
 
     RedirectRoute('/author/editmanuscript', author_handlers.EditManuscriptHandler, name='edit-manuscript', strict_slash=True),
+    RedirectRoute('/author/mymanuscripts', author_handlers.MyManuscriptsHandler, name='my-manuscripts', strict_slash=True),
+    RedirectRoute('/author/viewmanuscript', author_handlers.ViewManuscriptHandler, name='view-manuscript', strict_slash=True),
 
 ]
 
