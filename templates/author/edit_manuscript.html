@@ -216,9 +216,10 @@
 
         $().ready(function() {
 
+            // setTimeout is necessary for the ckeditor load wysiwyg instance
             var t=setTimeout(function(){
-                CKEDITOR.instances.wysiwyg.setData( '{{ sample }}' );
-            },100)
+                CKEDITOR.instances.wysiwyg.setData( '{{ sample|safe }}' );
+            }, 100)
 
             $('#submit-button').click(function(){
                 CKEDITOR.instances.wysiwyg.updateElement();

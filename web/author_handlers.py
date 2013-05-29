@@ -64,8 +64,7 @@ class EditManuscriptHandler(BaseHandler):
             params['title'] = manuscript.title
             params['tagline'] = manuscript.tagline
             params['summary'] = manuscript.summary
-            # next, the regex removes linebreaks and then the string has the character ' escaped
-            params['sample'] = re.sub(r'[\n\r]', r' ', manuscript.sample).replace("'", "&#39")
+            params['sample'] = re.sub(r'[\n\r]', r' ', manuscript.sample)
             params['genres_list'] = manuscript.genres
             params['display_manuscript'] = manuscript.display
             params['co_authors'] = ', '.join(manuscript.co_authors)
