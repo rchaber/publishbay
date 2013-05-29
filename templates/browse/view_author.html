@@ -60,7 +60,7 @@
                                 <dt>Manuscripts</dt>
                                 <dd>
                                 {% for m in manuscripts %}
-                                <a href="{{ uri_for('view-manuscript-details') }}?mid={{ m[1] }}">{{ m[0] }}</a>
+                                <a href="{{ uri_for('view-manuscript-details') }}?mid={{ m[1] }}">{{ m[0] }}</a>{% if not m == manuscripts|last %};{% endif %}
                                 {% endfor %}
                                 </dd>
                             </div>

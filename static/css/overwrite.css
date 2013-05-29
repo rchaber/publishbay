@@ -148,6 +148,7 @@ legend {
 legend + .control-group {
 	margin-top: 0;
 	-webkit-margin-top-collapse: separate;
+	overflow: visible;
 }
 
 .thumbnail {
@@ -440,7 +441,7 @@ input[type="radio"] label {
 
 .control-group {
 	margin-bottom: 10px;
-	overflow: auto;
+	overflow: visible;
 }
 
 .label {

@@ -38,10 +38,12 @@
                                 <dt>Summary</dt>
                                 <dd><pre>{{ summary }}</pre></dd>
                             </dl>
+                            {% if co_authors %}
                             <dl class="dl-horizontal">
                                 <dt>Co-authors</dt>
                                 <dd>{{ co_authors }}</dd>
                             </dl>
+                            {% endif %}
                             <dl class="dl-horizontal">
                                 <dt>Display</dt>
                                 {% if display_manuscript == 'pb_users' %}
