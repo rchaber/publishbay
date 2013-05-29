@@ -64,10 +64,10 @@
                                 </div>
                             </div>
 
-                            <div class="control-group">
+                            <div class="control-group" style="clear: both;">
                                 <label class="control-label">Select genres that best fit your publishing house (optional)</label>
                                 <div style = "overflow: auto; border: 2px solid #CCC; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
-                                    <label style="clear: both; padding-top: 5px;">Fiction:</label>
+                                    <label style="clear: both; padding-top: 5px; font-weight: bold;">Fiction:</label>
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in fiction_genres_left %}
                                         <label>
@@ -92,7 +92,7 @@
                                         </label>
                                         {% endfor %}
                                     </div>
-                                    <label style="clear: both; padding-top: 5px;">Non-fiction:</label>
+                                    <label style="clear: both; padding-top: 5px; font-weight: bold;">Non-fiction:</label>
                                     <div class="controls" style="float: left; width: 200px;">
                                         {% for genre in nonfiction_genres_left %}
                                         <label>

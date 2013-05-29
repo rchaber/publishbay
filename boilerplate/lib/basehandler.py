@@ -17,6 +17,8 @@ from boilerplate import models
 from boilerplate.lib import utils, i18n
 from babel import Locale
 
+from baymodels import models as bmodels
+
 def user_required(handler):
     """
          Decorator for checking if there's a user associated
@@ -211,21 +213,42 @@ class BaseHandler(webapp2.RequestHandler):
         if self.user:
             user_info = models.User.get_by_id(long(self.user_id))
             return user_info.key
-        return  None
+        return None
 
     @webapp2.cached_property
     def first_name(self):
         if self.user:
             user_info = models.User.get_by_id(long(self.user_id))
             return str(user_info.name)
-        return  None
+        return None
 
     @webapp2.cached_property
     def last_name(self):
         if self.user:
             user_info = models.User.get_by_id(long(self.user_id))
             return str(user_info.last_name)
-        return  None
+        return None
+
+    @webapp2.cached_property
+    def is_author(self):
+        if self.user:
+            a = bmodels.AuthorProfile.query(bmodels.AuthorProfile.user == self.user_key).get()
+            return True if a else False
+        return False
+
+    @webapp2.cached_property
+    def is_contractor(self):
+        if self.user:
+            c = bmodels.ProDetails.query(bmodels.ProDetails.user == self.user_key).get()
+            return True if c else False
+        return False
+
+    @webapp2.cached_property
+    def is_publisher(self):
+        if self.user:
+            p = bmodels.PublishingHouse.query(bmodels.PublishingHouse.owner == self.user_key).get()
+            return True if p else False
+        return False
 
     @webapp2.cached_property
     def username(self):
@@ -238,7 +261,7 @@ class BaseHandler(webapp2.RequestHandler):
                 logging.error(e)
                 self.auth.unset_session()
                 self.redirect_to('home')
-        return  None
+        return None
 
     @webapp2.cached_property
     def email(self):
@@ -251,7 +274,7 @@ class BaseHandler(webapp2.RequestHandler):
                 logging.error(e)
                 self.auth.unset_session()
                 self.redirect_to('home')
-        return  None
+        return None
 
     @webapp2.cached_property
     def provider_uris(self):
@@ -345,6 +368,9 @@ class BaseHandler(webapp2.RequestHandler):
             'user_id': self.user_id,
             'username': self.username,
             'first_name': self.first_name,
+            'is_author': self.is_author,
+            'is_contractor': self.is_contractor,
+            'is_publisher': self.is_publisher,
             'email': self.email,
             'url': self.request.url,
             'path': self.request.path,

@@ -108,7 +108,7 @@ class EditManuscriptHandler(BaseHandler):
             co_authors = co_authors.split(',')
             co_authors = [c.strip() for c in co_authors]
         else:
-            co_authors = ""
+            co_authors = []
 
         try:
             message = ''

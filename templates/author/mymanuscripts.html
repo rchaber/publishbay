@@ -39,7 +39,9 @@
                             </div>
 
                             <div class="list-info">
+                                {% if m.co_authors %}
                                 Co-authors: {{ m.co_authors }}
+                                {% endif %}
                             </div>
 
                             <div class="list-tags">{% for i in m.genres|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</div>
