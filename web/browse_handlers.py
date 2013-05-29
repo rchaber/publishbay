@@ -249,6 +249,11 @@ class ViewAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler)
 
         q = bmodels.Marked_authors.query(bmodels.Marked_authors.user == self.user_key, bmodels.Marked_authors.marked == author.key).get()
 
+        manuscripts = []
+        manuscripts_query = bmodels.Manuscript.query(bmodels.Manuscript.author == author.key, bmodels.Manuscript.display == 'pb_users').fetch()
+        if manuscripts_query:
+            manuscripts = [[m.title, m.key.id()] for m in manuscripts_query]
+
         params['marked'] = True if q else False
 
         if author:
@@ -260,6 +265,7 @@ class ViewAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler)
             params['title'] = author.title
             params['overview'] = author.overview
             params['author_id'] = author_id
+            params['manuscripts'] = manuscripts
             params['genres'] = author.genres
             params['ghostwrites'] = author.ghostwrites
             params['pseudonyms'] = ', '.join(author.pseudonyms)

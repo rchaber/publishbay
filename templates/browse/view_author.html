@@ -17,7 +17,7 @@
         <div class="span9">             
             <div class="w-box">
                 <div class="w-box-header">
-                    <h4>{% trans %}Profile{% endtrans %}</h4>
+                    <h4>{% trans %}Author{% endtrans %}</h4>
                     <div class="pull-right">
                         {% if marked %}
                         <a href="javascript:void(0)" class="btn btn-mini icon ptip_s marked" id="mark" title="Watch"><i class="icon-bookmark" style="opacity: 1"></i></a>
@@ -54,6 +54,18 @@
                                 <dt>Overview</dt>
                                 <dd><pre>{{ overview }}</pre></dd>
                             </dl>
+
+                            {% if manuscripts|length > 0 %}
+                            <dl class="dl-horizontal">
+                                <dt>Manuscripts</dt>
+                                <dd>
+                                {% for m in manuscripts %}
+                                <a href="{{ uri_for('view-manuscript-details') }}?mid={{ m[1] }}">{{ m[0] }}</a>
+                                {% endfor %}
+                                </dd>
+                            </div>
+                            {% endif %}
+
                             <dl class="dl-horizontal">
                                 <dt>Genres</dt>
                                 <dd>{% for g in genres %}
@@ -65,11 +77,14 @@
                                 <dt>Pseudonyms</dt>
                                 <dd>{{ pseudonyms }}</dd>
                             </dl>
-                            {% if ghostwrites %}
                             <dl class="dl-horizontal">
-                                <dd>Available as ghostwriter</dd>
+                                <dt>Ghostwriting</dt>
+                                {% if ghostwrites %}
+                                <dd>Yes</dd>
+                                {% else %}
+                                <dd>No</dd>
+                                {% endif %}
                             </dl>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
