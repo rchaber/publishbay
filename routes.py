@@ -40,6 +40,8 @@ _routes = [
     RedirectRoute('/browse/authors/viewmanuscript', browse_handlers.ViewManuscriptDetailsHandler, name='view-manuscript-details', strict_slash=True),
     RedirectRoute('/publisher/viewsavedauthors', publisher_handlers.ViewSavedAuthorsHandler, name='view-saved-authors', strict_slash=True),
 
+    RedirectRoute('/browse/manuscripts', browse_handlers.BrowseManuscriptsHandler, name='browse-manuscripts', strict_slash=True),
+
     RedirectRoute('/browse/publishinghouses', browse_handlers.BrowsePublishingHousesHandler, name='browse-publishinghouses', strict_slash=True),
     RedirectRoute('/browse/publishinghouses/view', browse_handlers.ViewPublishingHousesHandler, name='view-publishinghouses', strict_slash=True),
     RedirectRoute('/browse/publishinghouses/mark', handlers.SavePublishingHouseHandler, name='save-publishinghouse', strict_slash=True),

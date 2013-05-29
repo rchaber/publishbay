@@ -399,3 +399,67 @@ class ViewManuscriptDetailsHandler(BaseHandler):
 
         return self.render_template('/browse/view_manuscript_details.html', **params)
 
+
+class BrowseManuscriptsHandler(BaseHandler):
+    """
+    Handler for browsing manuscripts
+    """
+
+    @user_required
+    def get(self):
+
+        PAGE_SIZE = 5
+
+        manuscripts = []
+        params = {}
+        items = []
+
+        genrefilter = self.request.GET.getall('genre')
+
+        offset = 0
+
+        new_page = self.request.GET.get('page')
+        if new_page:
+            new_page = int(new_page)
+            offset = int(new_page - 1) * PAGE_SIZE
+        else:
+            new_page = 1
+
+        query1 = bmodels.Manuscript.query(bmodels.Manuscript.display == 'pb_users')
+
+        if genrefilter:
+            query = query1.filter(bmodels.Manuscript.genres.IN(genrefilter))
+        else:
+            query = query1
+
+        count = query.count()
+        items = query.fetch(PAGE_SIZE, offset=offset)
+
+        # the following line returns the equivalent to math.ceil(float), just saving from importing another lib
+        number_of_pages = count/PAGE_SIZE if count % PAGE_SIZE == 0 else count/PAGE_SIZE + 1
+
+        for i in items:
+            d = {}
+            d['manuscript_id'] = i.key.id()
+            d['title'] = i.title
+            d['tagline'] = i.tagline
+            d['summary'] = i.summary.replace('\r\n', ' ').replace('\n', ' ')
+            d['genres'] = i.genres
+            d['co_authors'] = ', '.join(i.co_authors)
+            manuscripts.append(d)
+
+        paging = utils.pagination(number_of_pages, new_page, 5) if len(manuscripts) > 0 else [[1], 0]
+
+        params['count'] = count
+        params['manuscripts'] = manuscripts
+
+        params['marks'] = paging[0] if len(paging) > 0 else 'no_marks'
+        params['active'] = 'mark_' + str(paging[0][paging[1]]) if len(paging) > 0 else 'no_marks'
+        params['previous'] = str(new_page - 1) if new_page > 1 else None
+        params['next'] = str(new_page + 1) if new_page < number_of_pages else None
+
+        params['genrelist_fiction'] = utils.genres_fiction
+        params['genrelist_nonfiction'] = utils.genres_nonfiction
+        params['genres'] = genrefilter
+
+        return self.render_template('/browse/browse_manuscripts.html', **params)

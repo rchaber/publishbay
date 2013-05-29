@@ -1,0 +1,112 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+    <div class="span12" style="margin-left:0;">
+        <div class="span3" style="margin-left: 0;">
+            <div class="sidebar">
+                <div class="w-box w-box-orange">
+                    <div class="w-box-header">
+                        <h4>Filter by genre</h4>
+                    </div>
+                    <div class="w-box-content cnt_b">
+                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
+                        <div class="control-group" style="margin-top: 15px;">
+                            <div class="controls">
+                                <label><b>Fiction:</b></label>
+                                {% for i in genrelist_fiction %}
+                                <label><input type="checkbox" id="genre_{{ i }}" name="genre" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in genres %} checked = "checked" {% endif %}>{{ i }}</label>
+                                {% endfor %}
+                            </div>
+                            <div class="controls" style="margin-top: 20px;">
+                                <label><b>Non-fiction:</b></label>
+                                {% for i in genrelist_nonfiction %}
+                                <label><input type="checkbox" id="genre_{{ i }}" name="genre" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in genres %} checked = "checked" {% endif %}>{{ i }}</label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span9">
+            <div class="w-box">
+                <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px;">
+                    <div class="record-count">{{ count }} manuscripts matching criteria</div>
+                    {% if manuscripts|length > 0 %}
+                    {{ macros.pagination(previous, next, marks) }}
+                    {% endif %}
+                    <ul>
+                    {% for m in manuscripts %}
+                        <li>
+                    
+                            <div class="list-name"><a href="{{ uri_for('view-manuscript-details') }}?mid={{ m.manuscript_id }}">{{ m.title }}</a></div>
+
+                            <div class="list-title">{{ m.tagline }}</div>
+
+                            <div class="list-info">
+                                {% if m.summary.split(' ')|length <= 40 %}
+                                {{ m.summary }}
+                                {% else %}
+                                <div class='jsTruncated'>{{ ' '.join(m.summary.split(' ')[0:40]) }} ...<span class='lessmore'> more</span></div>
+                                <div class='jsFull isHidden'>{{ m.summary }}<br><span class='lessmore'>less</span></div>
+                                {% endif %}
+                            </div>
+
+                            <div class="list-info">
+                                {% if m.co_authors %}
+                                Co-authors: {{ m.co_authors }}
+                                {% endif %}
+                            </div>
+
+                            <div class="list-tags">{% for i in m.genres|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</div>
+
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    {% if manuscripts|length > 0 %}
+                    {{ macros.pagination(previous, next, marks) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block mediaJS %}
+
+    <script type="text/javascript">
+
+        $().ready(function() {
+
+            $(".{{ active }}").addClass('active');
+
+            $('#update').click(function(){
+                var a = $('input[name="genre"]').serialize();
+                window.location.href = "/browse/manuscripts?" + a;
+            })
+
+            $('.bookmark').click(function(i){
+                var a = $('input[name="genre"]').serialize();
+                var b = $(this).attr('id').replace('page', '');
+                window.location.href = "/browse/manuscripts?" + a + '&page=' + b;
+            });
+
+            $('.lessmore').click(function(i){
+                var a = $(this).closest('.list-info').children();
+                for (var i=0; i<a.length; i++) {
+                    if ( $(a[i]).hasClass('isHidden') ){
+                        $(a[i]).removeClass('isHidden');
+                    }
+                    else {
+                        $(a[i]).addClass('isHidden');
+                    }
+                }
+            })
+
+        });
+
+    </script>
+
+    {% endblock %}
