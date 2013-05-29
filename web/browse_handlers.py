@@ -192,6 +192,10 @@ class BrowseAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
         number_of_pages = count/PAGE_SIZE if count % PAGE_SIZE == 0 else count/PAGE_SIZE + 1
 
         for i in items:
+            manuscripts = []
+            manuscripts_records = bmodels.Manuscript.query(bmodels.Manuscript.author == i.key, bmodels.Manuscript.display == 'pb_users').fetch()
+            if manuscripts_records:
+                manuscripts = [[m.title, m.key.id()] for m in manuscripts_records]
             d = {}
             d['author_id'] = i.key.id()
             if i.display_full_name:
@@ -206,6 +210,7 @@ class BrowseAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
             d['overview'] = i.overview.replace('\r\n', ' ').replace('\n', ' ')
             d['genres'] = i.genres
             d['ghostwrites'] = i.ghostwrites
+            d['manuscripts'] = manuscripts
             authors.append(d)
 
         paging = utils.pagination(number_of_pages, new_page, 5) if len(authors) > 0 else [[1], 0]
@@ -362,4 +367,35 @@ class ViewPublishingHousesHandler(blobstore_handlers.BlobstoreUploadHandler, Bas
             params['genres'] = publishinghouse.genres
 
         return self.render_template('browse/view_publishinghouse.html', **params)
+
+
+class ViewManuscriptDetailsHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+
+        manuscript_id = self.request.GET.get('mid')
+
+        print manuscript_id
+
+        manuscript = bmodels.Manuscript.get_by_id(int(manuscript_id))
+        author = manuscript.author.get()
+
+        if author.display_full_name:
+            author_display_name = '%s %s' % (author.name, author.last_name)
+        else:
+            author_display_name = '%s %s.' % (author.name, author.last_name[0])
+
+        params = {}
+
+        params['manuscript_id'] = manuscript_id
+        params['author'] = [author_display_name, author.key.id()]
+        params['title'] = manuscript.title
+        params['tagline'] = manuscript.tagline
+        params['summary'] = manuscript.summary
+        params['co_authors'] = ', '.join(manuscript.co_authors)
+        params['genres'] = manuscript.genres
+        params['sample'] = manuscript.sample
+
+        return self.render_template('/browse/view_manuscript_details.html', **params)
 

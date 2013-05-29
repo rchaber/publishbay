@@ -59,6 +59,14 @@
                             {% endif %}
                             </div>
 
+                            {% if a.manuscripts|length > 0 %}
+                            <div class="list-info">Manuscripts:
+                                {% for m in a.manuscripts %}
+                                <a href="{{ uri_for('view-manuscript-details') }}?mid={{ m[1] }}">{{ m[0] }}</a>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+
                             <div class="list-tags">{% for i in a.genres|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</div>
 
                             {% if a.ghostwrites %}

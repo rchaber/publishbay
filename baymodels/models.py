@@ -196,13 +196,14 @@ class Marked_publishinghouses(ndb.Model):
 
 
 class Manuscript(ndb.Model):
-    author = ndb.KeyProperty(kind=models.User)
+    author = ndb.KeyProperty(kind=AuthorProfile)
+    user = ndb.KeyProperty(kind=models.User)
     title = ndb.StringProperty()
     tagline = ndb.StringProperty()
     summary = ndb.TextProperty()
     sample = ndb.TextProperty()
     genres = ndb.StringProperty(repeated=True)
-    display = ndb.StringProperty()
+    display = ndb.StringProperty(choices=['pb_users', 'submissions'])
     co_authors = ndb.StringProperty(repeated=True)
     ownership = ndb.BooleanProperty()
     uploaded_on = ndb.DateTimeProperty(auto_now_add=True)

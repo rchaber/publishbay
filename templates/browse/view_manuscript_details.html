@@ -19,12 +19,11 @@
                 <div class="w-box-header">
                     <h4>{% trans %}Manuscript{% endtrans %}</h4>
                     <div class="pull-right">
-                        <a href="{{ uri_for('edit-manuscript') }}?manuscript_id={{ manuscript_id }}" class="btn btn-mini">Edit</a>
+                        <!-- put buttons here: save, contact author -->
                     </div>
                 </div>
                 <div class="w-box-content cnt_ab">
                     <div class="well form-vertical">
-                        <!-- <legend>Manuscript Info</legend> -->
                         <div>
                             <dl class="dl-horizontal">
                                 <dt>Title</dt>
@@ -39,16 +38,12 @@
                                 <dd><pre>{{ summary }}</pre></dd>
                             </dl>
                             <dl class="dl-horizontal">
-                                <dt>Co-authors</dt>
-                                <dd>{{ co_authors }}</dd>
+                                <dt>Author</dt>
+                                <dd><a href="/browse/authors/view?aid={{ author[1] }}">{{ author[0] }}</a></dd>
                             </dl>
                             <dl class="dl-horizontal">
-                                <dt>Display</dt>
-                                {% if display_manuscript == 'pb_users' %}
-                                <dd>{% trans %}PublishBay users logged in{% endtrans %}</dd>
-                                {% elif display_manuscript == 'submissions' %}
-                                <dd>{% trans %}Submissions only{% endtrans %}</dd>
-                                {% endif %}
+                                <dt>Co-authors</dt>
+                                <dd>{{ co_authors }}</dd>
                             </dl>
                             <dl class="dl-horizontal">
                                 <dt>Genres</dt>
@@ -57,7 +52,6 @@
                                 </dd>
                             </dl>
                         </div>
-                        <!-- <legend>Manuscript Sample</legend> -->
                         <div class="manuscript-sample">
                             {{ sample }}
                         </div>

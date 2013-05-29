@@ -33,7 +33,8 @@ import config.utils as utils
 
 """
 class Manuscript(ndb.Model):
-    author = ndb.KeyProperty(kind=models.User)
+    author = ndb.KeyProperty(kind=AuthorProfile)
+    user = ndb.KeyProperty(kind=models.User)
     title = ndb.StringProperty()
     summary = ndb.TextProperty()
     sample = ndb.TextProperty()
@@ -112,7 +113,8 @@ class EditManuscriptHandler(BaseHandler):
 
         try:
             message = ''
-            manuscript.author = self.user_key
+            manuscript.user = self.user_key
+            manuscript.author = bmodels.AuthorProfile.get_by_userkey(self.user_key).key
             manuscript.title = self.request.POST.get('title')
             manuscript.tagline = self.request.POST.get('tagline')
             manuscript.summary = self.request.POST.get('summary').replace('\r\r\n', '\r\n')
@@ -158,7 +160,7 @@ class MyManuscriptsHandler(BaseHandler):
         else:
             new_page = 1
 
-        query1 = bmodels.Manuscript.query(bmodels.Manuscript.author == self.user_key)
+        query1 = bmodels.Manuscript.query(bmodels.Manuscript.user == self.user_key)
 
         if genrefilter:
             query = query1.filter(bmodels.Manuscript.genres.IN(genrefilter))
@@ -217,6 +219,7 @@ class ViewManuscriptHandler(BaseHandler):
         params['summary'] = manuscript.summary
         params['co_authors'] = ', '.join(manuscript.co_authors)
         params['genres'] = manuscript.genres
+        params['display_manuscript'] = manuscript.display
         params['sample'] = manuscript.sample
 
         return self.render_template('/author/view_manuscript.html', **params)

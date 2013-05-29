@@ -37,6 +37,7 @@ _routes = [
     RedirectRoute('/browse/authors', browse_handlers.BrowseAuthorsHandler, name='browse-authors', strict_slash=True),
     RedirectRoute('/browse/authors/view', browse_handlers.ViewAuthorsHandler, name='view-authors', strict_slash=True),
     RedirectRoute('/browse/authors/mark', handlers.SaveAuthorHandler, name='save-author', strict_slash=True),
+    RedirectRoute('/browse/authors/viewmanuscript', browse_handlers.ViewManuscriptDetailsHandler, name='view-manuscript-details', strict_slash=True),
     RedirectRoute('/publisher/viewsavedauthors', publisher_handlers.ViewSavedAuthorsHandler, name='view-saved-authors', strict_slash=True),
 
     RedirectRoute('/browse/publishinghouses', browse_handlers.BrowsePublishingHousesHandler, name='browse-publishinghouses', strict_slash=True),
