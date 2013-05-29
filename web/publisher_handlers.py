@@ -126,13 +126,14 @@ class ViewSavedAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
         for i in items:
             d = {}
             author = i.marked.get()
+            picture_key = bmodels.BasicSettings.get_by_userkey(author.user)
             d['profile_id'] = i.marked.get().key.id()
             if author.display_full_name:
                 d['name_to_display'] = author.name + ' ' + author.last_name
             else:
                 d['name_to_display'] = author.name + ' ' + author.last_name[0] + '.'
-            if author.picture_key != '' and author.picture_key:
-                d['picture_url'] = '/serve/%s' % author.picture_key
+            if picture_key != '' and picture_key:
+                d['picture_url'] = '/serve/%s' % picture_key
             else:
                 d['picture_url'] = ''
             d['title'] = author.title

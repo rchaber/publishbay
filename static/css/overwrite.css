@@ -6,6 +6,7 @@
 #fade-menu [class^="icon-"], #fade-menu [class*=" icon-"] {
 	margin-right: 3px;
 	margin-top: 0;
+	margin-left: 1px;
 }
 
 #fade-menu ul li ul li a {
@@ -439,7 +440,7 @@ input[type="radio"] label {
 
 .control-group {
 	margin-bottom: 10px;
-	overflow: visible;
+	overflow: auto;
 }
 
 .label {
@@ -696,7 +697,7 @@ div.list-name a {
 .jQ-list .record-count {
 	padding: 3px 10px;
 	float: left;
-	top: 20px;
+	top: 18px;
 	position: relative;
 	font-weight: bold;
 	margin-bottom: 36px;
