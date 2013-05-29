@@ -24,12 +24,15 @@
                 </div>
                 <div class="w-box-content cnt_ab">
                     <div class="well form-vertical">
+                        <!-- <legend>Manuscript Info</legend> -->
                         <div>
                             <dl class="dl-horizontal">
-                                <dt>
-                                </dt>
+                                <dt>Title</dt>
                                 <dd class="list-name">{{ title }}</dd>
-                                <dd class="list-title">{{ tagline }}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Tagline</dt>
+                                <dd>{{ tagline }}</dd>
                             </dl>
                             <dl class="dl-horizontal">
                                 <dt>Summary</dt>
@@ -41,15 +44,12 @@
                             </dl>
                             <dl class="dl-horizontal">
                                 <dt>Genres</dt>
-                                <dd>{% for g in genres %}
-                                    <span class="label label-info">{{ g }}</span>
-                                    {% endfor %}
+                                <dd>
+                                    {% for g in genres %}<span class="label label-info">{{ g }}</span>{% endfor %}
                                 </dd>
                             </dl>
-                            <dl class="dl-horizontal">
-                                <dt>Sample</dt>
-                            </dl>
                         </div>
+                        <!-- <legend>Manuscript Sample</legend> -->
                         <div class="manuscript-sample">
                             {{ sample }}
                         </div>

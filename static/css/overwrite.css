@@ -607,12 +607,13 @@ input.PB-big-search {
 
 .list-name {
 	margin: 0;
-	font-size: 16px;
+	font-size: 20px;
 	font-weight: bold;
 	display: block;
 	padding: 0;
 	color: #80A226;
 	padding-left: 0;
+	line-height: 22px;
 }
 
 .jQ-list .list-name {
