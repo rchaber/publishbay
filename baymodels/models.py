@@ -208,3 +208,8 @@ class Manuscript(ndb.Model):
     ownership = ndb.BooleanProperty()
     uploaded_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
+
+
+class ManuscriptSubmission(ndb.Model):
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    updated_on = ndb.DateTimeProperty(auto_now=True)
