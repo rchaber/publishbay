@@ -211,5 +211,6 @@ class Manuscript(ndb.Model):
 
 
 class ManuscriptSubmission(ndb.Model):
+    # another test
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
