@@ -211,6 +211,5 @@ class Manuscript(ndb.Model):
 
 
 class ManuscriptSubmission(ndb.Model):
-    # this line purpose is just to test bluehost git fetch cronjob
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
