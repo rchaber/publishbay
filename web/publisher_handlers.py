@@ -127,7 +127,7 @@ class ViewSavedAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
             d = {}
             author = i.marked.get()
             picture_key = bmodels.BasicSettings.get_by_userkey(author.user)
-            d['profile_id'] = i.marked.get().key.id()
+            d['author_id'] = i.marked.get().key.id()
             if author.display_full_name:
                 d['name_to_display'] = author.name + ' ' + author.last_name
             else:
@@ -174,8 +174,6 @@ class ViewSavedPublishingHousesHandler(blobstore_handlers.BlobstoreUploadHandler
         items = []
 
         genrefilter = self.request.GET.getall('genre')
-        print genrefilter
-        print len(genrefilter)
 
         q = bmodels.Marked_publishinghouses.query(bmodels.Marked_publishinghouses.user == self.user_key)
         count = q.count()

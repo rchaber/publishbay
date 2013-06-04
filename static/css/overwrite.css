@@ -265,10 +265,11 @@ span.password_strength {
 
 .w-box-header h4 {
 	display: inline-block;
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 700;
 	margin: 0;
 	text-transform: uppercase;
+	vertical-align: middle;
 }
 
 form {
@@ -519,6 +520,43 @@ a.btn-mini.icon {
 	font-size: 12px;
 }
 
+.w-box-header [class*="icsw16-"], .w-box-header [class*="splashy-"] {
+	margin: -1px -1px 0 -1px;
+	margin-right: 0;
+}
+
+a.btn-header {
+	-webkit-transition: all 0.3s ease-out;
+	-moz-transition: all 0.3s ease-out;
+	-o-transition: all 0.3s ease-out;
+	transition: all 0.3s ease-out;	
+	background: #000;
+	background: rgba(0, 0, 0, .2);
+	color: #FFF;
+	display: inline-block;
+	cursor: pointer;
+	border: 1px solid #000;
+	border-color: rgba(0, 0, 0, .3);
+	padding: 0 6px;
+	line-height: 20px;
+	height: 20px;
+	font-size: 12px;
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+	-moz-box-shadow: 0 1px 0 rgba(255,255,255,0.3);
+	-ms-box-shadow: 0 1px 0 rgba(255,255,255,0.3);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+	-webkit-border-radius: 3px 3px 3px 3px;
+	-moz-border-radius: 3px 3px 3px 3px;
+	-ms-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	text-decoration: none;
+}
+
+a.btn-header:hover {
+	/*background: rgba(0, 0, 0, .3);*/
+	background: rgba(58, 135, 173, 0.64);
+}
+
 .PB-btn {
 	cursor: pointer;
 	border: 0;
@@ -754,4 +792,10 @@ div.list-name a {
 	font-weight: bold;
 }
 
-
+#breadcrumbs {
+	overflow: hidden;
+	width: 100%;
+	list-style: none;
+	margin: 0;
+	padding: 0px 0 6px;
+}

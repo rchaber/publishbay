@@ -207,8 +207,6 @@ class ViewManuscriptHandler(BaseHandler):
 
         manuscript_id = self.request.GET.get('mid')
 
-        print manuscript_id
-
         manuscript = bmodels.Manuscript.get_by_id(int(manuscript_id))
 
         params = {}
@@ -223,3 +221,47 @@ class ViewManuscriptHandler(BaseHandler):
         params['sample'] = manuscript.sample
 
         return self.render_template('/author/view_manuscript.html', **params)
+
+
+class SubmissionHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+
+        manuscript_id = self.request.GET.get('mid')
+
+        manuscript = bmodels.Manuscript.get_by_id(int(manuscript_id))
+
+        publishinghouses = []
+
+        q = bmodels.Marked_publishinghouses.query(bmodels.Marked_publishinghouses.user == self.user_key)
+        count = q.count()
+        items = q.fetch()
+
+        for i in items:
+            d = {}
+            publishinghouse = i.marked.get()
+            d['publishinghouse_id'] = i.marked.get().key.id()
+            d['name'] = publishinghouse.name
+            if publishinghouse.logo_key != '' and publishinghouse.logo_key:
+                d['logo_url'] = '/serve/%s' % publishinghouse.logo_key
+            else:
+                d['logo_url'] = ''
+            d['tagline'] = publishinghouse.tagline
+            d['description'] = publishinghouse.description.replace('\r\n', ' ').replace('\n', ' ')
+            d['genres'] = publishinghouse.genres
+            if len(genrefilter) > 0:
+                if len(set(publishinghouse.jobs).intersection(set(genrefilter))) > 0:
+                    publishinghouses.append(d)
+            else:
+                publishinghouses.append(d)
+
+        params['count'] = count
+        params['filter_count'] = len(publishinghouses)
+        params['publishinghouses'] = publishinghouses
+
+        params['genrelist_fiction'] = utils.genres_fiction
+        params['genrelist_nonfiction'] = utils.genres_nonfiction
+        params['genres'] = genrefilter
+
+        return self.render_template('author/submit.html', **params)

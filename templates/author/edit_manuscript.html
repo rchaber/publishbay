@@ -2,6 +2,12 @@
 
     {% block content %}
     <div class="span12" style="margin-left:0;">
+        <ul id="breadcrumbs">
+            <li><a href="/"><i class="icon-home"></i></a></li>
+            <li><a href="{{ uri_for('my-manuscripts') }}">Author: My Manuscripts</a></li>
+            <li><a href="{{ uri_for('view-manuscript') }}?mid={{ manuscript_id }}">Manuscript</a></li>
+            <li><span>Edit Manuscript</span></li>
+        </ul>
         <div class="span3" style="margin-left: 0;">
             <div class="sidebar">
                 <div class="w-box w-box-orange">

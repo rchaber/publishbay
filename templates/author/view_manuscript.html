@@ -2,7 +2,13 @@
 
     {% block content %}
 
+            
     <div class="span12" style="margin-left:0;">
+        <ul id="breadcrumbs">
+            <li><a href="/"><i class="icon-home"></i></a></li>
+            <li><a href="{{ uri_for('my-manuscripts') }}">Author: My Manuscripts</a></li>
+            <li><span>Manuscript</span></li>
+        </ul>
         <div class="span3" style="margin-left: 0;">
             <div class="sidebar">
                 <div class="w-box w-box-orange">
@@ -19,7 +25,8 @@
                 <div class="w-box-header">
                     <h4>{% trans %}Manuscript{% endtrans %}</h4>
                     <div class="pull-right">
-                        <a href="{{ uri_for('edit-manuscript') }}?manuscript_id={{ manuscript_id }}" class="btn btn-mini">Edit</a>
+                        <a href="{{ uri_for('edit-manuscript') }}?manuscript_id={{ manuscript_id }}" class="btn btn-mini icon ptip_s" title="Edit"><i class="icon-pencil"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-mini icon ptip_s" title="Submit"><i class="icsw16-box-outgoing"></i></a>
                     </div>
                 </div>
                 <div class="w-box-content cnt_ab">
