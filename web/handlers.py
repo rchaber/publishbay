@@ -676,10 +676,12 @@ class SaveContractorHandler(BaseHandler):
             mark.user = self.user_key
             mark.marked = contractor.key
             mark.put()
-            js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1')"
+            js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1');"
+            js += "$('.icon-bookmark').addClass('icon-white');"
         else:
             q.key.delete()
-            js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3')"
+            js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3');"
+            js += "$('.icon-bookmark').removeClass('icon-white');"
         print "here2"
         self.response.out.write(js)
 
@@ -698,10 +700,12 @@ class SaveAuthorHandler(BaseHandler):
             mark.user = self.user_key
             mark.marked = author.key
             mark.put()
-            js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1')"
+            js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1');"
+            js += "$('.icon-bookmark').addClass('icon-white');"
         else:
             q.key.delete()
-            js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3')"
+            js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3');"
+            js += "$('.icon-bookmark').removeClass('icon-white');"
         print "here2"
         self.response.out.write(js)
 
@@ -719,8 +723,10 @@ class SavePublishingHouseHandler(BaseHandler):
             mark.user = self.user_key
             mark.marked = publishinghouse.key
             mark.put()
-            js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1')"
+            js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1');"
+            js += "$('.icon-bookmark').addClass('icon-white');"
         else:
             q.key.delete()
-            js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3')"
+            js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3');"
+            js += "$('.icon-bookmark').removeClass('icon-white');"
         self.response.out.write(js)

@@ -462,7 +462,7 @@ dl {
 }
 
 dt, dd {
-	font-size: 14px;
+	font-size: 13px;
 	margin: 0;
 	padding-top: 0;
 	line-height: 20px;
@@ -775,7 +775,7 @@ div.list-name a {
 }
 
 #mark.marked {
-	background: #72CFFD;
+	background: #3A87AD; /* #72CFFD */
 }
 
 .modal.fade.in {
