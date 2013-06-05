@@ -449,6 +449,7 @@ class DisplayPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, B
                 if publishing_house.logo_key and publishing_house.logo_key != '':
                     params['logo_url'] = '/serve/%s' % publishing_house.logo_key
                 params['genres'] = publishing_house.genres
+                params['unsolicited'] = publishing_house.unsolicited
                 params['show_in_job_posts'] = publishing_house.show_in_job_posts
 
         print params['genres']
@@ -473,6 +474,7 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
         params['genres'] = ''
         params['show_in_job_posts'] = ''
         params['logo_url'] = ''
+        params['unsolicited'] = True
         params['there_is_ph'] = False
 
         if self.user:
@@ -486,6 +488,7 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
                     params['logo_url'] = '/serve/%s' % publishing_house.logo_key
                 params['genres'] = publishing_house.genres
                 params['show_in_job_posts'] = publishing_house.show_in_job_posts
+                params['unsolicited'] = publishing_house.unsolicited
 
         params['fiction_genres_left'] = utils.split_3cols(utils.genres_fiction)['left']
         params['fiction_genres_center'] = utils.split_3cols(utils.genres_fiction)['center']
@@ -531,6 +534,7 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
             publishing_house.description = self.request.POST.get('description').replace('\r\r\n', '\r\n')
             publishing_house.show_in_job_posts = (self.request.POST.get('show_in_job_posts') == "True")
             publishing_house.genres = checked_genres
+            publishing_house.unsolicited = (self.request.POST.get('unsolicited') == "True")
             publishing_house.put()
             message += " " + _('Your publishing house info has been updated.')
             self.add_message(message, 'success')

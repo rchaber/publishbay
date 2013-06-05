@@ -62,6 +62,7 @@ class PublishingHouse(ndb.Model):
     genres = ndb.StringProperty(repeated=True)
     show_in_job_posts = ndb.BooleanProperty(default=False)
     partners = ndb.KeyProperty(kind=models.User, repeated=True)
+    unsolicited = ndb.BooleanProperty(default=True)
 
     @classmethod
     def get_by_ownerkey(cls, k):

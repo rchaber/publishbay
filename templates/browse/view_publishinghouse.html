@@ -55,6 +55,16 @@
                                     {% endfor %}
                                 </dd>
                             </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Unsolicited Material</dt>
+                                <dd>
+                                    {% if unsolicited %}
+                                    Currently accepting
+                                    {% else %}
+                                    Doesn't accepts
+                                    {% endif %}
+                                </dd>
+                            </dl>
                         </div>
                     </div>
                 </div>

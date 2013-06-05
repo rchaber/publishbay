@@ -46,7 +46,7 @@
                             <img src="/static/images/dummy_50x50.gif" alt="">
                             {% endif %}
                             
-                            <div class="list-name"><a href="/browse/publishinghouses/view?phid={{ p.publishinghouse_id }}">{{ p.name }}</a></div>
+                            <div class="list-name"><a href="{{ uri_for('view-publishinghouses') }}?phid={{ p.publishinghouse_id }}">{{ p.name }}</a></div>
 
                             <div class="list-title">{{ p.tagline }}</div>
 
@@ -60,6 +60,14 @@
                             </div>
 
                             <div class="list-tags">{% for i in p.genres|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</div>
+
+                            <div class="list-info">
+                                {% if p.unsolicited %}
+                                Currently accepting unsolicited manuscripts
+                                {% else %}
+                                Doesn't accept unsolicited manuscripts
+                                {% endif %}
+                            </div>
 
                         </li>
                     {% endfor %}

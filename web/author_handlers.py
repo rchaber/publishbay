@@ -242,21 +242,22 @@ class SubmitManuscriptHandler(BaseHandler):
         for i in items:
             d = {}
             publishinghouse = i.marked.get()
-            d['publishinghouse_id'] = i.marked.get().key.id()
-            d['name'] = publishinghouse.name
-            if publishinghouse.logo_key != '' and publishinghouse.logo_key:
-                d['logo_url'] = '/serve/%s' % publishinghouse.logo_key
-            else:
-                d['logo_url'] = ''
-            d['tagline'] = publishinghouse.tagline
-            d['description'] = publishinghouse.description.replace('\r\n', ' ').replace('\n', ' ')
-            d['genres'] = publishinghouse.genres
-            publishinghouses.append(d)
-            # if len(genrefilter) > 0:
-            #     if len(set(publishinghouse.jobs).intersection(set(genrefilter))) > 0:
-            #         publishinghouses.append(d)
-            # else:
-            #     publishinghouses.append(d)
+            if publishinghouse.unsolicited:
+                d['publishinghouse_id'] = i.marked.get().key.id()
+                d['name'] = publishinghouse.name
+                if publishinghouse.logo_key != '' and publishinghouse.logo_key:
+                    d['logo_url'] = '/serve/%s' % publishinghouse.logo_key
+                else:
+                    d['logo_url'] = ''
+                d['tagline'] = publishinghouse.tagline
+                d['description'] = publishinghouse.description.replace('\r\n', ' ').replace('\n', ' ')
+                d['genres'] = publishinghouse.genres
+                publishinghouses.append(d)
+                # if len(genrefilter) > 0:
+                #     if len(set(publishinghouse.jobs).intersection(set(genrefilter))) > 0:
+                #         publishinghouses.append(d)
+                # else:
+                #     publishinghouses.append(d)
 
         params['manuscript_id'] = manuscript_id
         params['title'] = manuscript.title

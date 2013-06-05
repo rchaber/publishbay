@@ -47,6 +47,12 @@
                             <dd class="list-tags">{% for i in genres|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</dd>
                         </dl>
                         <dl class="dl-horizontal">
+                            <dt>Unsolicited manuscripts</dt>
+                            <dd>
+                                {% if unsolicited %}Accepting{% else %}No{% endif %}
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal">
                             <dt>Show in job posts</dt>
                             <dd>
                                 {% if show_in_job_posts %}Yes{% else %}No{% endif %}

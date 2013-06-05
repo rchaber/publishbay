@@ -325,6 +325,7 @@ class BrowsePublishingHousesHandler(blobstore_handlers.BlobstoreUploadHandler, B
             d['tagline'] = i.tagline
             d['description'] = i.description.replace('\r\n', ' ').replace('\n', ' ')
             d['genres'] = i.genres
+            d['unsolicited'] = i.unsolicited
             publishinghouses.append(d)
 
         paging = utils.pagination(number_of_pages, new_page, 5) if len(publishinghouses) > 0 else [[1], 0]
@@ -373,6 +374,7 @@ class ViewPublishingHousesHandler(blobstore_handlers.BlobstoreUploadHandler, Bas
                 params['logo_url'] = '/serve/%s' % publishinghouse.logo_key
             params['publishinghouse_id'] = publishinghouse_id
             params['genres'] = publishinghouse.genres
+            params['unsolicited'] = publishinghouse.unsolicited
 
         return self.render_template('browse/view_publishinghouse.html', **params)
 

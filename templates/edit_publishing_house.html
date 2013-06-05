@@ -122,6 +122,15 @@
                             </div>
 
                             <div class="control-group">
+                                <label class="control-label" style="margin-bottom: 0">Unsolicited manuscripts</label>
+                                    <div class="controls">
+                                        <input type="checkbox" id="unsolicited" name="unsolicited" value="True" {% if unsolicited %}checked="checked"{% endif %}>
+                                        Accepting unsolicited manuscripts
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="control-group">
                                 <label class="control-label" style="margin-bottom: 0">Show in job posts</label>
                                     <div class="controls">
                                         <input type="checkbox" id="show_in_job_posts" name="show_in_job_posts" value="True" {% if show_in_job_posts %}checked="checked"{% endif %}>

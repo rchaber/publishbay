@@ -54,16 +54,16 @@
 
 
                             <div class="control-group">
-                                <dl class="dl-horizontal">
+                                <dl class="dl-horizontal" style="margin-left: 7px;">
                                     <dt><input type="checkbox" id="coverletter_checkbox" name="coverletter_checkbox" value="True" style="margin-right: 5px;">
                                         Include Cover Letter
                                     </dt>
                                 </dl>
-                                <div id="coverletter_div">
+                                <div id="coverletter_div" style="display: none;">
                                     <div class="controls" id="coverletter_area">
                                         <textarea class="input-xxlarge focused" cols="50" id="coverletter" name="coverletter" rows="8" style="resize: vertical; width: 620px;"></textarea>
                                     </div>
-                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 620px;">
+                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 620px; margin-bottom: 20px;">
                                         <p>A good cover letter will help &#34;sell&#34; your manuscript to the publisher. Make sure to check for spelling and grammar errors!
                                             <span id="countdown" style="float: right; font-weight: bold;"></span>
                                         </p>
@@ -72,7 +72,7 @@
                             </div>
 
                             <legend>Select Publishing Houses to Submit</legend>
-                            <p>Only publishing houses accepting unsolicited material are displayed</p>
+                            <p>Only publishing houses currently accepting unsolicited material are displayed</p>
 
                             <table class="table" style="margin-bottom: 20px;">
                                 <thead>
@@ -87,7 +87,7 @@
                                     {% else %}
                                     <tr class="warning">
                                         <td></td>
-                                        <td>You have no saved publishing houses</td>
+                                        <td>You have no saved publishing houses that accept unsolicited manuscripts</td>
                                         <td></td>
                                     </tr>
                                     {% endif %}
@@ -113,14 +113,24 @@
     {% block mediaJS %}
     <script type="text/javascript">
 
+        function updateCountdown() {
+        // 5000 is the max description length
+        var remaining = 5000 - $('#coverletter').val().length;
+        $('#countdown').text(remaining + {% trans %}' characters left.'{% endtrans %});
+        }
+
         $().ready(function() {
-            $("#coverletter_div").hide();
+
             $('#coverletter_checkbox').click(function(){
                 if ($('#coverletter_checkbox').is(':checked'))
                     $("#coverletter_div").show();  // checked
                 else
                     $("#coverletter_div").hide();  // unchecked
             })
+
+            updateCountdown();
+            $('#coverletter').change(updateCountdown);
+            $('#coverletter').keyup(updateCountdown);
 
         });
     </script>
