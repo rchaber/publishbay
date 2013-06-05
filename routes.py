@@ -50,6 +50,7 @@ _routes = [
     RedirectRoute('/author/editmanuscript', author_handlers.EditManuscriptHandler, name='edit-manuscript', strict_slash=True),
     RedirectRoute('/author/mymanuscripts', author_handlers.MyManuscriptsHandler, name='my-manuscripts', strict_slash=True),
     RedirectRoute('/author/viewmanuscript', author_handlers.ViewManuscriptHandler, name='view-manuscript', strict_slash=True),
+    RedirectRoute('/author/submitmanuscript', author_handlers.SubmitManuscriptHandler, name='submit-manuscript', strict_slash=True),
 
 ]
 

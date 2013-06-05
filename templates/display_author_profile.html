@@ -35,6 +35,12 @@
                             <dd>{% for i in genres_list|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</dd>
                         </dl>
                         <dl class="dl-horizontal">
+                            <dt>Freelance writer</dt>
+                            <dd>
+                                I'm {% if not freelance %}not{% endif %} available as a freelance writer.
+                            </dd>
+                        </dl>
+                        <dl class="dl-horizontal">
                             <dt>Ghostwriting</dt>
                             <dd>
                                 I'm {% if not ghostwrites %}not{% endif %} available for ghostwriting.

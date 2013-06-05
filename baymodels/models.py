@@ -115,7 +115,8 @@ class AuthorProfile(ndb.Model):
     title = ndb.StringProperty()
     pseudonyms = ndb.StringProperty(repeated=True)
     overview = ndb.TextProperty()
-    ghostwrites = ndb.BooleanProperty()
+    ghostwrites = ndb.BooleanProperty(default=False)
+    freelance = ndb.BooleanProperty(default=False)
     genres = ndb.StringProperty(repeated=True)
     ph_author = ndb.KeyProperty(kind=PublishingHouse)
 

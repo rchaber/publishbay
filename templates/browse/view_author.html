@@ -78,6 +78,14 @@
                                 <dd>{{ pseudonyms }}</dd>
                             </dl>
                             <dl class="dl-horizontal">
+                                <dt>Freelance writer</dt>
+                                {% if freelance %}
+                                <dd>Yes</dd>
+                                {% else %}
+                                <dd>No</dd>
+                                {% endif %}
+                            </dl>
+                            <dl class="dl-horizontal">
                                 <dt>Ghostwriting</dt>
                                 {% if ghostwrites %}
                                 <dd>Yes</dd>

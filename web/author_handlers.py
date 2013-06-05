@@ -223,15 +223,16 @@ class ViewManuscriptHandler(BaseHandler):
         return self.render_template('/author/view_manuscript.html', **params)
 
 
-class SubmissionHandler(BaseHandler):
+class SubmitManuscriptHandler(BaseHandler):
 
     @user_required
     def get(self):
 
-        manuscript_id = self.request.GET.get('mid')
+        manuscript_id = self.request.GET.get('manuscript_id')
 
         manuscript = bmodels.Manuscript.get_by_id(int(manuscript_id))
 
+        params = {}
         publishinghouses = []
 
         q = bmodels.Marked_publishinghouses.query(bmodels.Marked_publishinghouses.user == self.user_key)
@@ -250,18 +251,22 @@ class SubmissionHandler(BaseHandler):
             d['tagline'] = publishinghouse.tagline
             d['description'] = publishinghouse.description.replace('\r\n', ' ').replace('\n', ' ')
             d['genres'] = publishinghouse.genres
-            if len(genrefilter) > 0:
-                if len(set(publishinghouse.jobs).intersection(set(genrefilter))) > 0:
-                    publishinghouses.append(d)
-            else:
-                publishinghouses.append(d)
+            publishinghouses.append(d)
+            # if len(genrefilter) > 0:
+            #     if len(set(publishinghouse.jobs).intersection(set(genrefilter))) > 0:
+            #         publishinghouses.append(d)
+            # else:
+            #     publishinghouses.append(d)
+
+        params['manuscript_id'] = manuscript_id
+        params['title'] = manuscript.title
+        params['tagline'] = manuscript.tagline
+        params['summary'] = manuscript.summary
+        params['co_authors'] = ', '.join(manuscript.co_authors)
+        params['genres'] = manuscript.genres
 
         params['count'] = count
-        params['filter_count'] = len(publishinghouses)
         params['publishinghouses'] = publishinghouses
+        # params['genrefilter'] = genrefilter
 
-        params['genrelist_fiction'] = utils.genres_fiction
-        params['genrelist_nonfiction'] = utils.genres_nonfiction
-        params['genres'] = genrefilter
-
-        return self.render_template('author/submit.html', **params)
+        return self.render_template('author/submit_manuscript.html', **params)

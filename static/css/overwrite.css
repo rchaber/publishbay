@@ -515,14 +515,21 @@ a.btn-mini {
 }
 
 a.btn-mini.icon {
-	padding-right: 6px;
-	padding-left: 6px;
+	padding-right: 0px;
+	padding-left: 0px;
 	font-size: 12px;
+	width: 28px;
 }
 
 .w-box-header [class*="icsw16-"], .w-box-header [class*="splashy-"] {
 	margin: -1px -1px 0 -1px;
 	margin-right: 0;
+}
+
+.btn-mini [class^="icon-"], .btn-mini [class*=" icon-"] {
+	margin-top: 0;
+	width: 16px;
+	margin-left: 1px;
 }
 
 a.btn-header {
@@ -559,9 +566,7 @@ a.btn-header:hover {
 
 .PB-btn {
 	cursor: pointer;
-	border: 0;
 	display: inline-block;
-	background: rgba(0, 0, 0, 0);
 	font: 700 13px sans-serif;
 	line-height: 25px;
 	border-radius: 6px;
@@ -574,11 +579,31 @@ a.btn-header:hover {
 	vertical-align: middle;
 	margin-bottom: 0 !important;
 	font-size: 14px;
+	color: #636360;
+	background: #F1F1EE;
+	background: #F1F1EE -webkit-linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
+	background: #F1F1EE -moz-linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
+	background: #F1F1EE -o-linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
+	background: #F1F1EE linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
+	border: 1px solid #CDCDC6;
+	border-bottom: 1px solid #B2AFB4;
+	-webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
+	-moz-box-shadow: 0 2px 2px rgba(0,0,0,.1);
+	box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
 }
 
 .PB-btn:hover {
 	text-decoration: none;
-	color: #FFF;
+	color: #6D696F;
+	background: #F5F5F4;
+	background: #F5F5F4 -webkit-linear-gradient(top,#F5F5F4,#E8E8E6 50%,#DEDEDD);
+	background: #F5F5F4 -moz-linear-gradient(top,#F5F5F4,#E8E8E6 50%,#DEDEDD);
+	background: #F5F5F4 -o-linear-gradient(top,#F5F5F4,#E8E8E6 50%,#DEDEDD);
+	background: #F5F5F4 linear-gradient(top,#F5F5F4,#E8E8E6 50%,#DEDEDD);
+	border: 1px solid #CCC9D0;
+	border-bottom-color: #B2AFB4;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
 }
 
 .PB-btn-primary {
@@ -598,6 +623,7 @@ a.btn-header:hover {
 }
 
 .PB-btn-primary:hover {
+	color: #FFF;
 	background: #93DD64;
 	background: #93DD64 -webkit-linear-gradient(top,#93DD64,#72D239 95%,#6FCC37);
 	background: #93DD64 -moz-linear-gradient(top,#93DD64,#72D239 95%,#6FCC37);
@@ -608,6 +634,7 @@ a.btn-header:hover {
 	box-shadow: 0 1px 3px rgba(38, 151, 72, .5),inset 0 1px 0 #ADEC66;
 	border: 1px solid #6DBE38;
 	border-bottom: 1px solid #198D0F;
+	text-shadow: 0 1px 0 #25A811;
 }
 
 .PB-btn-jumbo {

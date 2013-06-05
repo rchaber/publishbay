@@ -210,6 +210,7 @@ class BrowseAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
             d['overview'] = i.overview.replace('\r\n', ' ').replace('\n', ' ')
             d['genres'] = i.genres
             d['ghostwrites'] = i.ghostwrites
+            d['freelance'] = i.freelance
             d['manuscripts'] = manuscripts
             authors.append(d)
 
@@ -268,6 +269,7 @@ class ViewAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler)
             params['manuscripts'] = manuscripts
             params['genres'] = author.genres
             params['ghostwrites'] = author.ghostwrites
+            params['freelance'] = author.freelance
             params['pseudonyms'] = ', '.join(author.pseudonyms)
 
         return self.render_template('browse/view_author.html', **params)

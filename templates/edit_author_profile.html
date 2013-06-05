@@ -102,6 +102,15 @@
                             </div>
 
                             <div class="control-group">
+                                <label class="control-label" style="margin-bottom: 0">Freelance</label>
+                                    <div class="controls">
+                                        <input type="checkbox" id="freelance" name="freelance" value="True" {% if freelance %}checked="checked"{% endif %}>
+                                        Available as freelance writer
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="control-group">
                                 <label class="control-label" style="margin-bottom: 0">Ghostwriting</label>
                                     <div class="controls">
                                         <input type="checkbox" id="ghostwrites" name="ghostwrites" value="True" {% if ghostwrites %}checked="checked"{% endif %}>

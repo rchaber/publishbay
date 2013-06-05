@@ -558,6 +558,7 @@ class DisplayAuthorProfileHandler(BaseHandler):
         params['pseudonyms'] = ''
         params['overview'] = ''
         params['genres_list'] = ''
+        params['freelance'] = ''
         params['ghostwrites'] = ''
         params['there_is_author_profile'] = False
 
@@ -569,6 +570,7 @@ class DisplayAuthorProfileHandler(BaseHandler):
                 params['overview'] = author_profile.overview
                 params['pseudonyms'] = urllib.unquote(', '.join(author_profile.pseudonyms))
                 params['genres_list'] = author_profile.genres
+                params['freelance'] = author_profile.freelance
                 params['ghostwrites'] = author_profile.ghostwrites
 
         return self.render_template('display_author_profile.html', **params)
@@ -589,6 +591,7 @@ class EditAuthorProfileHandler(BaseHandler):
         params['pseudonyms'] = ''
         params['overview'] = ''
         params['genres_list'] = ''
+        params['freelance'] = ''
         params['ghostwrites'] = ''
         params['there_is_author_profile'] = False
 
@@ -599,6 +602,7 @@ class EditAuthorProfileHandler(BaseHandler):
                 params['overview'] = author_profile.overview
                 params['pseudonyms'] = ', '.join(author_profile.pseudonyms)
                 params['genres_list'] = author_profile.genres
+                params['freelance'] = author_profile.freelance
                 params['ghostwrites'] = author_profile.ghostwrites
                 params['there_is_author_profile'] = True
 
@@ -632,6 +636,7 @@ class EditAuthorProfileHandler(BaseHandler):
             message = ''
             author_profile.title = self.request.POST.get('title')
             author_profile.overview = self.request.POST.get('overview').replace('\r\r\n', '\r\n')
+            author_profile.freelance = (self.request.POST.get('freelance') == "True")
             author_profile.ghostwrites = (self.request.POST.get('ghostwrites') == "True")
             author_profile.genres = checked_genres
             author_profile.pseudonyms = pseudonyms
