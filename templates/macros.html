@@ -93,6 +93,7 @@
 <!-- renders left sidebar -->
 {% macro left_sidebar(current_page) -%}
     <div class="span3" style="margin-left: 0;">
+        <div class="w-box-header" style="border-bottom: 1px solid #eee; background: #DD8500"><h4>Settings</h4></div>
         <div class="sidebar">
             <ul id="pageNav">
                 <li {% if current_page == 'edit_profile' %}{{ 'class="active"' }}{% endif %}><a href="{{ uri_for('edit-profile') }}">{% trans %}My basic profile{% endtrans %}</a></li>

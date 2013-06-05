@@ -77,18 +77,35 @@
                             <table class="table" style="margin-bottom: 20px;">
                                 <thead>
                                     <tr>
-                                        <th style="width: 40px;"><input type="checkbox" id="checkall" name="checkall" value="True"></th>
-                                        <th>Publishing House</th>
-                                        <th></th>
+                                        <th style="width: 20px;"><input type="checkbox" id="checkall" name="checkall" value="True"></th>
+                                        <th style="width: 200px;">Publishing House</th>
+                                        <th>Genres</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% if publishinghouses|length > 0 %}
+                                        {% for p in publishinghouses %}
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" id="pid{{ p.publishinghouse_id }}" name="pid" value="{{ p.publishinghouse_id }}" style="margin-right: 5px;">
+                                            </td>
+                                            <td>
+                                                {% if p.logo_url != '' and p.logo_url %}
+                                                <img src="{{ p.logo_url }}" alt="" style="max-height: 30px; max-width: 30px; margin-right: 5px; float:left;">
+                                                {% else %}
+                                                <img src="/static/images/dummy_50x50.gif" alt="" style="max-height: 30px; max-width: 30px; margin-right: 5px; float:left;">
+                                                {% endif %}
+                                                {{ p.name }}
+                                            </td>
+                                            <td>
+                                                <div class="list-tags">{% for i in p.genres|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
                                     {% else %}
                                     <tr class="warning">
                                         <td></td>
-                                        <td>You have no saved publishing houses that accept unsolicited manuscripts</td>
-                                        <td></td>
+                                        <td colspan="2">You have no saved publishing houses that accept unsolicited manuscripts</td>
                                     </tr>
                                     {% endif %}
                                 </tbody>

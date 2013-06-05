@@ -377,7 +377,6 @@ label {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	border-bottom: 1px solid #eee;
 	border-bottom: 1px solid rgba(255,255,255,.6);
 }
 
@@ -582,6 +581,7 @@ a.btn-header:hover {
 	text-align: center;
 	vertical-align: middle;
 	margin-bottom: 0 !important;
+	margin-right: 10px;
 	font-size: 14px;
 	color: #636360;
 	background: #F1F1EE;
