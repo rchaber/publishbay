@@ -207,6 +207,9 @@
                     $("#coverletter_div, #coverletter_select").show();  // checked
                 } else {
                     CKEDITOR.instances.coverletter.setData();
+                    $('#coverletter_to_load')[0].selectedIndex = 0;
+                    $('#coverletter_name').val('');
+                    $('#coverletter_save_checkbox').prop('checked', false);
                     $("#coverletter_div, #coverletter_select").hide();  // unchecked
                 }
             });
@@ -215,7 +218,7 @@
                 if ($('#coverletter_save_checkbox').is(':checked')){
                     $("#coverletter_name_dd").show();  // checked
                 } else {
-                    CKEDITOR.instances.coverletter.setData();
+                    $('#coverletter_name').val('');
                     $("#coverletter_name_dd").hide();  // unchecked
                 }
             });

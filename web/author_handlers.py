@@ -291,6 +291,7 @@ class SubmitManuscriptHandler(BaseHandler):
                 q.content = self.request.POST.get('coverletter').replace('\r', ' ').replace('\n', ' ')
                 q.put()
 
+        # check if manuscript has already been submitted to any of the publishing houses
 
 class LoadCoverletterHandler(BaseHandler):
 
