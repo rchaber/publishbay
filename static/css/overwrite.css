@@ -738,6 +738,11 @@ div.list-name a {
 	margin-top: 5px;
 }
 
+.list-name.manuscript, .list-info.manuscript, .list-title.manuscript, .list-tags.manuscript {
+	padding-left: 10px;
+	margin-left: 10px;
+}
+
 .jQ-list ul img + .list-name, .jQ-list ul img + .list-name + .list-info, .jQ-list ul img + .list-info {
 	padding-left: 67px;
 }

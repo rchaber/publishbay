@@ -29,11 +29,11 @@
                     {% for m in manuscripts %}
                         <li>
                     
-                            <div class="list-name"><a href="{{ uri_for('view-manuscript') }}?mid={{ m.manuscript_id }}">{{ m.title }}</a></div>
+                            <div class="list-name manuscript"><a href="{{ uri_for('view-manuscript') }}?mid={{ m.manuscript_id }}">{{ m.title }}</a></div>
 
-                            <div class="list-title">{{ m.tagline }}</div>
+                            <div class="list-title manuscript">{{ m.tagline }}</div>
 
-                            <div class="list-info">
+                            <div class="list-info manuscript">
                                 {% if m.summary.split(' ')|length <= 40 %}
                                 {{ m.summary }}
                                 {% else %}
@@ -42,13 +42,13 @@
                                 {% endif %}
                             </div>
 
-                            <div class="list-info">
+                            <div class="list-info manuscript">
                                 {% if m.co_authors %}
                                 Co-authors: {{ m.co_authors }}
                                 {% endif %}
                             </div>
 
-                            <div class="list-tags">{% for i in m.genres|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</div>
+                            <div class="list-tags manuscript">{% for i in m.genres|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</div>
 
                         </li>
                     {% endfor %}
