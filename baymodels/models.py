@@ -216,3 +216,9 @@ class ManuscriptSubmission(ndb.Model):
     # another test
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
+
+
+class Coverletter(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    name = ndb.StringProperty()
+    content = ndb.TextProperty()

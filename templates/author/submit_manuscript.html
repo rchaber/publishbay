@@ -55,19 +55,37 @@
 
                             <div class="control-group">
                                 <dl class="dl-horizontal" style="margin-left: 7px;">
-                                    <dt><input type="checkbox" id="coverletter_checkbox" name="coverletter_checkbox" value="True" style="margin-right: 5px;">
+                                    <dt style="width: 300px;"><input type="checkbox" id="coverletter_checkbox" name="coverletter_checkbox" value="True" style="margin-right: 5px;">
                                         Include Cover Letter
                                     </dt>
+                                    {% if saved_coverletters|length > 0 %}
+                                    <dd style="width: 390px; text-align: right; display: none;" id="coverletter_select">
+                                        <select id="coverletter_to_load" style="height: 22px; margin-bottom: 0; font-size: 12px; max-width: 200px;">
+                                              <option value="None">Select a saved cover letter</option>
+                                              {% for c in saved_coverletters %}
+                                              <option value="{{ c[0] }}">{{ c[1] }}</option>
+                                              {% endfor %}
+                                        </select>
+                                        <button type="button" class="btn btn-mini" id="coverletter_load">Load</button>
+                                    </dd>
+                                    {% endif %}
                                 </dl>
                                 <div id="coverletter_div" style="display: none;">
                                     <div class="controls" id="coverletter_area">
                                         <textarea class="input-xxlarge focused" cols="50" id="coverletter" name="coverletter" rows="8" style="resize: vertical; width: 620px;"></textarea>
                                     </div>
-                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 620px; margin-bottom: 20px;">
-                                        <p>A good cover letter will help &#34;sell&#34; your manuscript to the publisher. Make sure to check for spelling and grammar errors!
-                                            <span id="countdown" style="float: right; font-weight: bold;"></span>
-                                        </p>
+                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 700px; margin-bottom: 20px; margin-top: 5px;">
+                                        <p>A good cover letter will help &#34;sell&#34; your manuscript to the publisher. Make sure to check for spelling and grammar errors!</p>
                                     </div>
+                                    <dl class="dl-horizontal" style="margin-top: -10px; height: 30px;">
+                                        <dt style="width: 200px; padding-top: 5px;"><input type="checkbox" id="coverletter_save_checkbox" name="coverletter_save_checkbox" value="True" style="margin-right: 5px;">
+                                            Save Cover Letter
+                                        </dt>
+                                        <dt style="white-space: normal; line-height: 15px; display: none;">Enter cover letter name</dt>
+                                        <dd id='coverletter_name_dd' style="display: none; height: 30px; line-height: 30px; vertical-align: top;">
+                                            Enter cover letter name<input class="input-large focused" id="coverletter_name" name="coverletter_name" type="text" value="" style="height: 15px; margin-left: 10px; margin-bottom: 0; font-size: 13px;">
+                                        </dd>
+                                    </dl>
                                 </div>
                             </div>
 
@@ -111,12 +129,11 @@
                                 </tbody>
                             </table>
 
-
-
                             <div class="form-actions">
-                                <button type="submit" class="PB-btn PB-btn-primary">Submit Manuscript</button>
+                                <button type="button" class="PB-btn PB-btn-primary" id="submit-button">Submit Manuscript</button>
                                 <a href="{{ uri_for('view-manuscript') }}?mid={{ manuscript_id }}" class="PB-btn">Cancel</a>
                             </div>
+
                         </form>
                     </fieldset>
 
@@ -128,26 +145,91 @@
     {% endblock %}
 
     {% block mediaJS %}
-    <script type="text/javascript">
 
-        function updateCountdown() {
-        // 5000 is the max description length
-        var remaining = 5000 - $('#coverletter').val().length;
-        $('#countdown').text(remaining + {% trans %}' characters left.'{% endtrans %});
+    <script src="/static/js/lib/ckeditor/ckeditor.js"></script>
+    <script src="/static/js/lib/jquery-validation/jquery.validate.js"></script>
+
+    <style type="text/css">
+        .cke_chrome {
+            border: 2px solid #CCC;
+            border-radius: 4px;
         }
+
+        .cke_inner {
+            border-radius: 4px;
+        }
+
+        .cke_top {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        .cke_bottom {
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        #coverletter_div {
+            width: 700px;
+        }
+    </style>
+
+    <script type="text/javascript">
 
         $().ready(function() {
 
-            $('#coverletter_checkbox').click(function(){
-                if ($('#coverletter_checkbox').is(':checked'))
-                    $("#coverletter_div").show();  // checked
-                else
-                    $("#coverletter_div").hide();  // unchecked
-            })
+            CKEDITOR.replace('coverletter');
 
-            updateCountdown();
-            $('#coverletter').change(updateCountdown);
-            $('#coverletter').keyup(updateCountdown);
+            $('#checkall').click(function(){
+                if ($('#checkall').is(':checked'))
+                    $('input[name="pid"]').prop('checked', true)  // check all
+                else
+                    $('input[name="pid"]').prop('checked', false)  // uncheck all
+            });
+
+            $('#submit-button').click(function(){
+                CKEDITOR.instances.coverletter.updateElement();
+                var checked_items = $('input[name="pid"]').serialize();
+                if (checked_items.length == 0) {
+                    bootbox.alert("Select at least one publishing house");
+                }
+                else {
+                    $("#form_manuscript_submission").submit();
+                };
+            });
+            
+            $('#coverletter_checkbox').click(function(){
+                if ($('#coverletter_checkbox').is(':checked')){
+                    $("#coverletter_div, #coverletter_select").show();  // checked
+                } else {
+                    CKEDITOR.instances.coverletter.setData();
+                    $("#coverletter_div, #coverletter_select").hide();  // unchecked
+                }
+            });
+
+            $('#coverletter_save_checkbox').click(function(){
+                if ($('#coverletter_save_checkbox').is(':checked')){
+                    $("#coverletter_name_dd").show();  // checked
+                } else {
+                    CKEDITOR.instances.coverletter.setData();
+                    $("#coverletter_name_dd").hide();  // unchecked
+                }
+            });
+
+            $('#coverletter_load').click(function(){
+                if ($('#coverletter_to_load').val() != 'None') {
+                    $.ajax({
+                        url: "{{ uri_for('load-coverletter') }}",
+                        type: "GET",
+                        data: { coverletter_id: $('#coverletter_to_load').val() },
+                        dataType: "script"
+                    });
+                };
+            });
 
         });
     </script>

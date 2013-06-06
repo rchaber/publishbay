@@ -222,7 +222,7 @@
 
         $().ready(function() {
 
-            // setTimeout is necessary for the ckeditor load wysiwyg instance
+            // setTimeout is necessary for the ckeditor load wysiwyg instance with saved text
             var t=setTimeout(function(){
                 CKEDITOR.instances.wysiwyg.setData( '{{ sample|safe }}' );
             }, 100)
@@ -231,7 +231,7 @@
                 CKEDITOR.instances.wysiwyg.updateElement();
                 $("#form_manuscript").submit();
             });
-            
+
             $("#form_manuscript").validate({
                 rules: {
                     title: "required",

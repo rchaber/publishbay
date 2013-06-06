@@ -259,6 +259,9 @@ class SubmitManuscriptHandler(BaseHandler):
                 # else:
                 #     publishinghouses.append(d)
 
+        c = bmodels.Coverletter.query(bmodels.Coverletter.user == self.user_key).fetch()
+        saved_coverletters = [[a.key.id(), a.name] for a in c]
+
         params['manuscript_id'] = manuscript_id
         params['title'] = manuscript.title
         params['tagline'] = manuscript.tagline
@@ -268,6 +271,41 @@ class SubmitManuscriptHandler(BaseHandler):
 
         params['count'] = count
         params['publishinghouses'] = publishinghouses
+        params['saved_coverletters'] = saved_coverletters
         # params['genrefilter'] = genrefilter
 
         return self.render_template('author/submit_manuscript.html', **params)
+
+    def post(self):
+
+        coverletter_save = (self.request.POST.get('coverletter_save_checkbox') == 'True')
+
+        if self.request.POST.get('coverletter_checkbox') == 'True':
+            coverletter_name = self.request.POST.get('coverletter_name')
+            if coverletter_name.replace(' ', '') != '' and coverletter_save:
+                q = bmodels.Coverletter.query(bmodels.Coverletter.name == coverletter_name).get()
+                if not q:
+                    q = bmodels.Coverletter()
+                    q.user = self.user_key
+                    q.name = coverletter_name
+                q.content = self.request.POST.get('coverletter').replace('\r', ' ').replace('\n', ' ')
+                q.put()
+
+
+class LoadCoverletterHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+
+        coverletter_id = self.request.GET.get('coverletter_id')
+        print "coverletter_id: "+coverletter_id
+        coverletter = bmodels.Coverletter.get_by_id(int(coverletter_id))
+
+        js = ''
+        if coverletter:
+            js = "CKEDITOR.instances.coverletter.setData('%s');" % coverletter.content
+
+        print js
+
+        self.response.out.write(js)
+

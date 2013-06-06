@@ -52,6 +52,8 @@ _routes = [
     RedirectRoute('/author/viewmanuscript', author_handlers.ViewManuscriptHandler, name='view-manuscript', strict_slash=True),
     RedirectRoute('/author/submitmanuscript', author_handlers.SubmitManuscriptHandler, name='submit-manuscript', strict_slash=True),
 
+    RedirectRoute('/author/loadcoverletter', author_handlers.LoadCoverletterHandler, name='load-coverletter', strict_slash=True),
+
 ]
 
 
