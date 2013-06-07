@@ -33,11 +33,11 @@
                         <div>
                             <dl class="dl-horizontal">
                                 <dt>
-                                    <div class="fileupload-new" style="width: 50px; height: 50px; vertical-align: middle; text-align: center;">
+                                    <div class="fileupload-new" style="width: 50px; height: 50px; vertical-align: middle; text-align: center; float: right; margin-right: 10px;">
                                         {% if logo_url == '' or not logo_url %}
                                         <img src="/static/images/dummy_50x50.gif" alt="">
                                         {% else %}
-                                        <img src="{{ logo_url }}" alt="" style="display: inline-block;">
+                                        <img src="{{ logo_url }}" alt="" style="display: inline-block; max-height: 50px; max-width: 50px;">
                                         {% endif %}
                                     </div>
                                 </dt>

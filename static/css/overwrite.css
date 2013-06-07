@@ -825,7 +825,7 @@ div.list-name a {
 	overflow-y: auto;
 	font-family: 'Helvetica Neue', arial, freesans, clean, sans-serif;
 	font-size: 14px;
-	font-weight: bold;
+	font-weight: normal;
 }
 
 #breadcrumbs {

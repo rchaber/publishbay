@@ -198,7 +198,14 @@
                     bootbox.alert("Select at least one publishing house");
                 }
                 else {
-                    $("#form_manuscript_submission").submit();
+                    var confirm_dialog = "Manuscript: " + $("dd.list-name").text();
+                    var phs = $('input[name="pid"]:checked').map(function(a){ return $($(this).parent().siblings()[0]).text().trim() }).get();
+                    phs = phs.join("<br>- ");
+                    confirm_dialog += ("<br>" + "Submitting to:" + "<br>- " + phs + "<br>");
+                    confirm_dialog += "<br>Confirm submission?"
+                    bootbox.confirm(confirm_dialog, function(result) {
+                        if (result) { $("#form_manuscript_submission").submit(); };
+                    });                     
                 };
             });
             
