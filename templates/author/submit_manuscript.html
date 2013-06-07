@@ -51,6 +51,7 @@
                         <form id="form_manuscript_submission" action="{{ url|safe }}" method="post">
 
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="manuscript_id" value="{{ manuscript_id }}">
 
 
                             <div class="control-group">

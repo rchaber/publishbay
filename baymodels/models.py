@@ -213,7 +213,10 @@ class Manuscript(ndb.Model):
 
 
 class ManuscriptSubmission(ndb.Model):
-    # another test
+    manuscript = ndb.KeyProperty(kind=Manuscript)
+    publishinghouse = ndb.KeyProperty(kind=PublishingHouse)
+    status = ndb.StringProperty(choices=['sent', 'read', 'rejected', 'accepted', 'acquired'])
+    coverletter = ndb.TextProperty()
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
 

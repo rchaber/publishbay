@@ -279,8 +279,10 @@ class SubmitManuscriptHandler(BaseHandler):
     def post(self):
 
         coverletter_save = (self.request.POST.get('coverletter_save_checkbox') == 'True')
+        coverletter_checkbox = (self.request.POST.get('coverletter_checkbox') == 'True')
 
-        if self.request.POST.get('coverletter_checkbox') == 'True':
+        if coverletter_checkbox:
+            content = self.request.POST.get('coverletter').replace('\r', ' ').replace('\n', ' ')
             coverletter_name = self.request.POST.get('coverletter_name')
             if coverletter_name.replace(' ', '') != '' and coverletter_save:
                 q = bmodels.Coverletter.query(bmodels.Coverletter.name == coverletter_name).get()
@@ -288,25 +290,56 @@ class SubmitManuscriptHandler(BaseHandler):
                     q = bmodels.Coverletter()
                     q.user = self.user_key
                     q.name = coverletter_name
-                q.content = self.request.POST.get('coverletter').replace('\r', ' ').replace('\n', ' ')
+                q.content = content
                 q.put()
 
         # check if manuscript has already been submitted to any of the publishing houses
+
+        ph_ids_list = self.request.POST.getall('pid')
+        phouses = [bmodels.PublishingHouse.get_by_id(int(p)).key for p in ph_ids_list]
+        manuscript = bmodels.Manuscript.get_by_id(int(self.request.POST.get('manuscript_id')))
+
+        already_submitted = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.manuscript == manuscript.key, bmodels.ManuscriptSubmission.publishinghouse.IN(phouses)).fetch()
+
+        print already_submitted
+
+        phouses_already_submitted = [p.publishinghouse for p in already_submitted]
+
+        submission_confirmed = []
+        submission_denied = []
+        for p in phouses:
+            if p not in phouses_already_submitted:
+                submission = bmodels.ManuscriptSubmission()
+                submission.publishinghouse = p
+                submission.manuscript = manuscript.key
+                submission.status = 'sent'
+                if coverletter_checkbox:
+                    submission.coverletter = content
+                submission.put()
+                submission_confirmed.append(p.get().name)
+            else:
+                submission_denied.append(p.get().name)
+
+        submission_confirmed = '; '.join(submission_confirmed)
+        submission_denied = '; '.join(submission_denied)
+
+        if len(submission_confirmed) > 0:
+            message = "Manuscript '%s' submitted to: %s" % (manuscript.title, submission_confirmed)
+            self.add_message(message, 'success')
+        if len(submission_denied) > 0:
+            message = " " + "Failed submissions. Manuscript '%s' already been submitted to: %s" % (manuscript.title, submission_denied)
+            self.add_message(message, 'error')
+
+        self.redirect('/')
+
 
 class LoadCoverletterHandler(BaseHandler):
 
     @user_required
     def get(self):
-
         coverletter_id = self.request.GET.get('coverletter_id')
-        print "coverletter_id: "+coverletter_id
         coverletter = bmodels.Coverletter.get_by_id(int(coverletter_id))
-
         js = ''
         if coverletter:
             js = "CKEDITOR.instances.coverletter.setData('%s');" % coverletter.content
-
-        print js
-
         self.response.out.write(js)
-
