@@ -239,6 +239,8 @@ class SubmitManuscriptHandler(BaseHandler):
         count = q.count()
         items = q.fetch()
 
+        my_publishinghouse_id = bmodels.PublishingHouse.query(bmodels.PublishingHouse.owner == self.user_key).get().key.id()
+
         for i in items:
             d = {}
             publishinghouse = i.marked.get()
@@ -252,7 +254,8 @@ class SubmitManuscriptHandler(BaseHandler):
                 d['tagline'] = publishinghouse.tagline
                 d['description'] = publishinghouse.description.replace('\r\n', ' ').replace('\n', ' ')
                 d['genres'] = publishinghouse.genres
-                publishinghouses.append(d)
+                if d['publishinghouse_id'] != my_publishinghouse_id:  # it doesn't include user own publishing house
+                    publishinghouses.append(d)
                 # if len(genrefilter) > 0:
                 #     if len(set(publishinghouse.jobs).intersection(set(genrefilter))) > 0:
                 #         publishinghouses.append(d)
@@ -270,7 +273,7 @@ class SubmitManuscriptHandler(BaseHandler):
         params['genres'] = manuscript.genres
 
         params['count'] = count
-        params['publishinghouses'] = publishinghouses
+        params['publishinghouses'] = sorted(publishinghouses, key=lambda pub: pub['name'])
         params['saved_coverletters'] = saved_coverletters
         # params['genrefilter'] = genrefilter
 
@@ -294,7 +297,6 @@ class SubmitManuscriptHandler(BaseHandler):
                 q.put()
 
         # check if manuscript has already been submitted to any of the publishing houses
-
         ph_ids_list = self.request.POST.getall('pid')
         phouses = [bmodels.PublishingHouse.get_by_id(int(p)).key for p in ph_ids_list]
         manuscript = bmodels.Manuscript.get_by_id(int(self.request.POST.get('manuscript_id')))
@@ -343,3 +345,40 @@ class LoadCoverletterHandler(BaseHandler):
         if coverletter:
             js = "CKEDITOR.instances.coverletter.setData('%s');" % coverletter.content
         self.response.out.write(js)
+
+
+class MySubmissionsHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+
+        status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else 'open'
+
+        if status_filter == 'open':
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['sent', 'read'])).fetch()
+            status_filter_label = 'Status: open'
+        elif status_filter == 'closed':
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['rejected', 'accepted', 'acquired'])).fetch()
+            status_filter_label = 'Status: closed'
+        else:
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key).fetch()
+            status_filter_label = 'All'
+
+        params = {}
+        submissions = []
+        for item in submissions_fetch:
+            d = {}
+            manuscript = item.manuscript.get()
+            d['manuscript_id'] = manuscript.key.id()
+            d['manuscript_title'] = manuscript.title
+            d['publishinghouse'] = item.publishinghouse.get().name
+            d['status'] = item.status
+            d['submitted_on'] = item.submitted_on
+            d['status_updated_on'] = item.updated_on
+            submissions.append(d)
+
+        params['status_filter'] = status_filter
+        params['status_filter_label'] = status_filter_label
+        params['submissions'] = submissions
+
+        return self.render_template('author/mysubmissions.html', **params)

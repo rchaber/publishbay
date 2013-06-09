@@ -1,0 +1,97 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+            
+    <div class="span12" style="margin-left:0;">
+
+        <ul id="breadcrumbs">
+            <li><a href="/"><i class="icon-home"></i></a></li>
+            <li><span>Author: My Submissions</span></li>
+        </ul>
+
+        <div class="w-box">
+            <div class="w-box-header">
+                <h4>{% trans %}My Submissions{% endtrans %}</h4>
+                <div class="pull-right">
+                    <div class="toggle-group">
+                        <span class="dropdown-toggle" data-toggle="dropdown">{{ status_filter_label }} <span class="caret"></span></span>
+                        <ul class="dropdown-menu">
+                            {% if status_filter != 'open' %}
+                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=open">Status: open</a></li>
+                            {% endif %}
+                            {% if status_filter != 'closed' %}
+                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=closed">Status: closed</a></li>
+                            {% endif %}
+                            {% if status_filter != 'all' %}
+                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=all">All</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="w-box-content cnt_ab">
+                <div class="well form-vertical">
+
+                    <!-- <legend>Select Publishing Houses to Submit</legend> -->
+
+                    <table class="table" style="margin-bottom: 20px;">
+                        <thead>
+                            <tr>
+                                <th>Manuscript ID</th>
+                                <th>Title</th>
+                                <th>Publishing House</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                                <th>Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if submissions|length > 0 %}
+                                {% for s in submissions %}
+                                <tr>
+                                    <td>
+                                        {{ s.manuscript_id }}
+                                    </td>
+                                    <td>
+                                        {{ s.manuscript_title }}
+                                    </td>
+                                    <td>
+                                        {{ s.publishinghouse }}
+                                    </td>
+                                    <td>
+                                        {{ s.status }}
+                                    </td>
+                                    <td>
+                                        {{ s.submitted_on }}
+                                    </td>
+                                    <td>
+                                        {{ s.status_updated_on }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr class="warning">
+                                    <td colspan="6">You have no submissions in our database</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+
+    <script type="text/javascript">
+
+        $().ready(function() {
+
+        });
+    </script>
+    {% endblock %}
+
