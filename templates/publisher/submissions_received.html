@@ -7,7 +7,7 @@
 
         <ul id="breadcrumbs">
             <li><a href="/"><i class="icon-home"></i></a></li>
-            <li><span>Author: My Submissions</span></li>
+            <li><span>Publisher: Submissions Received</span></li>
         </ul>
 
         <div class="w-box w-box-green">
@@ -17,11 +17,20 @@
                     <div class="toggle-group">
                         <span class="dropdown-toggle" data-toggle="dropdown">{{ status_filter_label }} <span class="caret"></span></span>
                         <ul class="dropdown-menu">
-                            {% if status_filter != 'open' %}
-                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=open">Status: open</a></li>
+                            {% if status_filter != 'unread' %}
+                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=unread">Status: unread</a></li>
                             {% endif %}
-                            {% if status_filter != 'closed' %}
-                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=closed">Status: closed</a></li>
+                            {% if status_filter != 'read' %}
+                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=read">Status: read</a></li>
+                            {% endif %}
+                            {% if status_filter != 'rejected' %}
+                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=rejected">Status: rejected</a></li>
+                            {% endif %}
+                            {% if status_filter != 'accepted' %}
+                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=accepted">Status: accepted</a></li>
+                            {% endif %}
+                            {% if status_filter != 'acquired' %}
+                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=acquired">Status: acquired</a></li>
                             {% endif %}
                             {% if status_filter != 'all' %}
                             <li><a href="{{ uri_for('my-submissions')}}?status_filter=all">All</a></li>
@@ -37,8 +46,9 @@
                             <tr>
                                 <th>Submission ID</th>
                                 <th>Manuscript</th>
-                                <th>Publishing House</th>
+                                <th>Author</th>
                                 <th>Status</th>
+                                <th>C. Letter</th>
                                 <th>Submitted</th>
                                 <th>Updated</th>
                             </tr>
@@ -48,16 +58,21 @@
                                 {% for s in submissions %}
                                 <tr>
                                     <td>
-                                        {{ s.submission_id }}
+                                        <a href="">{{ s.submission_id }}</a>
                                     </td>
                                     <td>
-                                        <a href="{{ uri_for('view-manuscript') }}?mid={{ s.manuscript_id }}">{{ s.manuscript_title }}</a>
+                                        {{ s.manuscript_title }}
                                     </td>
                                     <td>
-                                        <a href="{{ uri_for('view-publishinghouses') }}?phid={{ s.publishinghouse_id }}">{{ s.publishinghouse }}</a>
+                                        <a href="{{ uri_for('view-author') }}?aid={{ s.author_id }}">{{ s.author }}</a>
                                     </td>
                                     <td>
                                         {{ s.status }}
+                                    </td>
+                                    <td>
+                                        {% if s.coverletter %}
+                                        <i class="icon-bookmark icon-white"></i>
+                                        {% endif %}
                                     </td>
                                     <td>
                                         {{ s.submitted_on }}
@@ -69,7 +84,7 @@
                                 {% endfor %}
                             {% else %}
                                 <tr class="warning">
-                                    <td colspan="6">You have no submissions in our database matching the selected filter</td>
+                                    <td colspan="6">You have no submissions received matching the selected filter</td>
                                 </tr>
                             {% endif %}
                         </tbody>
