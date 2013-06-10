@@ -343,7 +343,7 @@ class MySubmissionsHandler(BaseHandler):
             d = {}
             manuscript = item.manuscript.get()
             publishinghouse = item.publishinghouse.get()
-            d['manuscript_id'] = manuscript.key.id()
+            d['submission_id'] = item.key.id()
             d['manuscript_title'] = manuscript.title
             d['publishinghouse'] = publishinghouse.name
             d['publishinghouse_id'] = publishinghouse.key.id()
