@@ -686,11 +686,11 @@ class SaveContractorHandler(BaseHandler):
             mark.marked = contractor.key
             mark.put()
             js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1');"
-            js += "$('.icon-bookmark').addClass('icon-white');"
+            js += "$('#mark .icon-bookmark').addClass('icon-white');"
         else:
             q.key.delete()
             js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3');"
-            js += "$('.icon-bookmark').removeClass('icon-white');"
+            js += "$('#mark .icon-bookmark').removeClass('icon-white');"
         print "here2"
         self.response.out.write(js)
 
@@ -710,11 +710,11 @@ class SaveAuthorHandler(BaseHandler):
             mark.marked = author.key
             mark.put()
             js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1');"
-            js += "$('.icon-bookmark').addClass('icon-white');"
+            js += "$('#mark .icon-bookmark').addClass('icon-white');"
         else:
             q.key.delete()
             js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3');"
-            js += "$('.icon-bookmark').removeClass('icon-white');"
+            js += "$('#mark .icon-bookmark').removeClass('icon-white');"
         print "here2"
         self.response.out.write(js)
 
@@ -733,9 +733,9 @@ class SavePublishingHouseHandler(BaseHandler):
             mark.marked = publishinghouse.key
             mark.put()
             js = "$('#mark').addClass('marked'); $('.btn .icon-bookmark').css('opacity', '1');"
-            js += "$('.icon-bookmark').addClass('icon-white');"
+            js += "$('#mark .icon-bookmark').addClass('icon-white');"
         else:
             q.key.delete()
             js = "$('#mark').removeClass('marked'); $('.btn .icon-bookmark').css('opacity', '.3');"
-            js += "$('.icon-bookmark').removeClass('icon-white');"
+            js += "$('#mark .icon-bookmark').removeClass('icon-white');"
         self.response.out.write(js)

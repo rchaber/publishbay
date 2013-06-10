@@ -10,30 +10,30 @@
             <li><span>Publisher: Submissions Received</span></li>
         </ul>
 
-        <div class="w-box w-box-green">
+        <div class="w-box w-box-blue">
             <div class="w-box-header">
-                <h4>{% trans %}My Submissions{% endtrans %}</h4>
+                <h4>{% trans %}Submissions Received{% endtrans %}</h4>
                 <div class="pull-right">
                     <div class="toggle-group">
                         <span class="dropdown-toggle" data-toggle="dropdown">{{ status_filter_label }} <span class="caret"></span></span>
                         <ul class="dropdown-menu">
                             {% if status_filter != 'unread' %}
-                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=unread">Status: unread</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=unread">Status: unread</a></li>
                             {% endif %}
                             {% if status_filter != 'read' %}
-                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=read">Status: read</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=read">Status: read</a></li>
                             {% endif %}
                             {% if status_filter != 'rejected' %}
-                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=rejected">Status: rejected</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=rejected">Status: rejected</a></li>
                             {% endif %}
                             {% if status_filter != 'accepted' %}
-                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=accepted">Status: accepted</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=accepted">Status: accepted</a></li>
                             {% endif %}
                             {% if status_filter != 'acquired' %}
-                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=acquired">Status: acquired</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=acquired">Status: acquired</a></li>
                             {% endif %}
                             {% if status_filter != 'all' %}
-                            <li><a href="{{ uri_for('my-submissions')}}?status_filter=all">All</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=all">All</a></li>
                             {% endif %}
                         </ul>
                     </div>
@@ -48,7 +48,7 @@
                                 <th>Manuscript</th>
                                 <th>Author</th>
                                 <th>Status</th>
-                                <th>C. Letter</th>
+                                <th>CL</th>
                                 <th>Submitted</th>
                                 <th>Updated</th>
                             </tr>
@@ -64,14 +64,14 @@
                                         {{ s.manuscript_title }}
                                     </td>
                                     <td>
-                                        <a href="{{ uri_for('view-author') }}?aid={{ s.author_id }}">{{ s.author }}</a>
+                                        <a href="{{ uri_for('view-authors') }}?aid={{ s.author_id }}">{{ s.author }}</a>
                                     </td>
                                     <td>
                                         {{ s.status }}
                                     </td>
                                     <td>
                                         {% if s.coverletter %}
-                                        <i class="icon-bookmark icon-white"></i>
+                                        <i class="icsw16-paperclip"></i>
                                         {% endif %}
                                     </td>
                                     <td>
@@ -84,7 +84,7 @@
                                 {% endfor %}
                             {% else %}
                                 <tr class="warning">
-                                    <td colspan="6">You have no submissions received matching the selected filter</td>
+                                    <td colspan="7">You have no submissions received matching the selected filter</td>
                                 </tr>
                             {% endif %}
                         </tbody>

@@ -213,25 +213,27 @@ class SubmissionsReceivedHandler(BaseHandler):
     @user_required
     def get(self):
 
-        status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else 'open'
+        status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else 'unread'
+
+        phouse_key = bmodels.PublishingHouse.get_by_ownerkey(self.user_key).key
 
         if status_filter == 'unread':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == self.user_key, bmodels.ManuscriptSubmission.status == 'sent').fetch()
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'sent').fetch()
             status_filter_label = 'Status: unread'
         elif status_filter == 'read':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == self.user_key, bmodels.ManuscriptSubmission.status == 'read').fetch()
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'read').fetch()
             status_filter_label = 'Status: read'
         elif status_filter == 'rejected':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == self.user_key, bmodels.ManuscriptSubmission.status == 'rejected').fetch()
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'rejected').fetch()
             status_filter_label = 'Status: rejected'
         elif status_filter == 'accepted':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == self.user_key, bmodels.ManuscriptSubmission.status == 'accepted').fetch()
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'accepted').fetch()
             status_filter_label = 'Status: accepted'
         elif status_filter == 'acquired':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == self.user_key, bmodels.ManuscriptSubmission.status == 'acquired').fetch()
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'acquired').fetch()
             status_filter_label = 'Status: acquired'
         else:
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == self.user_key).fetch()
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key).fetch()
             status_filter_label = 'All'
 
         params = {}
@@ -244,7 +246,10 @@ class SubmissionsReceivedHandler(BaseHandler):
             d['manuscript_title'] = manuscript.title
             d['author'] = author.name + ' ' + author.last_name
             d['author_id'] = author.key.id()
-            d['status'] = item.status
+            if item.status == 'sent':
+                d['status'] = 'unread'
+            else:
+                d['status'] = item.status
             d['coverletter'] = 'True' if (item.coverletter and item.coverletter != '') else 'False'
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')

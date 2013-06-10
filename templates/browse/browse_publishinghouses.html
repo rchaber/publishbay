@@ -39,13 +39,13 @@
                     <ul>
                     {% for p in publishinghouses %}
                         <li>
-                    
-                            {% if p.logo_url != '' and p.logo_url %}
-                            <img src="{{ p.logo_url }}" alt="" style="max-height: 50px; max-width: 50px;">
-                            {% else %}
-                            <img src="/static/images/dummy_50x50.gif" alt="">
-                            {% endif %}
-                            
+                            <div style="height: 60px; width: 60px; float: left;">
+                                {% if p.logo_url != '' and p.logo_url %}
+                                <img src="{{ p.logo_url }}" alt="" style="max-height: 50px; max-width: 50px; float: right;">
+                                {% else %}
+                                <img src="/static/images/dummy_50x50.gif" alt="">
+                                {% endif %}
+                            </div>
                             <div class="list-name"><a href="{{ uri_for('view-publishinghouses') }}?phid={{ p.publishinghouse_id }}">{{ p.name }}</a></div>
 
                             <div class="list-title">{{ p.tagline }}</div>
