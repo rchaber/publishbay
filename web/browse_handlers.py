@@ -308,6 +308,9 @@ class BrowsePublishingHousesHandler(blobstore_handlers.BlobstoreUploadHandler, B
         else:
             query = bmodels.PublishingHouse.query()
 
+        # removes user own publishing house
+        query = query.filter(bmodels.PublishingHouse.owner != self.user_key)
+
         count = query.count()
         items = query.fetch(PAGE_SIZE, offset=offset)
 

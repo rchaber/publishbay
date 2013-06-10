@@ -312,6 +312,7 @@ class SubmitManuscriptHandler(BaseHandler):
         for p in phouses:
             if p not in phouses_already_submitted:
                 submission = bmodels.ManuscriptSubmission()
+                submission.user = self.user_key
                 submission.publishinghouse = p
                 submission.manuscript = manuscript.key
                 submission.status = 'sent'
@@ -364,17 +365,20 @@ class MySubmissionsHandler(BaseHandler):
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key).fetch()
             status_filter_label = 'All'
 
+        print submissions_fetch
         params = {}
         submissions = []
         for item in submissions_fetch:
             d = {}
             manuscript = item.manuscript.get()
+            publishinghouse = item.publishinghouse.get()
             d['manuscript_id'] = manuscript.key.id()
             d['manuscript_title'] = manuscript.title
-            d['publishinghouse'] = item.publishinghouse.get().name
+            d['publishinghouse'] = publishinghouse.name
+            d['publishinghouse_id'] = publishinghouse.key.id()
             d['status'] = item.status
-            d['submitted_on'] = item.submitted_on
-            d['status_updated_on'] = item.updated_on
+            d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
+            d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
             submissions.append(d)
 
         params['status_filter'] = status_filter

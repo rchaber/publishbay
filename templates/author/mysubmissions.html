@@ -10,7 +10,7 @@
             <li><span>Author: My Submissions</span></li>
         </ul>
 
-        <div class="w-box">
+        <div class="w-box w-box-green">
             <div class="w-box-header">
                 <h4>{% trans %}My Submissions{% endtrans %}</h4>
                 <div class="pull-right">
@@ -30,12 +30,11 @@
                     </div>
                 </div>
             </div>
-            <div class="w-box-content cnt_ab">
-                <div class="well form-vertical">
+            <div class="w-box-content">
 
                     <!-- <legend>Select Publishing Houses to Submit</legend> -->
 
-                    <table class="table" style="margin-bottom: 20px;">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Manuscript ID</th>
@@ -54,10 +53,10 @@
                                         {{ s.manuscript_id }}
                                     </td>
                                     <td>
-                                        {{ s.manuscript_title }}
+                                        <a href="{{ uri_for('view-manuscript') }}?mid={{ s.manuscript_id }}">{{ s.manuscript_title }}</a>
                                     </td>
                                     <td>
-                                        {{ s.publishinghouse }}
+                                        <a href="{{ uri_for('view-publishinghouses') }}?phid={{ s.publishinghouse_id }}">{{ s.publishinghouse }}</a>
                                     </td>
                                     <td>
                                         {{ s.status }}
@@ -72,13 +71,12 @@
                                 {% endfor %}
                             {% else %}
                                 <tr class="warning">
-                                    <td colspan="6">You have no submissions in our database</td>
+                                    <td colspan="6">You have no submissions in our database matching the selected filter</td>
                                 </tr>
                             {% endif %}
                         </tbody>
                     </table>
 
-                </div>
             </div>
         </div>
 

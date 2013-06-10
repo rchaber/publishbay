@@ -151,10 +151,10 @@
                             <li>
                                 <a href="javascript:void(0)">{% trans %}Login{% endtrans %}</a>
                                 <ul>
+                                    <li><a href="{{ uri_for('login') }}"><i class="icon-off icon-white"></i>{% trans %} Login{% endtrans %}</a></li>
                                     <li><a href="{{ uri_for('contact') }}"><i class="icon-envelope icon-white"></i>{% trans %} Contact{% endtrans %}</a></li>
                                     <li><a href="{{ uri_for('register') }}"><i class="icon-user icon-white"></i>{% trans %} Register{% endtrans %}</a></li>
                                     <li><a href="{{ uri_for('password-reset') }}"><i class="icon-lock icon-white"></i>{% trans %} Forgot password?{% endtrans %}</a></li>
-                                    <li><a href="{{ uri_for('login') }}"><i class="icon-off icon-white"></i> Login</a></li>
                                 </ul>
                             </li>
                             {% endif %}
