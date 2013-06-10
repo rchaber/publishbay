@@ -2,49 +2,23 @@
 
 # standard library imports
 import logging
-import time
 import re
 
 # related third party imports
-import webapp2
 from webapp2_extras.i18n import gettext as _
 
 # local application/library specific imports
-
-from boilerplate import models
 from boilerplate.lib.basehandler import BaseHandler
 from boilerplate.lib.basehandler import user_required
 
 # from google.appengine.ext import blobstore
 # from google.appengine.ext.webapp import blobstore_handlers
 
-# from google.appengine.api import users
 # from google.appengine.api import images
-
-# import urllib2
-import urllib
-
-# from pprint import pprint as pprint
 
 from baymodels import models as bmodels
 
 import config.utils as utils
-
-
-"""
-class Manuscript(ndb.Model):
-    author = ndb.KeyProperty(kind=AuthorProfile)
-    user = ndb.KeyProperty(kind=models.User)
-    title = ndb.StringProperty()
-    summary = ndb.TextProperty()
-    sample = ndb.TextProperty()
-    genres = ndb.StringProperty(repeated=True)
-    display = ndb.StringProperty()
-    co_authors = ndb.StringProperty(repeated=True)
-    ownership = ndb.BooleanProperty()
-    uploaded_on = ndb.DateTimeProperty(auto_now_add=True)
-    updated_on = ndb.DateTimeProperty(auto_now=True)
-"""
 
 
 class EditManuscriptHandler(BaseHandler):
@@ -303,8 +277,6 @@ class SubmitManuscriptHandler(BaseHandler):
 
         already_submitted = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.manuscript == manuscript.key, bmodels.ManuscriptSubmission.publishinghouse.IN(phouses)).fetch()
 
-        print already_submitted
-
         phouses_already_submitted = [p.publishinghouse for p in already_submitted]
 
         submission_confirmed = []
@@ -365,7 +337,6 @@ class MySubmissionsHandler(BaseHandler):
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key).fetch()
             status_filter_label = 'All'
 
-        print submissions_fetch
         params = {}
         submissions = []
         for item in submissions_fetch:
