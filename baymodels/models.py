@@ -226,3 +226,9 @@ class Coverletter(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     name = ndb.StringProperty()
     content = ndb.TextProperty()
+
+
+class ResponseLetter(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    name = ndb.StringProperty()
+    content = ndb.TextProperty()

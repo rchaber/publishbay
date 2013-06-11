@@ -260,3 +260,53 @@ class SubmissionsReceivedHandler(BaseHandler):
         params['submissions'] = submissions
 
         return self.render_template('publisher/submissions_received.html', **params)
+
+
+class ReadSubmissionHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+
+        submission_id = self.request.GET.get('submission_id')
+        submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
+
+        if submission.status == 'sent':
+            try:
+                submission.status = 'read'
+                submission.put()
+            except:
+                pass
+
+        manuscript = submission.manuscript.get()
+        params = {}
+
+        params['submission_id'] = submission_id
+        params['author'] = submission.manuscript.get().user.get().name + ' ' + submission.manuscript.get().user.get().last_name
+        params['author_id'] = submission.manuscript.get().author.id()
+        params['coverletter'] = submission.coverletter
+        params['title'] = manuscript.title
+        params['tagline'] = manuscript.tagline
+        params['summary'] = manuscript.summary
+        params['sample'] = manuscript.sample
+        params['genres'] = manuscript.genres
+        params['co_authors'] = ', '.join(manuscript.co_authors)
+        params['submitted_on'] = submission.submitted_on.strftime('%Y-%m-%d')
+        params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
+
+        return self.render_template('publisher/read_submission.html', **params)
+
+"""
+class Manuscript(ndb.Model):
+    author = ndb.KeyProperty(kind=AuthorProfile)
+    user = ndb.KeyProperty(kind=models.User)
+    title = ndb.StringProperty()
+    tagline = ndb.StringProperty()
+    summary = ndb.TextProperty()
+    sample = ndb.TextProperty()
+    genres = ndb.StringProperty(repeated=True)
+    display = ndb.StringProperty(choices=['pb_users', 'submissions'])
+    co_authors = ndb.StringProperty(repeated=True)
+    ownership = ndb.BooleanProperty()
+    uploaded_on = ndb.DateTimeProperty(auto_now_add=True)
+    updated_on = ndb.DateTimeProperty(auto_now=True)
+"""

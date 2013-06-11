@@ -186,6 +186,10 @@ span#closeflash {
 	padding: 0 10px;
 }
 
+.w-box-blue .w-box-header {
+	background-color: #4682B4;
+}
+
 #content {
 	padding-top: 20;
 }
@@ -834,4 +838,62 @@ div.list-name a {
 	list-style: none;
 	margin: 0;
 	padding: 0px 0 6px;
+}
+
+.w-box-content.submission {
+	padding: 20px;
+}
+
+.submission_header {
+	text-align: center;
+	font-size: 16px;
+	margin: 10px 20px 20px;
+	line-height: 30px;
+}
+
+.submission_coverletter {
+	border: 1px solid #CCC;
+	padding: 10px;
+	margin: 10px auto;
+	width: 700px;
+
+}
+
+span.title {
+	font-size: 18px;
+	font-style: italic;
+	font-weight: bold;
+}
+
+span.tagline {
+	font-size: 14px;
+}
+
+.submission_header .genres {
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+pre.summary {
+	width: 700px;
+	margin: 10px auto;
+	border-radius: 0;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 15px;
+	background-color: #FFF;
+}
+
+.submission.manuscript-sample {
+	width: 700px;
+	margin: 20px auto;
+}
+
+.submission legend {
+	margin-top: 30px;
+}
+
+.submission_buttons {
+	width: 390px;
+	margin: 30px auto 10px;
 }

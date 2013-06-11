@@ -49,8 +49,8 @@
                                 <th>Author</th>
                                 <th>Status</th>
                                 <th>CL</th>
-                                <th>Submitted</th>
-                                <th>Updated</th>
+                                <th style="width: 110px;">Submitted</th>
+                                <th style="width: 110px;">Updated</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,7 +58,7 @@
                                 {% for s in submissions %}
                                 <tr>
                                     <td>
-                                        <a href="">{{ s.submission_id }}</a>
+                                        <a href="{{ uri_for('read-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
                                     </td>
                                     <td>
                                         {{ s.manuscript_title }}

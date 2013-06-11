@@ -1,0 +1,58 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+            
+    <div class="span12" style="margin-left:0;">
+        <ul id="breadcrumbs">
+            <li><a href="/"><i class="icon-home"></i></a></li>
+            <li><a href="{{ uri_for('submissions-received')}}">Publisher: Submissions Received</a></li>
+            <li><span>Read Submission</span></li>
+        </ul>
+        <div class="span12" style="margin-left: 0;">             
+            <div class="w-box w-box-blue">
+                <div class="w-box-header">
+                    <h4>{% trans %}Submission{% endtrans %} - ID: {{ submission_id }}</h4>
+                </div>
+                <div class="w-box-content cnt_ab submission">
+                    <div class="submission_header">
+                        <span class="title">&#34;{{ title }}&#34;</span>
+                        <br/>by&nbsp;<a href="{{ uri_for('view-authors')}}?aid={{ author_id }}" class="author">{{ author }}</a>
+                        <br/>
+                        {% if co_authors %}
+                        in collaboration with: {{ co_authors }}
+                        {% endif %}
+                        <span class="tagline">{{ tagline }}</span>
+                        <br/>
+                        <div class="genres">{% for g in genres %}<span class="label label-info">{{ g }}</span>{% endfor %}</div>
+                    </div>
+                    <div class="submission_coverletter">
+                        {{ coverletter }}
+                    </div>
+                    <legend>Summary</legend>
+                    <div>
+                        <pre class="summary">{{ summary }}</pre>
+                    </div>
+                    <legend>Manuscript Sample</legend>
+                    <div class="submission manuscript-sample">
+                        {{ sample }}
+                    </div>
+                    <div class="submission_buttons">
+                        <a href="" class="PB-btn PB-btn-primary">Respond Submission</a>
+                        <a href="" class="PB-btn">Back to Submissions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    <script type="text/javascript">
+
+        $().ready(function() {
+
+        });
+    </script>
+    {% endblock %}
+
