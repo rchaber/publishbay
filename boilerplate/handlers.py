@@ -1339,15 +1339,13 @@ class PasswordResetHandler(BaseHandler):
     Password Reset Handler with Captcha
     """
 
-
-
     def get(self):
         chtml = captcha.displayhtml(
-            public_key = self.app.config.get('captcha_public_key'),
-            use_ssl = (self.request.scheme == 'https'),
+            public_key=self.app.config.get('captcha_public_key'),
+            use_ssl=(self.request.scheme == 'https'),
             error = None)
-        if self.app.config.get('captcha_public_key') == "PUT_YOUR_RECAPCHA_PUBLIC_KEY_HERE" or \
-           self.app.config.get('captcha_private_key') == "PUT_YOUR_RECAPCHA_PUBLIC_KEY_HERE":
+        if self.app.config.get('captcha_public_key') == "PUT_YOUR_RECAPTCHA_PUBLIC_KEY_HERE" or \
+           self.app.config.get('captcha_private_key') == "PUT_YOUR_RECAPTCHA_PUBLIC_KEY_HERE":
             chtml = '<div class="alert alert-error"><strong>Error</strong>: You have to ' \
                     '<a href="http://www.google.com/recaptcha/whyrecaptcha" target="_blank">sign up ' \
                     'for API keys</a> in order to use reCAPTCHA.</div>' \
@@ -1355,7 +1353,8 @@ class PasswordResetHandler(BaseHandler):
                     '<input type="hidden" name="recaptcha_response_field" value="manual_challenge" />'
         params = {
             'captchahtml': chtml,
-            }
+            'public_key': self.app.config.get('captcha_public_key'),
+        }
         return self.render_template('password_reset.html', **params)
 
     def post(self):
