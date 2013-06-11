@@ -30,7 +30,7 @@ config = {
 'locales': ['en_US'],
 
 # contact page email settings
-'contact_sender': "rchaber@gmail.com",
+'contact_sender': "rchaber@publishbay.com",
 'contact_recipient': "PUT_RECIPIENT_EMAIL_HERE",
 
 # Password AES Encryption Parameters
