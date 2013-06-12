@@ -4,13 +4,17 @@
     <div class="span12" style="margin-left:0;">
         <ul id="breadcrumbs">
             <li><a href="/"><i class="icon-home"></i></a></li>
+            {% if new_manuscript %}
+            <li><span>Author: New Manuscript</span></li>
+            {% else %}
             <li><a href="{{ uri_for('my-manuscripts') }}">Author: My Manuscripts</a></li>
             <li><a href="{{ uri_for('view-manuscript') }}?mid={{ manuscript_id }}">Manuscript</a></li>
             <li><span>Edit Manuscript</span></li>
+            {% endif %}
         </ul>
         <div class="span3" style="margin-left: 0;">
             <div class="sidebar">
-                <div class="w-box w-box-orange">
+                <div class="w-box w-box-green">
                     <div class="w-box-header">
                         <h4>Etc</h4>
                     </div>
@@ -20,7 +24,7 @@
             </div>
         </div>
         <div class="span9">             
-            <div class="w-box">
+            <div class="w-box w-box-green">
                 <div class="w-box-header"><h4>{% trans %}Manuscript{% endtrans %}</h4></div>
                 <div class="w-box-content cnt_ab">
 

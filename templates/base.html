@@ -92,7 +92,7 @@
                     <div id="fade-menu" class="pull-right">
                         <ul class="clearfix" id="mobile-nav">
 
-                            {% if user_id %}
+                        {% if user_id %}
                             <li>
                                 <a href="javascript:void(0)">browse</a>
                                 <ul>
@@ -108,9 +108,9 @@
                             </li>
                             {% if is_author %}
                             <li>
-                                <a href="javascript:void(0)" style="color: #A1EEA1;">author</a>
+                                <a href="javascript:void(0)" style="color: #A1C7A1;">author</a>
                                 <ul>
-                                    <li><a href="{{ uri_for('edit-manuscript') }}"><i class="icsw16-book icsw16-white"></i> New manuscript</a></li>
+                                    <li><a href="{{ uri_for('edit-manuscript') }}?new_manuscript=True"><i class="icsw16-book icsw16-white"></i> New manuscript</a></li>
                                     <li><a href="{{ uri_for('my-manuscripts') }}"><i class="icsw16-books icsw16-white"></i> My manuscripts</a></li>
                                    <!-- <li><a href="javascript:void(0)"><i class="icsw16-suitcase icsw16-white"></i> Submit manuscript</a></li> -->
                                     <li><a href="{{ uri_for('my-submissions') }}"><i class="icsw16-archive icsw16-white"></i> My submissions</a></li>
@@ -147,7 +147,7 @@
                             <li class="ptip_sw" title="Messages"><a href="javascript:void(0)"><i class="icsw16-mail icsw16-white"></i><span class="badge badge-info">8</span></a></li>
                             <li class="ptip_sw" title="Settings"><a href="{{ uri_for('edit-profile') }}"><i class="icsw16-cog icsw16-white"></i></a></li>
                             <li class="ptip_sw" title="Logout"><a href="{{ logout_url }}"><i class="icsw16-exit icsw16-white"></i></a></li>
-                            {% else %}
+                        {% else %}
                             <li>
                                 <a href="javascript:void(0)">{% trans %}Login{% endtrans %}</a>
                                 <ul>
@@ -157,12 +157,12 @@
                                     <li><a href="{{ uri_for('password-reset') }}"><i class="icon-lock icon-white"></i>{% trans %} Forgot password?{% endtrans %}</a></li>
                                 </ul>
                             </li>
-                            {% endif %}
+                        {% endif %}
                         </ul>
                     </div>
 
                     {% if user_id %}
-                    <div class="pull-right" style="color: #EEE; margin-top: 7px; margin-right: 30px;"><b>{{ username }}</b></div>
+                    <div class="pull-right user" style="color: #EEE; margin-top: 7px; margin-right: 30px;"><b>{{ username }}</b></div>
                     {% endif %}
 
                     <div class="pull-left" style="margin-left: 0px; margin-top: 7px; position: relative;">

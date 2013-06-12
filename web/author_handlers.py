@@ -64,6 +64,8 @@ class EditManuscriptHandler(BaseHandler):
         params['nonfiction_genres_center'] = utils.split_3cols(utils.genres_nonfiction)['center']
         params['nonfiction_genres_right'] = utils.split_3cols(utils.genres_nonfiction)['right']
 
+        params['new_manuscript'] = (self.request.GET.get('new_manuscript') == 'True')
+
         return self.render_template('/author/edit_manuscript.html', **params)
 
     def post(self):
@@ -344,6 +346,7 @@ class MySubmissionsHandler(BaseHandler):
             manuscript = item.manuscript.get()
             publishinghouse = item.publishinghouse.get()
             d['submission_id'] = item.key.id()
+            d['manuscript_id'] = manuscript.key.id()
             d['manuscript_title'] = manuscript.title
             d['publishinghouse'] = publishinghouse.name
             d['publishinghouse_id'] = publishinghouse.key.id()
