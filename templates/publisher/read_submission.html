@@ -20,15 +20,18 @@
                         <br/>by&nbsp;<a href="{{ uri_for('view-authors')}}?aid={{ author_id }}" class="author">{{ author }}</a>
                         <br/>
                         {% if co_authors %}
-                        in collaboration with: {{ co_authors }}
+                        <span class="co-authors">in collaboration with: {{ co_authors }}</span>
+                        <br/>
                         {% endif %}
                         <span class="tagline">{{ tagline }}</span>
                         <br/>
                         <div class="genres">{% for g in genres %}<span class="label label-info">{{ g }}</span>{% endfor %}</div>
                     </div>
+                    {% if coverletter and coverletter != '' %}
                     <div class="submission_coverletter">
                         {{ coverletter }}
                     </div>
+                    {% endif %}
                     <legend>Summary</legend>
                     <div>
                         <pre class="summary">{{ summary }}</pre>

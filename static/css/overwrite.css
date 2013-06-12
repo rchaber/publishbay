@@ -869,6 +869,10 @@ span.tagline {
 	font-size: 14px;
 }
 
+span.co-authors {
+	font-size: 14px;
+}
+
 .submission_header .genres {
 	width: 500px;
 	margin-left: auto;
