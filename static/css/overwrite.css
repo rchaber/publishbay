@@ -995,3 +995,8 @@ pre.summary {
 #responseletter_div {
 	width: 700px;
 }
+
+#responseletter_area {
+	width: 725px;
+	margin: 25px auto;
+}

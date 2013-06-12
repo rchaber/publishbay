@@ -82,17 +82,20 @@
             CKEDITOR.replace('responseletter');
 
             $('#respond').click(function(){
-                alert('asdfa')
+                if ($('.submission.response').css('display') == 'none') {
+                    $('.submission.response').show();
+                } else {
+                    $('.submission.response').hide();
+                }
             });
 
             $('#response_accept').click(function(){
                 CKEDITOR.instances.responseletter.updateElement();
-                    var confirm_dialog = "Manuscript: " + $("dd.list-name").text();
-                    confirm_dialog += "<br>Confirm submission?"
-                    bootbox.confirm(confirm_dialog, function(result) {
-                        if (result) { $("#form_manuscript_submission").submit(); };
-                    });                     
-                };
+                var confirm_dialog = "Manuscript: " + $("dd.list-name").text();
+                confirm_dialog += "<br>Confirm submission?";
+                bootbox.confirm(confirm_dialog, function(result) {
+                    if (result) { $("#form_manuscript_submission").submit(); };
+                });
             });
 
             $('#responseletter_save_checkbox').click(function(){
