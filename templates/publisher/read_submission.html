@@ -40,10 +40,30 @@
                     <div class="submission manuscript-sample">
                         {{ sample }}
                     </div>
+
                     <div class="submission_buttons">
-                        <a href="" class="PB-btn PB-btn-primary">Respond Submission</a>
-                        <a href="" class="PB-btn">Back to Submissions</a>
+                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="respond" >Respond Submission</a>
+                        <a href="javascript:void(0)" class="PB-btn" id="back" >Back to Submissions</a>
                     </div>
+
+                    <div class="submission response" style="display: none;">
+                        <div class="controls" id="responseletter_area">
+                            <textarea class="input-xxlarge focused" cols="50" id="responseletter" name="responseletter" rows="8" style="resize: vertical; width: 620px;"></textarea>
+                        </div>
+                        <div style="font-size: 11px; display: block; line-height: 15px; width: 700px; margin-bottom: 20px; margin-top: 5px;">
+                            <p>Be professional, consistent, brief and, most of all, respectful.</p>
+                        </div>
+                        <dl class="dl-horizontal" style="margin-top: -10px; height: 30px;">
+                            <dt style="width: 200px; padding-top: 5px;"><input type="checkbox" id="responseletter_save_checkbox" name="responseletter_save_checkbox" value="True" style="margin-right: 5px;">
+                                Save Response Letter
+                            </dt>
+                            <dt style="white-space: normal; line-height: 15px; display: none;">Enter response letter name</dt>
+                            <dd id='responseletter_name_dd' style="display: none; height: 30px; line-height: 30px; vertical-align: top;">
+                                Enter response letter name<input class="input-large focused" id="responseletter_name" name="responseletter_name" type="text" value="" style="height: 15px; margin-left: 10px; margin-bottom: 0; font-size: 13px;">
+                            </dd>
+                        </dl>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -51,9 +71,49 @@
     {% endblock %}
 
     {% block mediaJS %}
+    <script src="/static/js/lib/ckeditor/ckeditor.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/cke_overwrite.css"/>
+
     <script type="text/javascript">
 
         $().ready(function() {
+
+            CKEDITOR.replace('responseletter');
+
+            $('#respond').click(function(){
+                alert('asdfa')
+            });
+
+            $('#response_accept').click(function(){
+                CKEDITOR.instances.responseletter.updateElement();
+                    var confirm_dialog = "Manuscript: " + $("dd.list-name").text();
+                    confirm_dialog += "<br>Confirm submission?"
+                    bootbox.confirm(confirm_dialog, function(result) {
+                        if (result) { $("#form_manuscript_submission").submit(); };
+                    });                     
+                };
+            });
+
+            $('#responseletter_save_checkbox').click(function(){
+                if ($('#responseletter_save_checkbox').is(':checked')){
+                    $("#responseletter_name_dd").show();  // checked
+                } else {
+                    $('#responseletter_name').val('');
+                    $("#responseletter_name_dd").hide();  // unchecked
+                }
+            });
+
+            $('#responseletter_load').click(function(){
+                if ($('#responseletter_to_load').val() != 'None') {
+                    $.ajax({
+                        url: "{{ uri_for('load-responseletter') }}",
+                        type: "GET",
+                        data: { responseletter_id: $('#responseletter_to_load').val() },
+                        dataType: "script"
+                    });
+                };
+            });
 
         });
     </script>

@@ -270,7 +270,7 @@ class ReadSubmissionHandler(BaseHandler):
         submission_id = self.request.GET.get('submission_id')
         submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
 
-        if submission.status == 'sent':
+        if (submission.status == 'sent' or submission.status == 'resent'):
             try:
                 submission.status = 'read'
                 submission.put()
@@ -295,18 +295,16 @@ class ReadSubmissionHandler(BaseHandler):
 
         return self.render_template('publisher/read_submission.html', **params)
 
-"""
-class Manuscript(ndb.Model):
-    author = ndb.KeyProperty(kind=AuthorProfile)
-    user = ndb.KeyProperty(kind=models.User)
-    title = ndb.StringProperty()
-    tagline = ndb.StringProperty()
-    summary = ndb.TextProperty()
-    sample = ndb.TextProperty()
-    genres = ndb.StringProperty(repeated=True)
-    display = ndb.StringProperty(choices=['pb_users', 'submissions'])
-    co_authors = ndb.StringProperty(repeated=True)
-    ownership = ndb.BooleanProperty()
-    uploaded_on = ndb.DateTimeProperty(auto_now_add=True)
-    updated_on = ndb.DateTimeProperty(auto_now=True)
-"""
+
+class LoadResponseLetterHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+        responseletter_id = self.request.GET.get('responseletter_id')
+        responseletter = bmodels.ResponseLetter.get_by_id(int(responseletter_id))
+        js = ''
+        if responseletter:
+            js = "CKEDITOR.instances.responseletter.setData('%s');" % responseletter.content
+        self.response.out.write(js)
+
+

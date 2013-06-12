@@ -216,10 +216,16 @@ class ManuscriptSubmission(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     manuscript = ndb.KeyProperty(kind=Manuscript)
     publishinghouse = ndb.KeyProperty(kind=PublishingHouse)
-    status = ndb.StringProperty(choices=['sent', 'read', 'rejected', 'accepted', 'acquired'])
+    status = ndb.StringProperty(choices=['sent', 'read', 'rejected', 'resubmit', 'resent', 'accepted', 'acquired'])
     coverletter = ndb.TextProperty()
+    responseletter = ndb.TextProperty()
     submitted_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
+
+
+class Marked_submissions(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    marked = ndb.KeyProperty(kind=ManuscriptSubmission)
 
 
 class Coverletter(ndb.Model):
