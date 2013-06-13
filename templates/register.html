@@ -7,7 +7,7 @@
         <div class="w-box-content borders">
 
             <div class="heading">Register</div>
-            <form id="form_register" action="{{ url|safe }}" method="post" class="well form-vertical" style="margin: 0 10px;">
+            <form id="form_register" action="{{ url|safe }}" method="post" class="well form-vertical" style="margin: 0 14px;">
                 <fieldset>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     <div style="float: left; width: 46%">
@@ -16,7 +16,7 @@
                         {{ macros.field(form.last_name, label=_("Last Name"), class="input-large focused") }}
                         {{ macros.field(form.email, label=_("Email"), class="input-large focused required email", type="email") }}
                     </div>
-                    <div style="display: inline-block; float: left; width: 45%; margin-left: 30px">
+                    <div style="display: inline-block; float: left; width: 45%; margin-left: 28px">
                         {{ macros.field(form.password, label=_("Password"), class="input-large focused required", type="password") }}
                         {% if not is_mobile %}
                         {{ macros.field(form.c_password, label=_("Confirm Password"), class="input-large focused required", type="password") }}
