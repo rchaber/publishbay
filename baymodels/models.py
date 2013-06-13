@@ -159,7 +159,7 @@ class AuthorProfile(ndb.Model):
 
     @property
     def last_name(self):
-        return self.last_.get().last_name
+        return self.user.get().last_name
 
     @property
     def display_full_name(self):
