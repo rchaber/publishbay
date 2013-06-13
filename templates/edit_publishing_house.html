@@ -7,8 +7,16 @@
     <!-- params: upload_url, name, tagline, description, logo_url, fiction_genres_left, fiction_genres_center, fiction_genres_right, nonfiction_genres_left, nonfiction_genres_center, nonfiction_genres_right, show_in_job_posts -->
 
     <div class="span9">             
-        <div class="w-box">
-            <div class="w-box-header"><h4>{% trans %}Edit my publishing house profile{% endtrans %}</h4></div>
+        <div class="w-box w-box-blue">
+            <div class="w-box-header">
+                <h4>
+                    {% if there_is_ph %}
+                        {% trans %}Edit my publishing house profile{% endtrans %}
+                    {% else %}
+                        {% trans %}Create my publishing house profile{% endtrans %}
+                    {% endif %}
+                </h4>
+            </div>
             <div class="w-box-content cnt_ab">
 
                 <div id="edit_publishing_house" class="well form-vertical">

@@ -515,6 +515,11 @@ input[type="radio"] label {
 	overflow: visible;
 }
 
+.control-group div p {
+	margin-top: -7px;
+	margin-left: 5px;
+}
+
 .label {
 	padding: 2px 6px;
 }

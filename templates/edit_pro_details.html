@@ -5,9 +5,17 @@
     {{ macros.left_sidebar("pro_details") }}
 
     <div class="span9">             
-        <div class="w-box">
-            <div class="w-box-header"><h4>{% trans %}Edit my contractor profile{% endtrans %}</h4></div>
-            <div class="w-box-content cnt_ab">
+        <div class="w-box w-box-orange">
+            <div class="w-box-header">
+                <h4>
+                    {% if there_is_profile %}
+                        {% trans %}Edit my contractor profile{% endtrans %}
+                    {% else %}
+                        {% trans %}Create my contractor profile{% endtrans %}
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="w-box-content cnt_ab borders">
 
                 <div id="edit_pro_details" class="well form-vertical">
                     <fieldset>
@@ -107,7 +115,7 @@
     {% block mediaJS %}
     
     <!-- file upload widget -->
-        <script src="/static/js/form/bootstrap-fileupload.min.js"></script>
+    <script src="/static/js/form/bootstrap-fileupload.min.js"></script>
     
     <script type="text/javascript">
 
