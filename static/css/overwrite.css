@@ -853,6 +853,10 @@ div.list-name a {
 	padding: 0 20px;
 }
 
+.w-box-content.borders {
+	border: 1px solid #CCC;
+}
+
 .label.label-info {
 	margin-right: 4px;
 	font-weight: bold;
