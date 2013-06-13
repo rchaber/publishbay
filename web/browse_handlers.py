@@ -74,6 +74,9 @@ class BrowseContractorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHa
         else:
             query = bmodels.ProDetails.query()
 
+        # removes user own publishing house
+        query = query.filter(bmodels.ProDetails.user != self.user_key)
+
         count = query.count()
         items = query.fetch(PAGE_SIZE, offset=offset)
 
@@ -184,6 +187,9 @@ class BrowseAuthorsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
             query = bmodels.AuthorProfile.query(bmodels.AuthorProfile.genres.IN(genrefilter))
         else:
             query = bmodels.AuthorProfile.query()
+
+        # removes user own publishing house
+        query = query.filter(bmodels.AuthorProfile.user != self.user_key)
 
         count = query.count()
         items = query.fetch(PAGE_SIZE, offset=offset)
