@@ -13,13 +13,8 @@ genres_nonfiction = utils.genres_nonfiction
 
 class BasicSettings(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
-    username = ndb.ComputedProperty(lambda self: self.user.get().username)
-    name = ndb.ComputedProperty(lambda self: self.user.get().name)
-    last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
     display_full_name = ndb.BooleanProperty(default=True)
     picture_key = ndb.BlobKeyProperty()
-    created_on = ndb.DateTimeProperty(auto_now_add=True)
-    updated_on = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
     def get_by_userkey(cls, k):
@@ -29,12 +24,21 @@ class BasicSettings(ndb.Model):
     def get_by_username(cls, u):
         return cls.query(cls.username == u).get()
 
+    @property
+    def username(self):
+        return self.user.get().username
+
+    @property
+    def name(self):
+        return self.user.get().name
+
+    @property
+    def last_name(self):
+        return self.user.get().last_name
+
 
 class ContactInfo(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
-    username = ndb.ComputedProperty(lambda self: self.user.get().username)
-    name = ndb.ComputedProperty(lambda self: self.user.get().name)
-    last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
     address1 = ndb.StringProperty()
     address2 = ndb.StringProperty()
     city = ndb.StringProperty()
@@ -51,6 +55,18 @@ class ContactInfo(ndb.Model):
     @classmethod
     def get_by_username(cls, u):
         return cls.query(cls.username == u).get()
+
+    @property
+    def username(self):
+        return self.user.get().username
+
+    @property
+    def name(self):
+        return self.user.get().name
+
+    @property
+    def last_name(self):
+        return self.user.get().last_name
 
 
 class PublishingHouse(ndb.Model):
@@ -71,11 +87,6 @@ class PublishingHouse(ndb.Model):
 
 class ProDetails(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
-    username = ndb.ComputedProperty(lambda self: self.user.get().username)
-    name = ndb.ComputedProperty(lambda self: self.user.get().name)
-    last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
-    # display_full_name = ndb.ComputedProperty(lambda self: BasicSettings.get_by_userkey(self.user).display_full_name if BasicSettings.get_by_userkey(self.user).display_full_name else True)
-    # picture_key = ndb.ComputedProperty(lambda self: BasicSettings.get_by_userkey(self.user).picture_key if BasicSettings.get_by_userkey(self.user).picture_key else None)
     title = ndb.StringProperty()
     overview = ndb.TextProperty()
     english_level = ndb.IntegerProperty(choices=[0, 1, 2, 3, 4, 5])
@@ -90,18 +101,24 @@ class ProDetails(ndb.Model):
         return self.key.id()
 
     @property
+    def username(self):
+        return self.user.get().username
+
+    @property
+    def name(self):
+        return self.user.get().name
+
+    @property
+    def last_name(self):
+        return self.user.get().last_name
+
+    @property
     def display_full_name(self):
-        if BasicSettings.get_by_userkey(self.user).display_full_name:
-            return BasicSettings.get_by_userkey(self.user).display_full_name
-        else:
-            return True
+        return BasicSettings.get_by_userkey(self.user).display_full_name
 
     @property
     def picture_key(self):
-        if BasicSettings.get_by_userkey(self.user).picture_key:
-            return BasicSettings.get_by_userkey(self.user).picture_key
-        else:
-            return ''
+        return BasicSettings.get_by_userkey(self.user).picture_key
 
     @classmethod
     def get_by_userkey(cls, k):
@@ -124,9 +141,6 @@ class ProDetails(ndb.Model):
 
 class AuthorProfile(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
-    name = ndb.ComputedProperty(lambda self: self.user.get().name)
-    last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
-    display_full_name = ndb.ComputedProperty(lambda self: BasicSettings.get_by_userkey(self.user.get().key).display_full_name if BasicSettings.get_by_userkey(self.user.get().key) else True)
     title = ndb.StringProperty()
     pseudonyms = ndb.StringProperty(repeated=True)
     overview = ndb.TextProperty()
@@ -138,6 +152,18 @@ class AuthorProfile(ndb.Model):
     @classmethod
     def get_by_userkey(cls, k):
         return cls.query(cls.user == k).get()
+
+    @property
+    def name(self):
+        return self.user.get().name
+
+    @property
+    def last_name(self):
+        return self.last_.get().last_name
+
+    @property
+    def display_full_name(self):
+        return BasicSettings.get_by_userkey(self.user).display_full_name
 
 
 class JobPost(ndb.Model):

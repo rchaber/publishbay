@@ -36,6 +36,8 @@ from lib.basehandler import BaseHandler
 from lib.basehandler import user_required
 from lib import facebook
 
+from baymodels import models as bmodels
+
 
 class AbTestHandler(BaseHandler):
     """
@@ -817,6 +819,12 @@ class RegisterHandler(RegisterBaseHandler):
                         'body' : body,
                         })
 
+                    #### Richard: creates a BasicSettings entity so when the user creates a contractor profile before configuring Basic Settings,
+                    #### the handler finds an entity with properties like display_full_name (instead of returning property from Non existant object)
+                    a = bmodels.BasicSettings()
+                    a.user = user_info.key
+                    a.put()
+
                     message = _('You were successfully registered. '
                                 'Please check your email to activate your account.')
                     self.add_message(message, 'success')
@@ -849,6 +857,7 @@ class RegisterHandler(RegisterBaseHandler):
                             extra_data = fb_data
                         )
                         social_user.put()
+
                 #check linkedin association
                 li_data = json.loads(self.session['linkedin'])
                 if li_data is not None:
