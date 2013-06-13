@@ -900,7 +900,7 @@ div.list-name a {
 	width: 100%;
 	list-style: none;
 	margin: 0;
-	padding: 0px 0 6px;
+	padding: 0 0 6px;
 }
 
 .w-box-content.submission {
@@ -999,4 +999,15 @@ pre.summary {
 #responseletter_area {
 	width: 725px;
 	margin: 25px auto;
+}
+
+.heading {
+	font-family: "Open Sans Condensed", sans-serif;
+	font-size: 22px;
+	font-weight: bold;
+	margin: 18px 30px 0;
+	border-bottom: 2px solid #CCC;
+	padding-bottom: 7px;
+	padding-left: 3px;
+	display: block;
 }

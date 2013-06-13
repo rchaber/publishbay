@@ -3,9 +3,9 @@
 {% block content %}
 <div class="span7" style="float: none; margin: 30px auto;">
     <div class="w-box">
-        <div class="w-box-header"><h4>Login</h4></div>
-        <div class="w-box-content">
-
+        <!-- <div class="w-box-header"><h4>Login</h4></div> -->
+        <div class="w-box-content" style="border: 1px solid #CCC;">
+            <div class="heading">Account Login</div>
             <form id="form_login_user" action="{{ url|safe }}" method="post" class="well form-vertical auth-at-loginpage">
                 <fieldset style="width: 95%;">
                     <div style="float: right; width: 200px;">
@@ -18,7 +18,7 @@
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     {{ macros.field(form.username, label=_("Username or Email"), class="input-large focused required", tabindex="1") }}
                     {{ macros.field(form.password, label=_("Password"), class="input-large focused required", tabindex="2", type="password") }}
-                    <div class="control-group">
+                    <div class="control-group" style="margin-bottom: 0;">
                         <div class="controls">
                             <button type="submit" class="PB-btn PB-btn-primary">{% trans %}Login{% endtrans %}</button>
                             <label class="remember" style="margin-left: 10px">
