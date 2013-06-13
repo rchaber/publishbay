@@ -74,8 +74,8 @@ class ProDetails(ndb.Model):
     username = ndb.ComputedProperty(lambda self: self.user.get().username)
     name = ndb.ComputedProperty(lambda self: self.user.get().name)
     last_name = ndb.ComputedProperty(lambda self: self.user.get().last_name)
-    display_full_name = ndb.ComputedProperty(lambda self: BasicSettings.get_by_userkey(self.user).display_full_name)
-    picture_key = ndb.ComputedProperty(lambda self: BasicSettings.get_by_userkey(self.user).picture_key)
+    # display_full_name = ndb.ComputedProperty(lambda self: BasicSettings.get_by_userkey(self.user).display_full_name if BasicSettings.get_by_userkey(self.user).display_full_name else True)
+    # picture_key = ndb.ComputedProperty(lambda self: BasicSettings.get_by_userkey(self.user).picture_key if BasicSettings.get_by_userkey(self.user).picture_key else None)
     title = ndb.StringProperty()
     overview = ndb.TextProperty()
     english_level = ndb.IntegerProperty(choices=[0, 1, 2, 3, 4, 5])
@@ -88,6 +88,20 @@ class ProDetails(ndb.Model):
     @property
     def pid(self):
         return self.key.id()
+
+    @property
+    def display_full_name(self):
+        if BasicSettings.get_by_userkey(self.user).display_full_name:
+            return BasicSettings.get_by_userkey(self.user).display_full_name
+        else:
+            return True
+
+    @property
+    def picture_key(self):
+        if BasicSettings.get_by_userkey(self.user).picture_key:
+            return BasicSettings.get_by_userkey(self.user).picture_key
+        else:
+            return ''
 
     @classmethod
     def get_by_userkey(cls, k):

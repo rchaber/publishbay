@@ -332,7 +332,7 @@ class DisplayProDetailsHandler(BaseHandler):
 
 class EditProDetailsHandler(BaseHandler):
     """
-    Handler for Edit User Contact Info
+    Handler for Edit Contractor Info
     """
 
     @user_required
@@ -379,10 +379,7 @@ class EditProDetailsHandler(BaseHandler):
 
         jobs = self.request.POST.getall('jobs')
 
-        # k = models.User.get_by_id(long(self.user_id)).key
-        # user = k.get()
         user = self.user_key.get()
-        print user
 
         user_pro_details = bmodels.ProDetails.get_by_userkey(self.user_key)
         if not user_pro_details:
@@ -391,7 +388,7 @@ class EditProDetailsHandler(BaseHandler):
 
         overview = self.request.POST.get('overview').replace('\r\r\n', '\r\n')
 
-        title = self.form.title.data
+        title = self.request.POST.get('title')
         profile_visibility = self.form.profile_visibility.data
         english_level = int(self.request.POST.get('english_level'))
 
@@ -402,6 +399,7 @@ class EditProDetailsHandler(BaseHandler):
             user_pro_details.profile_visibility = profile_visibility
             user_pro_details.english_level = english_level
             user_pro_details.jobs = jobs
+            print user_pro_details
 
             user_pro_details.put()
             message += " " + _('Your contractor info has been updated.')
