@@ -112,6 +112,9 @@ class ReadSubmissionHandler(BaseHandler):
         manuscript = submission.manuscript.get()
         params = {}
 
+        r = bmodels.ResponseLetter.query(bmodels.ResponseLetter.user == self.user_key).fetch()
+        saved_responseletters = [[a.key.id(), a.name] for a in r]
+
         params['submission_id'] = submission_id
         params['author'] = submission.manuscript.get().user.get().name + ' ' + submission.manuscript.get().user.get().last_name
         params['author_id'] = submission.manuscript.get().author.id()
@@ -124,6 +127,7 @@ class ReadSubmissionHandler(BaseHandler):
         params['co_authors'] = ', '.join(manuscript.co_authors)
         params['submitted_on'] = submission.submitted_on.strftime('%Y-%m-%d')
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
+        params['saved_responseletters'] = saved_responseletters
 
         return self.render_template('publisher/read_submission.html', **params)
 

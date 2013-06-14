@@ -47,21 +47,37 @@
                     </div>
 
                     <div class="submission response" style="display: none;">
+                        <legend>Response</legend>
                         <div class="controls" id="responseletter_area">
-                            <textarea class="input-xxlarge focused" cols="50" id="responseletter" name="responseletter" rows="8" style="resize: vertical; width: 620px;"></textarea>
-                        </div>
-                        <div style="font-size: 11px; display: block; line-height: 15px; width: 700px; margin-bottom: 20px; margin-top: 5px;">
-                            <p class="muted">Be professional, consistent, brief and, most of all, respectful.</p>
-                        </div>
-                        <dl class="dl-horizontal" style="margin-top: -10px; height: 30px;">
-                            <dt style="width: 200px; padding-top: 5px;"><input type="checkbox" id="responseletter_save_checkbox" name="responseletter_save_checkbox" value="True" style="margin-right: 5px;">
-                                Save Response Letter
-                            </dt>
-                            <dt style="white-space: normal; line-height: 15px; display: none;">Enter response letter name</dt>
-                            <dd id='responseletter_name_dd' style="display: none; height: 30px; line-height: 30px; vertical-align: top;">
-                                Enter response letter name<input class="input-large focused" id="responseletter_name" name="responseletter_name" type="text" value="" style="height: 15px; margin-left: 10px; margin-bottom: 0; font-size: 13px;">
+                            {% if saved_responseletters|length > 0 %}
+                            <dd style="text-align: right; margin-bottom: 10px;" id="coverletter_select">
+                                <select id="responseletter_to_load" style="height: 22px; margin-bottom: 0; font-size: 12px; max-width: 200px;">
+                                      <option value="None">Select a saved response letter</option>
+                                      {% for c in saved_responseletters %}
+                                      <option value="{{ c[0] }}">{{ c[1] }}</option>
+                                      {% endfor %}
+                                </select>
+                                <button type="button" class="btn btn-mini" id="responseletter_load">Load</button>
                             </dd>
-                        </dl>
+                            {% endif %}
+                            <textarea class="input-xxlarge focused" cols="50" id="responseletter" name="responseletter" rows="8" style="resize: vertical; width: 620px;"></textarea>
+                            <div style="font-size: 11px; display: block; line-height: 15px; width: 720px; margin-bottom: 20px;">
+                                <p class="muted">Be professional, consistent, brief and, most of all, respectful.</p>
+                            </div>
+                            <dl class="dl-horizontal" style="margin-top: -10px; height: 30px;">
+                                <dt style="width: 200px; padding-top: 5px;"><input type="checkbox" id="responseletter_save_checkbox" name="responseletter_save_checkbox" value="True" style="margin-right: 5px;">
+                                    Save Response Letter
+                                </dt>
+                                <dt style="white-space: normal; line-height: 15px; display: none;">Enter response letter name</dt>
+                                <dd id='responseletter_name_dd' style="display: none; height: 30px; line-height: 30px; vertical-align: top;">
+                                    Enter response letter name<input class="input-large focused" id="responseletter_name" name="responseletter_name" type="text" value="" style="height: 15px; margin-left: 10px; margin-bottom: 0; font-size: 13px;">
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="response_buttons">
+                            <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="sendresponse" >Send Response</a>
+                            <a href="javascript:void(0)" class="PB-btn" id="back" >Cancel</a>
+                        </div>
                     </div>
 
                 </div>
