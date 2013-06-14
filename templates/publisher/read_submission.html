@@ -64,7 +64,7 @@
                             <div style="font-size: 11px; display: block; line-height: 15px; width: 720px; margin-bottom: 20px;">
                                 <p class="muted">Be professional, consistent, brief and, most of all, respectful.</p>
                             </div>
-                            <dl class="dl-horizontal" style="margin-top: -10px; height: 30px;">
+                            <dl class="dl-horizontal" style="margin-top: -10px; height: 30px; padding-left: 10px;">
                                 <dt style="width: 200px; padding-top: 5px;"><input type="checkbox" id="responseletter_save_checkbox" name="responseletter_save_checkbox" value="True" style="margin-right: 5px;">
                                     Save Response Letter
                                 </dt>
@@ -73,10 +73,23 @@
                                     Enter response letter name<input class="input-large focused" id="responseletter_name" name="responseletter_name" type="text" value="" style="height: 15px; margin-left: 10px; margin-bottom: 0; font-size: 13px;">
                                 </dd>
                             </dl>
+                            <table class="table table-bordered">
+                                <tr class="warning" id="tr-status">
+                                    <td style="width: 220px; margin: 0; vertical-align: middle; text-align: center; height: 50px; padding: 0;">
+                                        <b>Manuscript Submission Result:&nbsp;&nbsp;&nbsp;</b>
+                                        <select id="status" name="status" style="margin-bottom: 0; width: 140px;">
+                                            <option value="None">Select</option>
+                                            <option value="accepted">Accepted</option>
+                                            <option value="rejected">Rejected</option>
+                                            <option value="resubmit">Resubmit</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="response_buttons">
                             <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="sendresponse" >Send Response</a>
-                            <a href="javascript:void(0)" class="PB-btn" id="back" >Cancel</a>
+                            <a href="javascript:void(0)" class="PB-btn" id="cancelbutton" >Cancel</a>
                         </div>
                     </div>
 
@@ -100,10 +113,18 @@
             $('#respond').click(function(){
                 if ($('.submission.response').css('display') == 'none') {
                     $('.submission.response').show();
+                    $('.submission_buttons').hide();
                 } else {
                     $('.submission.response').hide();
+                    CKEDITOR.instances.responseletter.setData();
+                    $('option[value="None"]').prop('selected', 'selected');
+                    $('#responseletter_save_checkbox').prop('checked', false);
+                    $('#responseletter_name').val('');
+                    $('.submission_buttons').show();
                 }
             });
+
+            $('#cancelbutton').click(function() {$('#respond').click()});
 
             $('#response_accept').click(function(){
                 CKEDITOR.instances.responseletter.updateElement();
@@ -133,6 +154,18 @@
                     });
                 };
             });
+
+            $('#sendresponse').click(function(){
+                if ($.inArray($('#status').val(), ['accepted', 'rejected', 'resubmit']) < 0) {
+                    bootbox.alert("You must select manuscript submission result");
+                }
+            });
+
+            $('#status').change(function(){
+                var sta = ['warning', 'success', 'error', 'info'];
+                var color = sta[$.inArray($('#status').val(), ['None', 'accepted', 'rejected', 'resubmit'])];
+                $('#tr-status').attr('class', color)
+            })
 
         });
     </script>

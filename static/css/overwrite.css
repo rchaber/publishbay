@@ -521,7 +521,7 @@ input[type="radio"] label {
 	overflow: visible;
 }
 
-.control-group div p {
+.control-group div p, .controls div p {
 	margin-top: 0; /*-7px;*/
 	margin-left: 5px;
 	line-height: 15px;
@@ -936,7 +936,15 @@ div.list-name a {
 	padding: 10px;
 	margin: 10px auto;
 	width: 700px;
+	box-shadow: 2px 2px 2px 0px #DDD;
+	-moz-box-shadow: 2px 2px 2px 0px #DDD;
+	-webkit-box-shadow:  2px 2px 2px 0px #DDD;
+}
 
+.submission pre.summary {
+	box-shadow: 2px 2px 2px 0px #DDD;
+	-moz-box-shadow: 2px 2px 2px 0px #DDD;
+	-webkit-box-shadow:  2px 2px 2px 0px #DDD;
 }
 
 span.title {
@@ -971,6 +979,9 @@ pre.summary {
 .submission.manuscript-sample {
 	width: 700px;
 	margin: 20px auto;
+	box-shadow: 2px 2px 2px 0px #DDD;
+	-moz-box-shadow: 2px 2px 2px 0px #DDD;
+	-webkit-box-shadow:  2px 2px 2px 0px #DDD;
 }
 
 .submission legend {
