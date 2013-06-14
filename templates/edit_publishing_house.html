@@ -75,6 +75,7 @@
                                     </span>
                                     <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
                                 </div>
+                                <div style="clear: both;"></div>
                             </div>
 
                             <div class="control-group" style="clear: both;">
@@ -183,16 +184,16 @@
         }
 
         $().ready(function() {
-            $("#form_publishing_house").validate({
-                submitHandler: function(form) {
-                        // $('#checked_genres').attr('value', $('input[name="genres"]').serialize());
-                        form.submit();
-                },
-                errorPlacement: function(error, element) {
-                    element.parent().parent().addClass("error");
-                    error.addClass("help-inline").appendTo( element.parent() );
-                }
-            });
+            // $("#form_publishing_house").validate({
+            //     submitHandler: function(form) {
+            //             // $('#checked_genres').attr('value', $('input[name="genres"]').serialize());
+            //             form.submit();
+            //     },
+            //     errorPlacement: function(error, element) {
+            //         element.parent().parent().addClass("error");
+            //         error.addClass("help-inline").appendTo( element.parent() );
+            //     }
+            // });
 
             updateCountdown();
             $('#description').change(updateCountdown);
