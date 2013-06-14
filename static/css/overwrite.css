@@ -174,7 +174,7 @@ legend + .control-group {
 #fade-menu ul li a.arrow_down {
 	font-size: 13px;
 	font-weight: bold;
-	font-family: Helvetica, arial, freesans, sans-serif;
+	font-family: Karla, Helvetica, arial, freesans, sans-serif;
 	text-shadow: 0px 1px 0px #464B4C;
 	background-image: url(/static/images/icon-arrow-down.png);
 	background-repeat: no-repeat;
