@@ -907,7 +907,7 @@ div.list-name a {
 	max-height: 400px;
 	padding: 15px;
 	overflow-y: auto;
-	font-family: 'Helvetica Neue', arial, freesans, clean, sans-serif;
+	font-family: Helvetica, arial, freesans, clean, sans-serif;
 	font-size: 14px;
 	font-weight: normal;
 }
@@ -936,15 +936,15 @@ div.list-name a {
 	padding: 10px;
 	margin: 10px auto;
 	width: 700px;
-	box-shadow: 2px 2px 2px 0px #DDD;
-	-moz-box-shadow: 2px 2px 2px 0px #DDD;
-	-webkit-box-shadow:  2px 2px 2px 0px #DDD;
+	box-shadow: 2px 2px 0px 0px #DDD;
+	-moz-box-shadow: 2px 2px 0px 0px #DDD;
+	-webkit-box-shadow:  2px 2px 0px 0px #DDD;
 }
 
 .submission pre.summary {
-	box-shadow: 2px 2px 2px 0px #DDD;
-	-moz-box-shadow: 2px 2px 2px 0px #DDD;
-	-webkit-box-shadow:  2px 2px 2px 0px #DDD;
+	box-shadow: 2px 2px 0px 0px #DDD;
+	-moz-box-shadow: 2px 2px 0px 0px #DDD;
+	-webkit-box-shadow:  2px 2px 0px 0px #DDD;
 }
 
 span.title {
@@ -979,9 +979,9 @@ pre.summary {
 .submission.manuscript-sample {
 	width: 700px;
 	margin: 20px auto;
-	box-shadow: 2px 2px 2px 0px #DDD;
-	-moz-box-shadow: 2px 2px 2px 0px #DDD;
-	-webkit-box-shadow:  2px 2px 2px 0px #DDD;
+	box-shadow: 2px 2px 0px 0px #DDD;
+	-moz-box-shadow: 2px 2px 0px 0px #DDD;
+	-webkit-box-shadow:  2px 2px 0px 0px #DDD;
 }
 
 .submission legend {

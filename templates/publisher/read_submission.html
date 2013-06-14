@@ -20,7 +20,7 @@
                         <br/>by&nbsp;<a href="{{ uri_for('view-authors')}}?aid={{ author_id }}" class="author">{{ author }}</a>
                         <br/>
                         {% if co_authors %}
-                        <span class="co-authors">in collaboration with: {{ co_authors }}</span>
+                        <span class="co-authors">co-author(s): {{ co_authors }}</span>
                         <br/>
                         {% endif %}
                         <span class="tagline">{{ tagline }}</span>
@@ -48,45 +48,51 @@
 
                     <div class="submission response" style="display: none;">
                         <legend>Response</legend>
-                        <div class="controls" id="responseletter_area">
-                            {% if saved_responseletters|length > 0 %}
-                            <dd style="text-align: right; margin-bottom: 10px;" id="coverletter_select">
-                                <select id="responseletter_to_load" style="height: 22px; margin-bottom: 0; font-size: 12px; max-width: 200px;">
-                                      <option value="None">Select a saved response letter</option>
-                                      {% for c in saved_responseletters %}
-                                      <option value="{{ c[0] }}">{{ c[1] }}</option>
-                                      {% endfor %}
-                                </select>
-                                <button type="button" class="btn btn-mini" id="responseletter_load">Load</button>
-                            </dd>
-                            {% endif %}
-                            <textarea class="input-xxlarge focused" cols="50" id="responseletter" name="responseletter" rows="8" style="resize: vertical; width: 620px;"></textarea>
-                            <div style="font-size: 11px; display: block; line-height: 15px; width: 720px; margin-bottom: 20px;">
-                                <p class="muted">Be professional, consistent, brief and, most of all, respectful.</p>
-                            </div>
-                            <dl class="dl-horizontal" style="margin-top: -10px; height: 30px; padding-left: 10px;">
-                                <dt style="width: 200px; padding-top: 5px;"><input type="checkbox" id="responseletter_save_checkbox" name="responseletter_save_checkbox" value="True" style="margin-right: 5px;">
-                                    Save Response Letter
-                                </dt>
-                                <dt style="white-space: normal; line-height: 15px; display: none;">Enter response letter name</dt>
-                                <dd id='responseletter_name_dd' style="display: none; height: 30px; line-height: 30px; vertical-align: top;">
-                                    Enter response letter name<input class="input-large focused" id="responseletter_name" name="responseletter_name" type="text" value="" style="height: 15px; margin-left: 10px; margin-bottom: 0; font-size: 13px;">
+                        <form id="form_submission_response" action="{{ url|safe }}" method="post">
+
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
+                            <div class="controls" id="responseletter_area">
+                                {% if saved_responseletters|length > 0 %}
+                                <dd style="text-align: right; margin-bottom: 10px;" id="coverletter_select">
+                                    <select id="responseletter_to_load" style="height: 22px; margin-bottom: 0; font-size: 12px; max-width: 200px;">
+                                          <option value="None">Select a saved response letter</option>
+                                          {% for c in saved_responseletters %}
+                                          <option value="{{ c[0] }}">{{ c[1] }}</option>
+                                          {% endfor %}
+                                    </select>
+                                    <button type="button" class="btn btn-mini" id="responseletter_load">Load</button>
                                 </dd>
-                            </dl>
-                            <table class="table table-bordered">
-                                <tr class="warning" id="tr-status">
-                                    <td style="width: 220px; margin: 0; vertical-align: middle; text-align: center; height: 50px; padding: 0;">
-                                        <b>Manuscript Submission Result:&nbsp;&nbsp;&nbsp;</b>
-                                        <select id="status" name="status" style="margin-bottom: 0; width: 140px;">
-                                            <option value="None">Select</option>
-                                            <option value="accepted">Accepted</option>
-                                            <option value="rejected">Rejected</option>
-                                            <option value="resubmit">Resubmit</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                                {% endif %}
+                                <textarea class="input-xxlarge focused" cols="50" id="responseletter" name="responseletter" rows="8" style="resize: vertical; width: 620px;"></textarea>
+                                <div style="font-size: 11px; display: block; line-height: 15px; width: 720px; margin-bottom: 20px;">
+                                    <p class="muted">Be professional, consistent, brief and, most of all, respectful.</p>
+                                </div>
+                                <dl class="dl-horizontal" style="margin-top: -10px; height: 30px; padding-left: 10px;">
+                                    <dt style="width: 200px; padding-top: 5px;"><input type="checkbox" id="responseletter_save_checkbox" name="responseletter_save_checkbox" value="True" style="margin-right: 5px;">
+                                        Save Response Letter
+                                    </dt>
+                                    <dt style="white-space: normal; line-height: 15px; display: none;">Enter response letter name</dt>
+                                    <dd id='responseletter_name_dd' style="display: none; height: 30px; line-height: 30px; vertical-align: top;">
+                                        Enter response letter name<input class="input-large focused" id="responseletter_name" name="responseletter_name" type="text" value="" style="height: 15px; margin-left: 10px; margin-bottom: 0; font-size: 13px;">
+                                    </dd>
+                                </dl>
+                                <table class="table table-bordered">
+                                    <tr class="warning" id="tr-status">
+                                        <td style="width: 220px; margin: 0; vertical-align: middle; text-align: center; height: 50px; padding: 0;">
+                                            <b>Manuscript Submission Result:&nbsp;&nbsp;&nbsp;</b>
+                                            <select id="status" name="status" style="margin-bottom: 0; width: 140px;">
+                                                <option value="None">Select</option>
+                                                <option value="accepted">Accepted</option>
+                                                <option value="rejected">Rejected</option>
+                                                <option value="resubmit">Resubmit</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </form>
                         <div class="response_buttons">
                             <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="sendresponse" >Send Response</a>
                             <a href="javascript:void(0)" class="PB-btn" id="cancelbutton" >Cancel</a>
@@ -124,16 +130,7 @@
                 }
             });
 
-            $('#cancelbutton').click(function() {$('#respond').click()});
-
-            $('#response_accept').click(function(){
-                CKEDITOR.instances.responseletter.updateElement();
-                var confirm_dialog = "Manuscript: " + $("dd.list-name").text();
-                confirm_dialog += "<br>Confirm submission?";
-                bootbox.confirm(confirm_dialog, function(result) {
-                    if (result) { $("#form_manuscript_submission").submit(); };
-                });
-            });
+            $('#cancelbutton').click(function(){ $('#respond').click() });
 
             $('#responseletter_save_checkbox').click(function(){
                 if ($('#responseletter_save_checkbox').is(':checked')){
@@ -156,9 +153,20 @@
             });
 
             $('#sendresponse').click(function(){
+                CKEDITOR.instances.responseletter.updateElement();
                 if ($.inArray($('#status').val(), ['accepted', 'rejected', 'resubmit']) < 0) {
                     bootbox.alert("You must select manuscript submission result");
-                }
+                } else {
+                    var confirm_dialog = "Submission ID: {{ submission_id }} <br>";
+                    confirm_dialog += 'Title: <i>"{{ title }}"</i> <br>';
+                    confirm_dialog += "Author: {{ author }} <br>";
+                    confirm_dialog += "Co-author(s): {{ co_authors }} <br><br>";
+                    confirm_dialog += ("Submission result: <b>" + $('#status').val().toUpperCase() + "</b><br><br>");
+                    confirm_dialog += "Confirm submission response?"
+                    bootbox.confirm(confirm_dialog, function(result) {
+                        if (result) { $("#form_submission_response").submit(); };
+                    });                     
+                };
             });
 
             $('#status').change(function(){
