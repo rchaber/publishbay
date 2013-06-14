@@ -32,20 +32,20 @@ _routes = [
     RedirectRoute('/browse/contractors', browse_handlers.BrowseContractorsHandler, name='browse-contractors', strict_slash=True),
     RedirectRoute('/browse/contractors/view', browse_handlers.ViewContractorsHandler, name='view-contractors', strict_slash=True),
     RedirectRoute('/browse/contractors/mark', handlers.SaveContractorHandler, name='save-contractor', strict_slash=True),
-    RedirectRoute('/publisher/viewsavedcontractors', publisher_handlers.ViewSavedContractorsHandler, name='view-saved-contractors', strict_slash=True),
+    RedirectRoute('/browse/viewsavedcontractors', browse_handlers.ViewSavedContractorsHandler, name='view-saved-contractors', strict_slash=True),
 
     RedirectRoute('/browse/authors', browse_handlers.BrowseAuthorsHandler, name='browse-authors', strict_slash=True),
     RedirectRoute('/browse/authors/view', browse_handlers.ViewAuthorsHandler, name='view-authors', strict_slash=True),
     RedirectRoute('/browse/authors/mark', handlers.SaveAuthorHandler, name='save-author', strict_slash=True),
     RedirectRoute('/browse/authors/viewmanuscript', browse_handlers.ViewManuscriptDetailsHandler, name='view-manuscript-details', strict_slash=True),
-    RedirectRoute('/publisher/viewsavedauthors', publisher_handlers.ViewSavedAuthorsHandler, name='view-saved-authors', strict_slash=True),
+    RedirectRoute('/browse/viewsavedauthors', browse_handlers.ViewSavedAuthorsHandler, name='view-saved-authors', strict_slash=True),
 
     RedirectRoute('/browse/manuscripts', browse_handlers.BrowseManuscriptsHandler, name='browse-manuscripts', strict_slash=True),
 
     RedirectRoute('/browse/publishinghouses', browse_handlers.BrowsePublishingHousesHandler, name='browse-publishinghouses', strict_slash=True),
     RedirectRoute('/browse/publishinghouses/view', browse_handlers.ViewPublishingHousesHandler, name='view-publishinghouses', strict_slash=True),
     RedirectRoute('/browse/publishinghouses/mark', handlers.SavePublishingHouseHandler, name='save-publishinghouse', strict_slash=True),
-    RedirectRoute('/publisher/viewsavedpublishinghouses', publisher_handlers.ViewSavedPublishingHousesHandler, name='view-saved-publishinghouses', strict_slash=True),
+    RedirectRoute('/browse/viewsavedpublishinghouses', browse_handlers.ViewSavedPublishingHousesHandler, name='view-saved-publishinghouses', strict_slash=True),
 
     RedirectRoute('/author/editmanuscript', author_handlers.EditManuscriptHandler, name='edit-manuscript', strict_slash=True),
     RedirectRoute('/author/mymanuscripts', author_handlers.MyManuscriptsHandler, name='my-manuscripts', strict_slash=True),

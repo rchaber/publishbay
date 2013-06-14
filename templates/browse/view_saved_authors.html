@@ -2,41 +2,51 @@
 
     {% block content %}
 
-    <div class="span12" style="margin-left:0; margin-top: 15px;">
+    <div class="span12" style="margin-left:0;">
+
+        <ul id="breadcrumbs">
+            <li><a href="/"><i class="icon-home"></i></a></li>
+            <li><span>Browse: Saved Authors</span></li>
+        </ul>
+
         <div class="span3" style="margin-left: 0;">
             <div class="sidebar">
                 <div class="w-box w-box-orange">
                     <div class="w-box-header">
-                        <h4>Filter by job</h4>
+                        <h4>Filter by genre</h4>
                     </div>
                     <div class="w-box-content cnt_b">
-                        <div class="control-group">
-                            {% for i in joblist %}
-                            <div class="controls">
-                                <label><input type="checkbox" id="job_{{ i }}" name="jobs" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in jobs %} checked = "checked" {% endif %}>{{ i }}</label>
-                            </div>
-                            {% endfor %}
-                        </div>
                         <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="update" style="padding: 1px 14px 1px;">Update</a>
+                        <div class="control-group" style="margin-top: 15px;">
+                            <div class="controls">
+                                <label><b>Fiction:</b></label>
+                                {% for i in genrelist_fiction %}
+                                <label><input type="checkbox" id="genre_{{ i }}" name="genre" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in genres %} checked = "checked" {% endif %}>{{ i }}</label>
+                                {% endfor %}
+                            </div>
+                            <div class="controls" style="margin-top: 20px;">
+                                <label><b>Non-fiction:</b></label>
+                                {% for i in genrelist_nonfiction %}
+                                <label><input type="checkbox" id="genre_{{ i }}" name="genre" value="{{ i }}" style="margin-right: 5px; margin-top: -2px;" {%if i in genres %} checked = "checked" {% endif %}>{{ i }}</label>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="span9">
             <div class="w-box">
-                <div class="w-box-header">
-                    <h4>Saved contractors</h4>
-                </div>
-                <div class="w-box-content cnt_browse jQ-list" style="border-top-width: 1px; min-height: 60px;">
+                <div class="w-box-content cnt_browse jQ-list borders" style="min-height: 60px;">
                     <div class="record-count">
                         {% if count > 0 %}
-                        Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;contractors
+                        Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;authors
                         {% else %}
-                        You have no saved contractors
+                        You have no saved authors
                         {% endif %}
                     </div>
                     <ul>
-                    {% for c in contractors %}
+                    {% for c in authors %}
                         <li>
                     
                         {% if c.picture_url != '' and c.picture %}
@@ -45,7 +55,7 @@
                         <img src="/static/images/dummy_50x50.gif" alt="">
                         {% endif %}
                         
-                        <div class="list-name"><a href="/browse/contractors/view?pid={{ c.profile_id }}">{{ c.name_to_display }}</a></div>
+                        <div class="list-name"><a href="/browse/authors/view?aid={{ c.author_id }}">{{ c.name_to_display }}</a></div>
 
                         <div class="list-title">{{ c.title }}</div>
 
@@ -58,7 +68,7 @@
                         {% endif %}
                         </div>
 
-                        <div class="list-tags">{% for i in c.jobs|sort %}<span class="label label-info">{{ i }} </span>{% endfor %}</div>
+                        <div class="list-tags">{% for i in c.genres|sort %}<span class="label label-info">{{ i }}</span>{% endfor %}</div>
 
                         </li>
                     {% endfor %}
@@ -66,7 +76,7 @@
                     
                     <div class="record-count" style="float: none;">
                         {% if count > 0 %}
-                        Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;contractors
+                        Showing&nbsp;{{ filter_count }}&nbsp;out&nbsp;of&nbsp;{{ count }}&nbsp;saved&nbsp;authors
                         {% endif %}
                     </div>
                 </div>
@@ -83,8 +93,8 @@
         $().ready(function() {
 
             $('#update').click(function(){
-                var a = $('input[name="jobs"]').serialize();
-                window.location.href = "/publisher/viewsavedcontractors?" + a;
+                var a = $('input[name="genre"]').serialize();
+                window.location.href = "/publisher/viewsavedauthors?" + a;
             })
 
             $('.lessmore').click(function(i){
