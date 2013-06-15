@@ -301,10 +301,10 @@ class SubmitManuscriptHandler(BaseHandler):
         submission_denied = '; '.join(submission_denied)
 
         if len(submission_confirmed) > 0:
-            message = "Manuscript '%s' submitted to: %s" % (manuscript.title, submission_confirmed)
+            message = '<i>"%s"</i> submitted to: %s' % (manuscript.title, submission_confirmed)
             self.add_message(message, 'success')
         if len(submission_denied) > 0:
-            message = " " + "Failed submissions. Manuscript '%s' already been submitted to: %s" % (manuscript.title, submission_denied)
+            message = 'Failed submissions. <i>"%s"</i> already been submitted to: %s' % (manuscript.title, submission_denied)
             self.add_message(message, 'error')
 
         self.redirect('/')

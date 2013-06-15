@@ -26,6 +26,9 @@ skip_files:
 - ^testrunner\.py
 - ^grunt\.js
 - ^node_modules/(.*/)?
+- ^(.*/)?.*\.md
+- ^(.*/)?.*\.php
+- ^(.*/)?.*/examples/.*
 
 builtins:
 - appstats: on #/_ah/stats/

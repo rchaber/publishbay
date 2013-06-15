@@ -41,7 +41,7 @@
             </div>
             <div class="w-box-content">
 
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Submission ID</th>
@@ -84,7 +84,21 @@
                                 {% endfor %}
                             {% else %}
                                 <tr class="warning">
-                                    <td colspan="7" style="text-align: center; padding: 8px 0px;">You have no submissions received matching the selected filter</td>
+                                    <td colspan="7" style="text-align: center; padding: 8px 0px;">
+                                        {% if status_filter == 'unread' %}
+                                        You have no unread submissions received
+                                        {% elif status_filter == 'read' %}
+                                        You have no submissions received marked as read
+                                        {% elif status_filter == 'rejected' %}
+                                        You have no submissions received which were rejected
+                                        {% elif status_filter == 'accepted' %}
+                                        You have no submissions received which were accepted
+                                        {% elif status_filter == 'acquired' %}
+                                        You have no submissions received which were acquired
+                                        {% elif status_filter == 'all' %}
+                                        You have no submissions received
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endif %}
                         </tbody>
