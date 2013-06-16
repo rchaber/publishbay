@@ -29,6 +29,9 @@ skip_files:
 - ^(.*/)?.*\.md
 - ^(.*/)?.*\.php
 - ^(.*/)?.*/examples/.*
+- ^(.*/)?.*/license/.*
+- ^(.*/)?.*/LICENSE
+- ^(.*/)?.*/LICENSE-MIT
 
 builtins:
 - appstats: on #/_ah/stats/
