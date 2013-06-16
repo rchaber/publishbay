@@ -19,7 +19,7 @@ from webapp2_extras.i18n import gettext as _
 
 # local application/library specific imports
 
-import bayforms as bayforms #
+import bayforms as bayforms
 
 from boilerplate import models
 from boilerplate.lib.basehandler import BaseHandler
