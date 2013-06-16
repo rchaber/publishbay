@@ -88,7 +88,7 @@ header {
 }
 
 .error.help-inline {
-	margin-top: -10px;
+	margin-top: -2px;
 	font-size: 11px;
 	float: left;
 	margin-bottom: 0;
@@ -1037,12 +1037,16 @@ pre.summary {
 .heading {
 	font-family: "Open Sans Condensed", sans-serif;
 	font-size: 22px;
-	font-weight: bold;
+	font-weight: normal;
 	margin: 18px 30px 0;
 	border-bottom: 2px solid #CCC;
 	padding-bottom: 7px;
 	padding-left: 3px;
 	display: block;
+}
+
+#form_login_user .control-label {
+	font-weight: normal;
 }
 
 /*==================================================================*/
