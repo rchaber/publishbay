@@ -97,7 +97,7 @@ class EditManuscriptHandler(BaseHandler):
             manuscript.genres = checked_genres
             manuscript.display = self.request.POST.get('display_manuscript')
             manuscript.co_authors = co_authors
-            manuscript.ownership = (self.request.POST.get('ownership') == "True")
+            manuscript.ownership = (self.request.POST.get('ownership') == 'True')
             manuscript.sample = self.request.POST.get('wysiwyg').replace('\r\r\n', '\r\n')
             manuscript.put()
             message += " " + _('Your manuscript has been uploaded/updated.')
@@ -327,7 +327,7 @@ class MySubmissionsHandler(BaseHandler):
     @user_required
     def get(self):
 
-        status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else 'open'
+        status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else 'all'
 
         if status_filter == 'open':
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['sent', 'read', 'resubmit'])).fetch()
@@ -351,6 +351,8 @@ class MySubmissionsHandler(BaseHandler):
             d['publishinghouse'] = publishinghouse.name
             d['publishinghouse_id'] = publishinghouse.key.id()
             d['status'] = item.status.capitalize()
+            d['coverletter'] = True if (item.coverletter and item.coverletter.strip() != '') else False
+            d['responseletter'] = True if (item.responseletter and item.responseletter.strip() != '') else False
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
             d['class'] = utils.cl[utils.sta.index(item.status)]

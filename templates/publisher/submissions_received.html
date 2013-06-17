@@ -35,9 +35,10 @@
                             <tr>
                                 <th>Submission ID</th>
                                 <th>Manuscript</th>
-                                <th>Author</th>
+                                <th>From Author</th>
                                 <th>Status</th>
                                 <th>CL</th>
+                                <th>RL</th>
                                 <th style="width: 110px;">Submitted</th>
                                 <th style="width: 110px;">Updated</th>
                             </tr>
@@ -60,6 +61,11 @@
                                     </td>
                                     <td>
                                         {% if s.coverletter %}
+                                        <i class="icsw16-paperclip"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if s.responseletter %}
                                         <i class="icsw16-paperclip"></i>
                                         {% endif %}
                                     </td>

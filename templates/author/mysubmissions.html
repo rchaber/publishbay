@@ -37,8 +37,10 @@
                             <tr>
                                 <th>Submission ID</th>
                                 <th>Manuscript</th>
-                                <th>Publishing House</th>
+                                <th>To Publishing House</th>
                                 <th>Status</th>
+                                <th>CL</th>
+                                <th>RL</th>
                                 <th>Submitted</th>
                                 <th>Updated</th>
                             </tr>
@@ -58,6 +60,16 @@
                                     </td>
                                     <td>
                                         {{ s.status }}
+                                    </td>
+                                    <td>
+                                        {% if s.coverletter %}
+                                        <i class="icsw16-paperclip"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if s.responseletter %}
+                                        <i class="icsw16-paperclip"></i>
+                                        {% endif %}
                                     </td>
                                     <td>
                                         {{ s.submitted_on }}

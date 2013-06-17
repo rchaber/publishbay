@@ -85,7 +85,8 @@ class SubmissionsReceivedHandler(BaseHandler):
                 d['status'] = 'unread'
             else:
                 d['status'] = item.status
-            d['coverletter'] = 'True' if (item.coverletter and item.coverletter != '') else 'False'
+            d['coverletter'] = True if (item.coverletter and item.coverletter.strip() != '') else False
+            d['responseletter'] = True if (item.responseletter and item.responseletter.strip() != '') else False
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
             d['class'] = utils.cl[utils.sta.index(item.status)]
@@ -134,13 +135,11 @@ class ReadSubmissionHandler(BaseHandler):
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
         params['saved_responseletters'] = saved_responseletters
 
-        print submission.status
         if submission.status in ['sent', 'read', 'resubmitted']:
             params['submission_locked'] = False
         else:
             params['submission_locked'] = True
 
-        print params['submission_locked']
         params['responseletter'] = submission.responseletter
 
         return self.render_template('publisher/read_submission.html', **params)
@@ -188,7 +187,6 @@ class ReadSubmissionHandler(BaseHandler):
             message = _('Unable to send response and update submission. Please try again later.')
             self.add_message(message, 'error')
             return self.get()
-
 
 
 class LoadResponseLetterHandler(BaseHandler):
