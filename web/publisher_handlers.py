@@ -61,6 +61,9 @@ class SubmissionsReceivedHandler(BaseHandler):
         elif status_filter == 'accepted':
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'accepted').fetch()
             status_filter_label = 'Status: accepted'
+        elif status_filter == 'resubmit':
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'resubmit').fetch()
+            status_filter_label = 'Status: resubmit'
         elif status_filter == 'acquired':
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'acquired').fetch()
             status_filter_label = 'Status: acquired'
@@ -130,6 +133,53 @@ class ReadSubmissionHandler(BaseHandler):
         params['saved_responseletters'] = saved_responseletters
 
         return self.render_template('publisher/read_submission.html', **params)
+
+    def post(self):
+        """ Get fields from POST dict """
+
+        submission_id = self.request.POST.get('submission_id')
+        submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
+
+        responseletter_save = (self.request.POST.get('responseletter_save_checkbox') == 'True')
+        responseletter_checkbox = (self.request.POST.get('responseletter_checkbox') == 'True')
+
+        if responseletter_checkbox:
+            content = self.request.POST.get('responseletter').replace('\r', ' ').replace('\n', ' ')
+            if content.strip() != '':
+                submission.responseletter = content.strip()
+            responseletter_name = self.request.POST.get('responseletter_name').lower().strip()
+            if responseletter_name != '' and responseletter_save:
+                q = bmodels.responseletter.query(bmodels.ResponseLetter.name == responseletter_name).get()
+                if not q:
+                    q = bmodels.ResponseLetter()
+                    q.user = self.user_key
+                    q.name = responseletter_name
+                q.content = content
+                q.put()
+
+        try:
+            message = ''
+            submission.status = self.request.POST.get('status')
+
+            submission.put()
+            message += _('Submission updated and response sent. Please reload.')
+
+            self.add_message(message, 'success')
+            if submission.status == 'rejected':
+                self.redirect('/publisher/submissionsreceived?status_filter=rejected')
+            elif submission.status == 'accepted':
+                self.redirect('/publisher/submissionsreceived?status_filter=accepted')
+            elif submission.status == 'resubmit':
+                self.redirect('/publisher/submissionsreceived?status_filter=resubmit')
+            else:
+                self.redirect('/publisher/submissionsreceived')
+
+        except (AttributeError, KeyError, ValueError), e:
+            logging.error('Error responding submission: ' + str(e))
+            message = _('Unable to send response and update submission. Please try again later.')
+            self.add_message(message, 'error')
+            return self.get()
+
 
 
 class LoadResponseLetterHandler(BaseHandler):

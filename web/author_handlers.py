@@ -262,8 +262,8 @@ class SubmitManuscriptHandler(BaseHandler):
 
         if coverletter_checkbox:
             content = self.request.POST.get('coverletter').replace('\r', ' ').replace('\n', ' ')
-            coverletter_name = self.request.POST.get('coverletter_name').lower()
-            if coverletter_name.replace(' ', '') != '' and coverletter_save:
+            coverletter_name = self.request.POST.get('coverletter_name').lower().strip()
+            if coverletter_name != '' and coverletter_save:
                 q = bmodels.Coverletter.query(bmodels.Coverletter.name == coverletter_name).get()
                 if not q:
                     q = bmodels.Coverletter()
