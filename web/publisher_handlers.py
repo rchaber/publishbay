@@ -45,7 +45,7 @@ class SubmissionsReceivedHandler(BaseHandler):
     @user_required
     def get(self):
 
-        status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else 'unread'
+        status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else ''
 
         phouse_key = bmodels.PublishingHouse.get_by_ownerkey(self.user_key).key
 
@@ -105,7 +105,7 @@ class ReadSubmissionHandler(BaseHandler):
         submission_id = self.request.GET.get('submission_id')
         submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
 
-        if (submission.status == 'sent' or submission.status == 'resent'):
+        if (submission.status == 'sent' or submission.status == 'resubmitted'):
             try:
                 submission.status = 'read'
                 submission.put()
@@ -129,8 +129,16 @@ class ReadSubmissionHandler(BaseHandler):
         params['genres'] = manuscript.genres
         params['co_authors'] = ', '.join(manuscript.co_authors)
         params['submitted_on'] = submission.submitted_on.strftime('%Y-%m-%d')
+        params['status'] = submission.status.capitalize()
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
         params['saved_responseletters'] = saved_responseletters
+
+        if submission.status in ['sent', 'read', 'resubmitted']:
+            params['submission_locked'] = 'True'
+        else:
+            params['submission_locked'] = 'False'
+
+        params['responseletter'] = submission.responseletter
 
         return self.render_template('publisher/read_submission.html', **params)
 

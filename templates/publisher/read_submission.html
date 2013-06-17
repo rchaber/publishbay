@@ -13,8 +13,30 @@
             <div class="w-box w-box-blue">
                 <div class="w-box-header">
                     <h4>{% trans %}Submission{% endtrans %} ID: {{ submission_id }}</h4>
+                    <div class="pull-right">
+                        <a href="{{ uri_for('submissions-received') }}" class="btn btn-mini icon ptip_sw" title="Back"><i class="splashy-arrow_state_blue_left"></i></a>
+                    </div>
                 </div>
                 <div class="w-box-content cnt_ab submission">
+
+                    {% if submission_locked %}
+                    <table class="table table-bordered" style="margin-bottom: 20px;">
+                        {% if status == 'Accepted' %}
+                        <tr class="success" id="tr-status">
+                        {% elif status == 'Rejected' %}
+                        <tr class="error" id="tr-status">
+                        {% elif status == 'Resubmit' %}
+                        <tr class="info" id="tr-status">
+                        {% else %}
+                        <tr class="warning" id="tr-status">
+                        {% endif %}
+                            <td style="width: 220px; margin: 0; vertical-align: middle; text-align: center; height: 50px; padding: 0;">
+                                <b>Manuscript Submission Result:&nbsp;{{ status }}</b>
+                            </td>
+                        </tr>
+                    </table>
+                    {% endif %}
+
                     <div class="submission_header">
                         <span class="title">&#34;{{ title }}&#34;</span>
                         <br/>by&nbsp;<a href="{{ uri_for('view-authors')}}?aid={{ author_id }}" class="author">{{ author }}</a>
@@ -41,6 +63,16 @@
                         {{ sample }}
                     </div>
 
+                    {% if submission_locked %}
+
+                        {% if responseletter %}
+                        <legend>Response Letter</legend>
+                        <div class="submission response-letter">
+                            {{ responseletter }}
+                        </div>
+                        {% endif %}
+                    
+                    {% else %}
                     <div class="submission_buttons">
                         <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="respond" >Respond Submission</a>
                         <a href="{{ uri_for('submissions-received')}}" class="PB-btn" id="back" >Back to Submissions</a>
@@ -99,6 +131,7 @@
                             <a href="javascript:void(0)" class="PB-btn" id="cancelbutton" >Cancel</a>
                         </div>
                     </div>
+                    {% endif %}
 
                 </div>
             </div>
