@@ -141,21 +141,19 @@ class ReadSubmissionHandler(BaseHandler):
         submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
 
         responseletter_save = (self.request.POST.get('responseletter_save_checkbox') == 'True')
-        responseletter_checkbox = (self.request.POST.get('responseletter_checkbox') == 'True')
 
-        if responseletter_checkbox:
-            content = self.request.POST.get('responseletter').replace('\r', ' ').replace('\n', ' ')
-            if content.strip() != '':
-                submission.responseletter = content.strip()
-            responseletter_name = self.request.POST.get('responseletter_name').lower().strip()
-            if responseletter_name != '' and responseletter_save:
-                q = bmodels.responseletter.query(bmodels.ResponseLetter.name == responseletter_name).get()
-                if not q:
-                    q = bmodels.ResponseLetter()
-                    q.user = self.user_key
-                    q.name = responseletter_name
-                q.content = content
-                q.put()
+        content = self.request.POST.get('responseletter').replace('\r', ' ').replace('\n', ' ')
+        if content.strip() != '':
+            submission.responseletter = content.strip()
+        responseletter_name = self.request.POST.get('responseletter_name').lower().strip()
+        if responseletter_name != '' and responseletter_save:
+            q = bmodels.ResponseLetter.query(bmodels.ResponseLetter.name == responseletter_name).get()
+            if not q:
+                q = bmodels.ResponseLetter()
+                q.user = self.user_key
+                q.name = responseletter_name
+            q.content = content
+            q.put()
 
         try:
             message = ''
