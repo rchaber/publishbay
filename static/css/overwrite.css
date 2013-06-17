@@ -345,11 +345,12 @@ input[type="radio"], input[type="checkbox"] {
 
 .table th, .table td {
 	padding: 8px 3px 8px 10px;
-	line-height: 20px;
+	line-height: 15px;
 	text-align: left;
 	vertical-align: top;
 	border-top: 1px solid #DDD;
 	border-radius: 0;
+	height: 15px;
 }
 
 .table-bordered, th, td, tr {

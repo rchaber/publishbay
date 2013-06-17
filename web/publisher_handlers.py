@@ -71,8 +71,6 @@ class SubmissionsReceivedHandler(BaseHandler):
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key).fetch()
             status_filter_label = 'All'
 
-        sta = ['sent', 'read', 'rejected', 'resubmit', 'resubmitted', 'accepted', 'acquired']
-        cl = ['warning', 'warning', 'error', 'info', 'info', 'success', 'success']
         params = {}
         submissions = []
         for item in submissions_fetch:
@@ -90,7 +88,7 @@ class SubmissionsReceivedHandler(BaseHandler):
             d['coverletter'] = 'True' if (item.coverletter and item.coverletter != '') else 'False'
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
-            d['class'] = cl[sta.index(item.status)]
+            d['class'] = utils.cl[utils.sta.index(item.status)]
             submissions.append(d)
 
         params['status_filter'] = status_filter
@@ -136,11 +134,13 @@ class ReadSubmissionHandler(BaseHandler):
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
         params['saved_responseletters'] = saved_responseletters
 
+        print submission.status
         if submission.status in ['sent', 'read', 'resubmitted']:
-            params['submission_locked'] = 'True'
+            params['submission_locked'] = False
         else:
-            params['submission_locked'] = 'False'
+            params['submission_locked'] = True
 
+        print params['submission_locked']
         params['responseletter'] = submission.responseletter
 
         return self.render_template('publisher/read_submission.html', **params)

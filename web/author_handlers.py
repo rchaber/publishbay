@@ -350,9 +350,10 @@ class MySubmissionsHandler(BaseHandler):
             d['manuscript_title'] = manuscript.title
             d['publishinghouse'] = publishinghouse.name
             d['publishinghouse_id'] = publishinghouse.key.id()
-            d['status'] = item.status
+            d['status'] = item.status.capitalize()
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
+            d['class'] = utils.cl[utils.sta.index(item.status)]
             submissions.append(d)
 
         params['status_filter'] = status_filter

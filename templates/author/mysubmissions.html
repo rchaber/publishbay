@@ -32,7 +32,7 @@
             </div>
             <div class="w-box-content">
 
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Submission ID</th>
@@ -46,7 +46,7 @@
                         <tbody>
                             {% if submissions|length > 0 %}
                                 {% for s in submissions %}
-                                <tr>
+                                <tr class="{{ s.class }}">
                                     <td>
                                         {{ s.submission_id }}
                                     </td>

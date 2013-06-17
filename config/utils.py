@@ -106,3 +106,26 @@ genres_nonfiction = ['Art & Photography',
                      'Travel',
                      'True Adventure & True Crime',
                      'Women Issues']
+
+sta = ['sent',
+       'read',
+       'rejected',
+       'resubmit',
+       'resubmitted',
+       'accepted',
+       'acquired']
+
+cl = ['',
+      '',
+      'error',
+      'info',
+      'info',
+      'success',
+      'success']
+
+
+
+
+
+
+
