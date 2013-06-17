@@ -71,6 +71,8 @@ class SubmissionsReceivedHandler(BaseHandler):
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key).fetch()
             status_filter_label = 'All'
 
+        sta = ['sent', 'read', 'rejected', 'resubmit', 'resubmitted', 'accepted', 'acquired']
+        cl = ['warning', 'warning', 'error', 'info', 'info', 'success', 'success']
         params = {}
         submissions = []
         for item in submissions_fetch:
@@ -88,6 +90,7 @@ class SubmissionsReceivedHandler(BaseHandler):
             d['coverletter'] = 'True' if (item.coverletter and item.coverletter != '') else 'False'
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
+            d['class'] = cl[sta.index(item.status)]
             submissions.append(d)
 
         params['status_filter'] = status_filter
