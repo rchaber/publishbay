@@ -22,6 +22,7 @@
                             <li><a href="{{ uri_for('submissions-received')}}?status_filter=read">Status: read</a></li>
                             <li><a href="{{ uri_for('submissions-received')}}?status_filter=rejected">Status: rejected</a></li>
                             <li><a href="{{ uri_for('submissions-received')}}?status_filter=accepted">Status: accepted</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=pass">Status: pass</a></li>
                             <li><a href="{{ uri_for('submissions-received')}}?status_filter=negotiating">Status: negotiating</a></li>
                             <li><a href="{{ uri_for('submissions-received')}}?status_filter=canceled">Status: canceled</a></li>
                             <li><a href="{{ uri_for('submissions-received')}}?status_filter=acquired">Status: acquired</a></li>
@@ -89,6 +90,8 @@
                                         You have no submissions received which were rejected
                                         {% elif status_filter == 'accepted' %}
                                         You have no submissions received which were accepted
+                                        {% elif status_filter == 'pass' %}
+                                        You have no submissions received which you pass after analyzing the full manuscript
                                         {% elif status_filter == 'negotiating' %}
                                         You have no submissions received in negotiation process
                                         {% elif status_filter == 'canceled' %}

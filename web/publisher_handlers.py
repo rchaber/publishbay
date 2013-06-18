@@ -64,6 +64,9 @@ class SubmissionsReceivedHandler(BaseHandler):
         elif status_filter == 'negotiating':
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'negotiating').fetch()
             status_filter_label = 'Status: negotiating'
+        elif status_filter == 'pass':
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'pass').fetch()
+            status_filter_label = 'Status: pass'
         elif status_filter == 'canceled':
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'canceled').fetch()
             status_filter_label = 'Status: canceled'

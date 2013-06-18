@@ -333,7 +333,7 @@ class MySubmissionsHandler(BaseHandler):
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['sent', 'read', 'negotiating'])).fetch()
             status_filter_label = 'Status: open'
         elif status_filter == 'closed':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['rejected', 'accepted', 'canceled', 'acquired'])).fetch()
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['rejected', 'accepted', 'pass', 'canceled', 'acquired'])).fetch()
             status_filter_label = 'Status: closed'
         else:
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key).fetch()
