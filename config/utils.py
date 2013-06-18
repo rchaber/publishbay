@@ -111,12 +111,16 @@ sta = ['sent',
        'read',
        'rejected',
        'accepted',
+       'negotiating',
+       'canceled',
        'acquired']
 
 cl = ['',
       '',
       'error',
       'success',
+      'info',
+      'error',
       'success']
 
 

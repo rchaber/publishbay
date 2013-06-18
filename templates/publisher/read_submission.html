@@ -14,18 +14,18 @@
                 <div class="w-box-header">
                     <h4>{% trans %}Submission{% endtrans %} ID: {{ submission_id }}</h4>
                     <div class="pull-right">
-                        <a href="{{ uri_for('submissions-received') }}" class="btn btn-mini icon ptip_sw" title="Back"><i class="splashy-arrow_state_blue_left"></i></a>
+                        <a href="{{ uri_for('submissions-received') }}" class="btn btn-mini icon ptip_sw" title="Back" style="width: 23px;"><i class="icon-chevron-left"></i></a>
                     </div>
                 </div>
                 <div class="w-box-content cnt_ab submission" xx="{{ submission_locked }}">
 
                     {% if submission_locked %}
                     <table class="table table-bordered" style="margin-bottom: 20px;">
-                        {% if status == 'Accepted' %}
+                        {% if status == 'Accepted' or status == 'Acquired' %}
                         <tr class="success" id="tr-status">
-                        {% elif status == 'Rejected' %}
+                        {% elif status == 'Rejected' or status == 'Canceled' %}
                         <tr class="error" id="tr-status">
-                        {% elif status == 'Resubmit' %}
+                        {% elif status == 'Negotiating' %}
                         <tr class="info" id="tr-status">
                         {% else %}
                         <tr class="warning" id="tr-status">
@@ -203,7 +203,7 @@
             });
 
             $('#status').change(function(){
-                var sta = ['warning', 'success', 'error', 'info'];
+                var sta = ['warning', 'success', 'error'];
                 var color = sta[$.inArray($('#status').val(), ['None', 'accepted', 'rejected'])];
                 $('#tr-status').attr('class', color)
             })
