@@ -61,9 +61,6 @@ class SubmissionsReceivedHandler(BaseHandler):
         elif status_filter == 'accepted':
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'accepted').fetch()
             status_filter_label = 'Status: accepted'
-        elif status_filter == 'resubmit':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'resubmit').fetch()
-            status_filter_label = 'Status: resubmit'
         elif status_filter == 'acquired':
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'acquired').fetch()
             status_filter_label = 'Status: acquired'
@@ -107,7 +104,7 @@ class ReadSubmissionHandler(BaseHandler):
         submission_id = self.request.GET.get('submission_id')
         submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
 
-        if (submission.status == 'sent' or submission.status == 'resubmitted'):
+        if submission.status == 'sent':
             try:
                 submission.status = 'read'
                 submission.put()
@@ -135,7 +132,7 @@ class ReadSubmissionHandler(BaseHandler):
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
         params['saved_responseletters'] = saved_responseletters
 
-        if submission.status in ['sent', 'read', 'resubmitted']:
+        if submission.status in ['sent', 'read']:
             params['submission_locked'] = False
         else:
             params['submission_locked'] = True
@@ -177,8 +174,6 @@ class ReadSubmissionHandler(BaseHandler):
                 self.redirect('/publisher/submissionsreceived?status_filter=rejected')
             elif submission.status == 'accepted':
                 self.redirect('/publisher/submissionsreceived?status_filter=accepted')
-            elif submission.status == 'resubmit':
-                self.redirect('/publisher/submissionsreceived?status_filter=resubmit')
             else:
                 self.redirect('/publisher/submissionsreceived')
 

@@ -110,16 +110,12 @@ genres_nonfiction = ['Art & Photography',
 sta = ['sent',
        'read',
        'rejected',
-       'resubmit',
-       'resubmitted',
        'accepted',
        'acquired']
 
 cl = ['',
       '',
       'error',
-      'info',
-      'info',
       'success',
       'success']
 
