@@ -722,6 +722,37 @@ a.btn-header:hover {
 	text-shadow: 0 1px 0 #25A811;
 }
 
+.PB-btn-red {
+color: #FFF;
+background: #DA4A4A;
+background: #DA4A4A -webkit-linear-gradient(top,#DA4A4A,#CA3232 95%,#B41515);
+background: #DA4A4A -moz-linear-gradient(top,#DA4A4A,#CA3232 95%,#B41515);
+background: #DA4A4A -o-linear-gradient(top,#DA4A4A,#CA3232 95%,#B41515);
+background: #DA4A4A linear-gradient(top,#DA4A4A,#CA3232 95%,#B41515);
+border: 1px solid #9E1919;
+border-bottom-color: #8D0F0F;
+border-top-color: #BE3838;
+-webkit-box-shadow: 0 1px 3px rgba(151, 101, 38, .5),inset 0 1px 0 #E66262;
+-moz-box-shadow: 0 1px 3px rgba(38,151,72,.5),inset 0 1px 0 #E66262;
+box-shadow: 0 1px 3px rgba(151, 97, 38, .5),inset 0 1px 0 #E66262;
+text-shadow: 0 1px 0 #A81111;
+}
+
+.PB-btn-red:hover {
+color: #FFF;
+background: #DD6464;
+background: #DD6464 -webkit-linear-gradient(top,#DD6464,#D23939 95%,#CC3737);
+background: #DD6464 -moz-linear-gradient(top,#DD6464,#D23939 95%,#CC3737);
+background: #DD6464 -o-linear-gradient(top,#DD6464,#D23939 95%,#CC3737);
+background: #DD6464 linear-gradient(top,#DD6464,#D23939 95%,#CC3737);
+-webkit-box-shadow: 0 1px 3px rgba(151, 133, 38, .5),inset 0 1px 0 #EC6666;
+-moz-box-shadow: 0 1px 3px rgba(38,151,72,.5),inset 0 1px 0 #EC6666;
+box-shadow: 0 1px 3px rgba(151, 115, 38, .5),inset 0 1px 0 #EC6666;
+border: 1px solid #BE6E38;
+border-bottom: 1px solid #8D0F0F;
+text-shadow: 0 1px 0 #A81111;
+}
+
 .PB-btn-jumbo {
 	display: block;
 	font-size: 18px;

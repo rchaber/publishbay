@@ -17,12 +17,12 @@
                         <a href="{{ uri_for('submissions-received') }}" class="btn btn-mini icon ptip_sw" title="Back" style="width: 23px;"><i class="icon-chevron-left"></i></a>
                     </div>
                 </div>
-                <div class="w-box-content cnt_ab submission" xx="{{ submission_locked }}">
+                <div class="w-box-content cnt_ab submission">
 
                     {% if submission_locked %}
                     <table class="table table-bordered" style="margin-bottom: 20px;">
                         {% if status == 'Accepted' or status == 'Acquired' %}
-                        <tr class="success" id="tr-status">
+                        <tr class="warning" id="tr-status">
                         {% elif status == 'Rejected' or status == 'Canceled' %}
                         <tr class="error" id="tr-status">
                         {% elif status == 'Negotiating' %}
@@ -31,10 +31,53 @@
                         <tr class="warning" id="tr-status">
                         {% endif %}
                             <td style="width: 220px; margin: 0; vertical-align: middle; text-align: center; height: 50px; padding: 0;">
-                                <b>Manuscript Submission Result:&nbsp;{{ status }}</b>
+                                <b>Manuscript Submission Status:&nbsp;{{ status }}</b>
                             </td>
                         </tr>
+                        {% if status == 'Accepted' %}
+                        <tr class="warning" id="tr-status">
+                            <td style="padding: 0 10px 10px; vertical-align: middle; text-align: center; height: 50px; border-top: none;">
+                                <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="makeoffer" >Make Offer</a>
+                                <a href="javascript:void(0)" class="PB-btn" id="passbutton" >Pass</a>
+                                <a href="javascript:void(0)" class="PB-btn PB-btn-red" id="sendpass" style="display: none;">Pass Submission</a>
+                                <a href="javascript:void(0)" class="PB-btn" id="cancelbutton" style="display: none;">Cancel</a>
+                            </td>
+                        </tr>
+                        <tr class="warning" id="passresponseletter_row" style="display: none;">
+                            <td style="padding: 0 87px 20px; vertical-align: middle; text-align: center; border-top: none;">
+                                {% if saved_responseletters|length > 0 %}
+                                <dl style="margin: 0;">
+                                    <dt style="font-size: 21px; font-weight: normal; line-height: 40px; float: left;">Pass Response Letter</dt>
+                                    <dd style="text-align: right; margin-bottom: 10px;" id="coverletter_select">
+                                        <select id="responseletter_to_load" style="height: 30px; line-height: 30px; padding: 6px; vertical-align: middle; margin-bottom: 0; font-size: 12px; max-width: 200px;">
+                                              <option value="None">Select a saved response letter</option>
+                                              {% for c in saved_responseletters %}
+                                              <option value="{{ c[0] }}">{{ c[1] }}</option>
+                                              {% endfor %}
+                                        </select>
+                                        <button type="button" class="btn btn-mini" id="responseletter_load" style="height: 30px; width: 50px;">Load</button>
+                                    </dd>
+                                </dl>
+                                {% endif %}
+                                <textarea class="input-xxlarge focused" cols="50" id="passresponseletter" name="passresponseletter" rows="8" style="resize: vertical; width: 620px;"></textarea>
+                                <div style="font-size: 11px; display: block; line-height: 15px; width: 720px; margin-bottom: 20px; text-align: left;">
+                                    <p class="muted">Be professional, consistent, brief and, most of all, respectful.</p>
+                                </div>
+                                <dl class="dl-horizontal" style="margin-top: -10px; height: 30px; padding-left: 10px; margin-bottom: 0;">
+                                    <dt style="width: 200px; padding-top: 5px;"><input type="checkbox" id="responseletter_save_checkbox" name="responseletter_save_checkbox" value="True" style="margin-right: 5px;">
+                                        Save Response Letter
+                                    </dt>
+                                    <dt style="white-space: normal; line-height: 15px; display: none;">Enter response letter name</dt>
+                                    <dd id='responseletter_name_dd' style="display: none; height: 30px; line-height: 30px; vertical-align: top;">
+                                        Enter response letter name<input class="input-large focused" id="responseletter_name" name="responseletter_name" type="text" value="" style="height: 15px; margin-left: 10px; margin-bottom: 0; font-size: 13px;">
+                                    </dd>
+                                </dl>
+                            </td>
+                        </tr>
+                        {% endif %}
                     </table>
+                    <div id="passresponseletter_area" style="display: none; width: 720px; margin: 10px auto 20px;">
+                    </div>
                     {% endif %}
 
                     <div class="submission_header">
@@ -147,7 +190,25 @@
 
         $().ready(function() {
 
+            {% if status == 'Accepted' %}
+
+            CKEDITOR.replace('passresponseletter');
+
+            $('#passbutton, #cancelbutton').click(function(){
+                if ($('#passresponseletter_row').css('display') == 'none') {
+                    $('#passresponseletter_row, #sendpass, #cancelbutton').show();
+                    $('#passbutton, #makeoffer').hide();
+                } else {
+                    $('#passresponseletter_row, #sendpass, #cancelbutton').hide();
+                    $('#passbutton, #makeoffer').show();
+                };
+            });
+
+            {% else %}
+
             CKEDITOR.replace('responseletter');
+
+            {% endif %}                    
 
             $('#respond').click(function(){
                 if ($('.submission.response').css('display') == 'none') {

@@ -259,6 +259,7 @@ class ManuscriptSubmission(ndb.Model):
     status = ndb.StringProperty(choices=['sent', 'read', 'rejected', 'accepted', 'pass', 'negotiating', 'canceled', 'acquired'])
     coverletter = ndb.TextProperty()
     responseletter = ndb.TextProperty()
+    passresponseletter = ndb.TextProperty()
     submitted_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
 
