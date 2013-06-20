@@ -14,13 +14,13 @@
                 <div class="w-box-header">
                     <h4>{% trans %}Submission{% endtrans %} ID: {{ submission_id }}</h4>
                     <div class="pull-right">
-                        <a href="{{ uri_for('submissions-received') }}" class="btn btn-mini icon ptip_sw" title="Back" style="width: 23px;"><i class="icon-chevron-left"></i></a>
+                        <a href="{{ uri_for('submissions-received') }}" class="btn btn-mini" title="Back">Back</a>
                     </div>
                 </div>
-                <div class="w-box-content cnt_ab submission">
+                <div class="w-box-content">
 
                     {% if submission_locked %}
-                    <table class="table table-bordered" style="margin-bottom: 20px;">
+                    <table class="table">
                         {% if status == 'Accepted' or status == 'Acquired' %}
                         <tr class="warning" id="tr-status">
                         {% elif status == 'Rejected' or status == 'Canceled' %}
@@ -30,13 +30,13 @@
                         {% else %}
                         <tr class="warning" id="tr-status">
                         {% endif %}
-                            <td style="width: 220px; margin: 0; vertical-align: middle; text-align: center; height: 50px; padding: 0;">
+                            <td style="border-top: none; vertical-align: middle; text-align: center; height: 60px; padding: 0;">
                                 <b>Manuscript Submission Status:&nbsp;{{ status }}</b>
                             </td>
                         </tr>
                         {% if status == 'Accepted' %}
                         <tr class="warning" id="tr-status">
-                            <td style="padding: 0 10px 10px; vertical-align: middle; text-align: center; height: 50px; border-top: none;">
+                            <td style="padding: 0 10px 10px; text-align: center; height: 45px; border-top: none;">
                                 <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="makeoffer" >Make Offer</a>
                                 <a href="javascript:void(0)" class="PB-btn" id="passbutton" >Pass</a>
                                 <a href="javascript:void(0)" class="PB-btn PB-btn-red" id="sendpass" style="display: none;">Pass Submission</a>
@@ -76,10 +76,26 @@
                         </tr>
                         {% endif %}
                     </table>
-                    <div id="passresponseletter_area" style="display: none; width: 720px; margin: 10px auto 20px;">
-                    </div>
                     {% endif %}
 
+                </div>
+            </div> <!-- w-box-blue -->
+
+            {% if submission_locked %}
+            <div class="w-box w-box-blue hideable">
+                <div class="w-box-header">
+                    <h4>{% trans %}Submission Details{% endtrans %}</h4>
+                </div>
+            {% else %}
+            <div class="w-box w-box-blue">
+                <div class="w-box-header">
+                    <h4>{% trans %}Submission{% endtrans %} ID: {{ submission_id }}</h4>
+                    <div class="pull-right">
+                        <a href="{{ uri_for('submissions-received') }}" class="btn btn-mini icon ptip_sw" title="Back" style="padding: 0 5px;">Back</a>
+                    </div>
+                </div>
+            {% endif %}
+                <div class="w-box-content cnt_ab submission">
                     <div class="submission_header">
                         <span class="title">&#34;{{ title }}&#34;</span>
                         <br/>by&nbsp;<a href="{{ uri_for('view-authors')}}?aid={{ author_id }}" class="author">{{ author }}</a>
