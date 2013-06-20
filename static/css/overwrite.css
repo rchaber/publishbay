@@ -316,6 +316,9 @@ span.password_strength {
 	margin: 0;
 	text-transform: uppercase;
 	vertical-align: middle;
+	line-height: 22px;
+	height:22px;
+	font-family: 'Helvetica Neue', Helvetica, arial, sans-serif;
 }
 
 form {
