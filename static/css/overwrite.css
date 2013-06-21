@@ -667,7 +667,8 @@ a.btn-header:hover {
 	margin-bottom: 0 !important;
 	margin-right: 10px;
 	font-size: 14px;
-	color: #636360;
+
+/*	color: #636360;
 	background: #F1F1EE;
 	background: #F1F1EE -webkit-linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
 	background: #F1F1EE -moz-linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
@@ -679,19 +680,37 @@ a.btn-header:hover {
 	-moz-box-shadow: 0 2px 2px rgba(0,0,0,.1);
 	box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
 	text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+*/
+	color: #686868;
+	background: #DADADA;
+	background: #DADADA -webkit-linear-gradient(top,#DADADA,#CACACA 95%,#B6B6B6);
+	background: #DADADA -moz-linear-gradient(top,#DADADA,#CACACA 95%,#B6B6B6);
+	background: #DADADA -o-linear-gradient(top,#DADADA,#CACACA 95%,#B6B6B6);
+	background: #DADADA linear-gradient(top,#DADADA,#CACACA 95%,#B6B6B6);
+	border: 1px solid #979797;
+	border-bottom-color: #8D8D8D;
+	border-top-color: #C0C0C0;
+	-webkit-box-shadow: 0 1px 3px rgba(150, 150, 150, .5),inset 0 1px 0 #EBEBEB;
+	-moz-box-shadow: 0 1px 3px rgba(150, 150, 150, .5),inset 0 1px 0 #EBEBEB;
+	box-shadow: 0 1px 3px rgba(150, 150, 150, .5),inset 0 1px 0 #EBEBEB;
+	text-shadow: 0 1px 0 #FAFAFA;
+
 }
 
 .PB-btn:hover {
 	text-decoration: none;
-	color: #6D696F;
-	background: #F5F5F4;
-	background: #F5F5F4 -webkit-linear-gradient(top,#F5F5F4,#E8E8E6 50%,#DEDEDD);
-	background: #F5F5F4 -moz-linear-gradient(top,#F5F5F4,#E8E8E6 50%,#DEDEDD);
-	background: #F5F5F4 -o-linear-gradient(top,#F5F5F4,#E8E8E6 50%,#DEDEDD);
-	background: #F5F5F4 linear-gradient(top,#F5F5F4,#E8E8E6 50%,#DEDEDD);
-	border: 1px solid #CCC9D0;
-	border-bottom-color: #B2AFB4;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+	color: #686868;
+	background: #E0E0E0;
+	background: #E0E0E0 -webkit-linear-gradient(top,#E0E0E0,#CECECE 95%,#CECECE);
+	background: #E0E0E0 -moz-linear-gradient(top,#E0E0E0,#E8E8E6 50%,#DEDEDD);
+	background: #E0E0E0 -o-linear-gradient(top,#E0E0E0,#E8E8E6 50%,#DEDEDD);
+	background: #E0E0E0 linear-gradient(top,#E0E0E0,#E8E8E6 50%,#DEDEDD);
+	-webkit-box-shadow: 0 1px 3px rgba(150, 150, 150, .5),inset 0 1px 0 #ECECEC;
+	-moz-box-shadow: 0 1px 3px rgba(150, 150, 150, .5),inset 0 1px 0 #ECECEC;
+	box-shadow: 0 1px 3px rgba(150, 150, 150, .5),inset 0 1px 0 #ECECEC;
+	border: 1px solid #BEBEBE;
+	border-bottom: 1px solid #858585;
+	text-shadow: 0 1px 0 #F8F8F8;
 }
 
 .PB-btn-primary {
