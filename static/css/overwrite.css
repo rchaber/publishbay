@@ -667,20 +667,6 @@ a.btn-header:hover {
 	margin-bottom: 0 !important;
 	margin-right: 10px;
 	font-size: 14px;
-
-/*	color: #636360;
-	background: #F1F1EE;
-	background: #F1F1EE -webkit-linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
-	background: #F1F1EE -moz-linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
-	background: #F1F1EE -o-linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
-	background: #F1F1EE linear-gradient(top,#F7F7F7 0,#F1F1EE 7%,#DDD 75%,#CAC7CA 100%);
-	border: 1px solid #CDCDC6;
-	border-bottom: 1px solid #B2AFB4;
-	-webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
-	-moz-box-shadow: 0 2px 2px rgba(0,0,0,.1);
-	box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
-	text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
-*/
 	color: #686868;
 	background: #DADADA;
 	background: #DADADA -webkit-linear-gradient(top,#DADADA,#CACACA 95%,#B6B6B6);
