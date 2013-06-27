@@ -40,7 +40,7 @@ class EditManuscriptHandler(BaseHandler):
             params['tagline'] = manuscript.tagline
             params['summary'] = manuscript.summary
             params['sample'] = re.sub(r'[\n\r]', r' ', manuscript.sample)
-            params['genres_list'] = manuscript.genres
+            params['genres_list'] = [str(i) for i in manuscript.genres]
             params['display_manuscript'] = manuscript.display
             params['co_authors'] = ', '.join(manuscript.co_authors)
             params['ownership'] = False
@@ -51,7 +51,7 @@ class EditManuscriptHandler(BaseHandler):
             params['tagline'] = ''
             params['summary'] = ''
             params['sample'] = ''
-            params['genres_list'] = ''
+            params['genres_list'] = []
             params['display_manuscript'] = 'pb_users'
             params['co_authors'] = ''
             params['ownership'] = False
@@ -63,6 +63,8 @@ class EditManuscriptHandler(BaseHandler):
         params['nonfiction_genres_left'] = utils.split_3cols(utils.genres_nonfiction)['left']
         params['nonfiction_genres_center'] = utils.split_3cols(utils.genres_nonfiction)['center']
         params['nonfiction_genres_right'] = utils.split_3cols(utils.genres_nonfiction)['right']
+        params['fiction_genres'] = utils.genres_fiction
+        params['nonfiction_genres'] = utils.genres_nonfiction
 
         params['new_manuscript'] = (self.request.GET.get('new_manuscript') == 'True')
 

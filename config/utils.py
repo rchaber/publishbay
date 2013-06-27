@@ -33,6 +33,39 @@ def pagination(number_of_pages, current_page, nav_len):  # better algorithm to p
     return nav_bar, active_mark
 
 
+submission_status = {'submitted': 'Submitted',
+                     'rev_inq': 'Reviewing Inquiry',
+                     'inq_rej': 'Inquiry Rejected',
+                     'req_prop': 'Requesting Proposal',
+                     'prop_sent': 'Proposal Sent',
+                     'eval_prop': 'Evaluating Proposal',
+                     'prop_rej': 'Proposal Rejected',
+                     'offer': 'Offer',
+                     'deal': 'Deal',
+                     'offer_rej': 'Offer Rejected',
+                     'canceled': 'Canceled',
+                     'development': 'Development',
+                     'published': 'Published'}
+
+sta = ['sent',
+       'read',
+       'rejected',
+       'accepted',
+       'pass',
+       'negotiating',
+       'canceled',
+       'acquired']
+
+cl = ['',
+      '',
+      'error',
+      'success',
+      'error',
+      'info',
+      'error',
+      'success']
+
+
 joblist = ['Publisher',
            'Manager',
            'Editor',
@@ -40,6 +73,7 @@ joblist = ['Publisher',
            'Designer',
            'Translator',
            'Proofreader']
+
 
 genres_fiction = ['Action and Adventure',
                   'Chick Lit',
@@ -71,6 +105,7 @@ genres_fiction = ['Action and Adventure',
                   'Western',
                   "Women's Fiction",
                   'Young Adult']
+
 
 genres_nonfiction = ['Art & Photography',
                      'Biography & Memoirs',
@@ -106,28 +141,3 @@ genres_nonfiction = ['Art & Photography',
                      'Travel',
                      'True Adventure & True Crime',
                      'Women Issues']
-
-sta = ['sent',
-       'read',
-       'rejected',
-       'accepted',
-       'pass',
-       'negotiating',
-       'canceled',
-       'acquired']
-
-cl = ['',
-      '',
-      'error',
-      'success',
-      'error',
-      'info',
-      'error',
-      'success']
-
-
-
-
-
-
-

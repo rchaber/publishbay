@@ -66,59 +66,18 @@
 
                                 <div class="control-group">
                                     <label class="control-label">Select genres that best fit this manuscript (optional)</label>
-                                    <div style = "overflow: auto; border: 2px solid #CCC; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
-                                        <label style="clear: both; padding-top: 5px; font-weight: bold;">Fiction:</label>
-                                        <div class="controls" style="float: left; width: 200px;">
-                                            {% for genre in fiction_genres_left %}
-                                            <label>
-                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
-                                                {{ genre }}
-                                            </label>
+                                    <select id="optgroup" name="genres" multiple="multiple">
+                                        <optgroup label="Fiction">
+                                            {% for genre in fiction_genres %}
+                                            <option value="{{ genre }}">{{ genre }}</option>
                                             {% endfor %}
-                                        </div>
-                                        <div class="controls" style="float: left; width: 200px;">
-                                            {% for genre in fiction_genres_center %}
-                                            <label>
-                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
-                                                {{ genre }}
-                                            </label>
+                                        </optgroup>
+                                        <optgroup label="Non-fiction">
+                                            {% for genre in nonfiction_genres %}
+                                            <option value="{{ genre }}">{{ genre }}</option>
                                             {% endfor %}
-                                        </div>
-                                        <div class="controls" style="float: left; width: 200px;">
-                                            {% for genre in fiction_genres_right %}
-                                            <label>
-                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
-                                                {{ genre }}
-                                            </label>
-                                            {% endfor %}
-                                        </div>
-                                        <label style="clear: both; padding-top: 5px; font-weight: bold;">Non-fiction:</label>
-                                        <div class="controls" style="float: left; width: 200px;">
-                                            {% for genre in nonfiction_genres_left %}
-                                            <label>
-                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
-                                                {{ genre }}
-                                            </label>
-                                            {% endfor %}
-                                        </div>
-                                        <div class="controls" style="float: left; width: 200px;">
-                                            {% for genre in nonfiction_genres_center %}
-                                            <label>
-                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
-                                                {{ genre }}
-                                            </label>
-                                            {% endfor %}
-                                        </div>
-                                        <div class="controls" style="float: left; width: 200px;">
-                                            {% for genre in nonfiction_genres_right %}
-                                            <label>
-                                                <input type="checkbox" id="{{ genre.lower() }}" name="genres" value="{{ genre }}" {% if genre in genres_list %}checked="checked"{% endif %}>
-                                                {{ genre }}
-                                            </label>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                    <input style="display: none;" id="checked_genres" name="checked_genres" type="text" value="" />
+                                        </optgroup>
+                                    </select>
                                 </div>
 
                                 <div class="control-group">
@@ -190,8 +149,10 @@
 
     <script src="/static/js/lib/ckeditor/ckeditor.js"></script>
     <script src="/static/js/lib/jquery-validation/jquery.validate.js"></script>
+    <script src="/static/js/jquery.multi-select.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/static/css/cke_overwrite.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/multi-select.css">
 
     <script type="text/javascript">
 
@@ -202,6 +163,16 @@
         }
 
         $().ready(function() {
+
+            var a = {{ genres_list|safe }};
+            // $('#optgroup').multiSelect();
+            $('#optgroup').multiSelect({
+                selectableHeader: "<div class='custom-header'>Selectable genres</div>",
+                selectionHeader: "<div class='custom-header'>Selection genres</div>"
+            });
+            $('#optgroup').multiSelect('select', a);
+
+            // to get selected items into an array: $('.ms-elem-selection.ms-selected span').each(function(i){a.push($(this).text())})
 
             // setTimeout is necessary for the ckeditor load wysiwyg instance with saved text
             var t=setTimeout(function(){
