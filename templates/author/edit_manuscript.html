@@ -200,6 +200,8 @@
                 $("#form_manuscript").submit();
             });
 
+            // regex to extract file name from full path: [^/]*$
+
             $("#form_manuscript").validate({
                 rules: {
                     title: "required",
@@ -211,7 +213,6 @@
                     var manuscript_content = $('[name="wysiwyg"]').val();
                     var manuscript_stripped = manuscript_content.replace(re, '');
                     var to_upload = $('input[name="full_manuscript"]').val();
-                    alert ('to_upload: ' + to_upload);
                     if (manuscript_stripped == "") {
                         bootbox.alert('You must fill in a manuscript sample');
                     }

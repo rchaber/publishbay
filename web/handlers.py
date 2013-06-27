@@ -263,8 +263,6 @@ class BasicSettingsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
         else:
             picture_key = ''
 
-        print "post here1"
-
         user_basicsettings = bmodels.BasicSettings.get_by_userkey(self.user_key)
         if not user_basicsettings:
             user_basicsettings = bmodels.BasicSettings()

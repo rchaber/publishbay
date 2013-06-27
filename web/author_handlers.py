@@ -11,8 +11,8 @@ from webapp2_extras.i18n import gettext as _
 from boilerplate.lib.basehandler import BaseHandler
 from boilerplate.lib.basehandler import user_required
 
-# from google.appengine.ext import blobstore
-# from google.appengine.ext.webapp import blobstore_handlers
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
 
 # from google.appengine.api import images
 
@@ -21,7 +21,7 @@ from baymodels import models as bmodels
 import config.utils as utils
 
 
-class EditManuscriptHandler(BaseHandler):
+class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler for Add/Update Manuscript
     """
@@ -33,9 +33,12 @@ class EditManuscriptHandler(BaseHandler):
         manuscript_id = self.request.GET.get('manuscript_id')
 
         params = {}
+        params['upload_url'] = blobstore.create_upload_url('/upload_manuscript')
 
         if manuscript_id:
             manuscript = bmodels.Manuscript.get_by_id(int(manuscript_id))
+            if manuscript.full_manuscript_key and manuscript.full_manuscript_key != '':
+                params['full_manuscript_url'] = '/serve/%s' % manuscript.full_manuscript_key
             params['title'] = manuscript.title
             params['tagline'] = manuscript.tagline
             params['summary'] = manuscript.summary
@@ -57,12 +60,6 @@ class EditManuscriptHandler(BaseHandler):
             params['ownership'] = False
             params['is_new_manuscript'] = True
 
-        params['fiction_genres_left'] = utils.split_3cols(utils.genres_fiction)['left']
-        params['fiction_genres_center'] = utils.split_3cols(utils.genres_fiction)['center']
-        params['fiction_genres_right'] = utils.split_3cols(utils.genres_fiction)['right']
-        params['nonfiction_genres_left'] = utils.split_3cols(utils.genres_nonfiction)['left']
-        params['nonfiction_genres_center'] = utils.split_3cols(utils.genres_nonfiction)['center']
-        params['nonfiction_genres_right'] = utils.split_3cols(utils.genres_nonfiction)['right']
         params['fiction_genres'] = utils.genres_fiction
         params['nonfiction_genres'] = utils.genres_nonfiction
 
@@ -72,6 +69,12 @@ class EditManuscriptHandler(BaseHandler):
 
     def post(self):
         """ Get fields from POST dict """
+
+        upload_full_manuscript = self.get_uploads()
+        if upload_full_manuscript:
+            full_manuscript_key = upload_full_manuscript[0].key()
+        else:
+            full_manuscript_key = ''
 
         checked_genres = self.request.POST.getall('genres')
 
