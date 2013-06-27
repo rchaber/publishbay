@@ -1339,3 +1339,16 @@ pre.summary {
 	background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
 }
+
+.icon-file {
+	opacity: .5;
+}
+
+.btn.btn-file, .btn.fileupload-exists {
+	border: 2px solid #CCC;
+	border-left: 1px solid #CCC;
+}
+
+.input-append .uneditable-input[class*="span"] {
+    width: 200px;
+}

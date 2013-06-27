@@ -110,6 +110,17 @@
                                     </div>
                                 </div>
 
+                                <legend>Current / Full Manuscript Upload</legend>
+
+                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                  <div class="input-append">
+                                    <div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input type="file" /></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                  </div>
+                                </div>
+                                    <div style="font-size: 11px; display: block; line-height: 15px; width: 540px; margin-left: 5px;">
+                                        <p class="muted">File type must be pdf, no larger than 30Mb.</p>
+                                    </div>   
+
                                 <legend>Ownership Statement</legend>
 
                                 <div class="control-group">
@@ -150,9 +161,11 @@
     <script src="/static/js/lib/ckeditor/ckeditor.js"></script>
     <script src="/static/js/lib/jquery-validation/jquery.validate.js"></script>
     <script src="/static/js/jquery.multi-select.js"></script>
+    <script src="/static/js/bootstrap-fileupload.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/static/css/cke_overwrite.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/multi-select.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-fileupload.css">
 
     <script type="text/javascript">
 
@@ -172,7 +185,10 @@
             });
             $('#optgroup').multiSelect('select', a);
 
-            // to get selected items into an array: $('.ms-elem-selection.ms-selected span').each(function(i){a.push($(this).text())})
+            $('.fileupload').fileupload({
+                uploadtype: 'file',
+                name: 'full_manuscript'
+            });
 
             // setTimeout is necessary for the ckeditor load wysiwyg instance with saved text
             var t=setTimeout(function(){
@@ -194,11 +210,16 @@
                     var re = /([<]\/?\b\w*\b[>])|(\&nbsp\;)|(\s*)/g;  // regex to remove tags and spaces (whitespaces and &nbsp;)
                     var manuscript_content = $('[name="wysiwyg"]').val();
                     var manuscript_stripped = manuscript_content.replace(re, '');
+                    var to_upload = $('input[name="full_manuscript"]').val();
+                    alert ('to_upload: ' + to_upload);
                     if (manuscript_stripped == "") {
                         bootbox.alert('You must fill in a manuscript sample');
                     }
                     else if ($('input[name="ownership"]:checked').length == 0) {
                         bootbox.alert('You must check the ownership statement');
+                    } 
+                    else if (to_upload != undefined && to_upload.substring(to_upload.length - 3).toLowerCase() != 'pdf') {
+                        bootbox.alert('Current / Full Manuscript file type must be pdf');
                     }
                     else {
                         form.submit();
