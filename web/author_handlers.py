@@ -74,7 +74,10 @@ class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         if upload_full_manuscript:
             full_manuscript_key = upload_full_manuscript[0].key()
         else:
-            full_manuscript_key = ''
+            full_manuscript_key = None
+
+        print upload_full_manuscript
+        print upload_full_manuscript.filename
 
         checked_genres = self.request.POST.getall('genres')
 

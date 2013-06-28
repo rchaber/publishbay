@@ -1346,18 +1346,11 @@ pre.summary {
 
 .btn.btn-file, .btn.fileupload-exists {
 	border: 2px solid #CCC;
-	border-left: 1px solid #CCC;
 }
 
-.btn.btn-file:first-of-type, .btn.fileupload-exists:first-of-type {
-	border-left: 2px solid #CCC;
-}
-
-/*
-.btn.fileupload-exists:first-of-type {
+.input-append .btn.fileupload-exists {
 	border-left: none;
 }
-*/
 
 .input-append .uneditable-input[class*="span"] {
     width: 200px;
