@@ -30,24 +30,22 @@
                                 </label>
                             </div>
 
-                            <div class="control-group">
+                            <div class="control-group"> 
                                 <label class="control-label">Portrait</label>
-                                <div class="fileupload fileupload-new" data-provides="fileupload" style="float: left; margin-right:20px;">
-                                    <div class="fileupload-new thumbnail" style="width: 50px; height: 50px; margin-right: 15px; line-height: 50px;">
-                                        {% if picture_url == ''%}
-                                        <img src="/static/images/dummy_50x50.gif" alt="">
-                                        {% else %}
-                                        <img src="{{ picture_url }}" alt="">
-                                        {% endif %}
+                                <div class="fileupload fileupload-{% if picture_url %}{{ 'exists' }}{% else %}{{ 'new' }}{% endif %}" data-provides="fileupload" style="float: left; margin-right:20px;">
+                                    <div class="fileupload-new thumbnail" style="width: 60px; height: 60px; margin-right: 15px; line-height: 60px; padding: 0;">
+                                        <img src="/static/images/dummy_60x60.gif" alt="" style="margin-top: -1px;">
                                     </div>
-                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; margin-right: 15px;"></div>
+                                    <div class="fileupload-preview fileupload-exists thumbnail" style="width: 60px; height: 60px; margin-right: 15px; line-height: 60px; padding: 0;">
+                                        {% if picture_url %}<img src="{{ picture_url }}" alt="">{% endif %}
+                                    </div>
                                     <span class="btn btn-small btn-file">
                                         <span class="fileupload-new">Select a photo now</span>
                                         <span class="fileupload-exists">Change</span>
                                         <input type="file" name="file" id="file" />
                                         <input type="hidden" name="upload_url" value="{{ upload_url }}"/>
                                     </span>
-                                    <a href="#" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                    <a href="javascript:void(0);" class="btn btn-small fileupload-exists" data-dismiss="fileupload">Remove</a>
                                 </div>
                                 <aside style="display: block; margin-top: -10px; padding-right: 20px;">
                                     <h4 style="font-weight: normal; font-size: 16px; margin-bottom: 5px; margin-top: 13px;">You need a photo! </h4>
@@ -72,21 +70,20 @@
     {% block mediaJS %}
     
     <!-- file upload widget -->
-        <script src="/static/js/form/bootstrap-fileupload.min.js"></script>
+    <script src="/static/js/form/bootstrap-fileupload.js"></script>
     
     <script type="text/javascript">
 
         $().ready(function() {
-            $("#form_basic_settings").validate({
-                submitHandler: function(form) {
-                        form.submit();
-                },
-                errorPlacement: function(error, element) {
-                    element.parent().parent().addClass("error");
-                    error.addClass("help-inline").appendTo( element.parent() );
-                }
-            });
-
+            // $("#form_basic_settings").validate({
+            //     submitHandler: function(form) {
+            //             form.submit();
+            //     },
+            //     errorPlacement: function(error, element) {
+            //         element.parent().parent().addClass("error");
+            //         error.addClass("help-inline").appendTo( element.parent() );
+            //     }
+            // });
         });
     </script>
     {% endblock %}

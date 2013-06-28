@@ -243,7 +243,7 @@ class BasicSettingsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
 
         params['upload_url'] = blobstore.create_upload_url('/upload_picture')
         params['display_full_name'] = True
-        params['picture_url'] = ''
+        params['picture_url'] = None
 
         if self.user:
             user_basicsettings = bmodels.BasicSettings.get_by_userkey(self.user_key)
@@ -258,10 +258,11 @@ class BasicSettingsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
         """ Get fields from POST dict """
 
         upload_picture = self.get_uploads()
+        # print upload_picture[0].filename
         if upload_picture:
             picture_key = upload_picture[0].key()
         else:
-            picture_key = ''
+            picture_key = None
 
         user_basicsettings = bmodels.BasicSettings.get_by_userkey(self.user_key)
         if not user_basicsettings:
@@ -269,7 +270,7 @@ class BasicSettingsHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandle
             user_basicsettings.user = self.user_key
 
         # if picture changes, then the old one is deleted from Blobstore
-        if (picture_key != '' and picture_key != user_basicsettings.picture_key) and user_basicsettings:
+        if (picture_key and picture_key != user_basicsettings.picture_key) and user_basicsettings:
             try:
                 blobstore.delete(user_basicsettings.picture_key)
             except:

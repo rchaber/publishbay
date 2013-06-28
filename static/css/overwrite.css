@@ -1349,6 +1349,21 @@ pre.summary {
 	border-left: 1px solid #CCC;
 }
 
+.btn.btn-file:first-of-type, .btn.fileupload-exists:first-of-type {
+	border-left: 2px solid #CCC;
+}
+
+/*
+.btn.fileupload-exists:first-of-type {
+	border-left: none;
+}
+*/
+
 .input-append .uneditable-input[class*="span"] {
     width: 200px;
+    border-right: none;
+}
+
+.fileupload .thumbnail img, .fileupload img {
+	margin-top: -1px;
 }
