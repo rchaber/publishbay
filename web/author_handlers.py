@@ -19,6 +19,7 @@ from google.appengine.ext.webapp import blobstore_handlers
 from baymodels import models as bmodels
 
 import config.utils as utils
+from pprint import pprint as pprint
 
 
 class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
@@ -76,8 +77,9 @@ class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         else:
             full_manuscript_key = None
 
-        print upload_full_manuscript
-        print upload_full_manuscript.filename
+        pprint(upload_full_manuscript[0].__dict__)
+        print upload_full_manuscript[0].filename
+        print full_manuscript_key
 
         checked_genres = self.request.POST.getall('genres')
 
@@ -117,6 +119,44 @@ class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             message = _('Unable to create/update manuscript. Please try again later.')
             self.add_message(message, 'error')
             return self.get()
+
+
+class FullManuscriptUploadHandler(object):
+    """
+    Handler to upload full manuscripts
+    """
+
+    @user_required
+    def get(self):
+        params = {}
+        params['upload_url'] = blobstore.create_upload_url('/upload_manuscript')
+
+        return self.render_template('/author/edit_manuscript.html', **params)
+
+    def post(self):
+        """ Get fields from POST dict """
+
+        upload_full_manuscript = self.get_uploads()
+        if upload_full_manuscript:
+            full_manuscript_key = upload_full_manuscript[0].key()
+        else:
+            full_manuscript_key = None
+
+        pprint(upload_full_manuscript[0].__dict__)
+        print upload_full_manuscript[0].filename
+        print full_manuscript_key
+
+        try:
+            message = ''
+            message += " " + _('Full manuscript file successfully uploaded.')
+            self.add_message(message, 'success')
+            self.response.out.write()
+
+        except (AttributeError, KeyError, ValueError), e:
+            logging.error('Error creating/updating manuscript: ' + e)
+            message = _('Unable to create/update manuscript. Please try again later.')
+            self.add_message(message, 'error')
+            return self.get()        
 
 
 class MyManuscriptsHandler(BaseHandler):

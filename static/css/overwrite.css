@@ -1353,8 +1353,11 @@ pre.summary {
 }
 
 .input-append .uneditable-input[class*="span"] {
-    width: 200px;
-    border-right: none;
+	width: auto;
+	border-right: none;
+	min-width: 250px;
+	max-width: 460px;
+	overflow: scroll;
 }
 
 .fileupload .thumbnail img, .fileupload img {
