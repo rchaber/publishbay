@@ -26,6 +26,7 @@
                     <h4>{% trans %}Manuscript{% endtrans %}</h4>
                     <div class="pull-right">
                         <a href="{{ uri_for('edit-manuscript') }}?manuscript_id={{ manuscript_id }}" class="btn btn-mini icon ptip_sw" title="Edit"><i class="icon-pencil"></i></a>
+                        <a href="{{ uri_for('upload-manuscript') }}?manuscript_id={{ manuscript_id }}" class="btn btn-mini icon ptip_sw" title="Upload"><i class="icon-upload"></i></a>
                         <a href="{{ uri_for('submit-manuscript') }}?manuscript_id={{ manuscript_id }}" class="btn btn-mini icon ptip_sw" title="Submit"><i class="icsw16-box-outgoing"></i></a>
                     </div>
                 </div>
@@ -64,6 +65,19 @@
                                 <dd>
                                     {% for g in genres %}<span class="label label-info">{{ g }}</span>{% endfor %}
                                 </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Full Manuscript File</dt>
+                                <dd>
+                                    {% if full_manuscript_filename %}
+                                    {{ full_manuscript_filename }}
+                                    {% else %}
+                                    No full manuscript file has been uploaded
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Manuscript Sample:</dt>
                             </dl>
                         </div>
                         <!-- <legend>Manuscript Sample</legend> -->

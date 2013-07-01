@@ -22,7 +22,7 @@ import config.utils as utils
 from pprint import pprint as pprint
 
 
-class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
+class EditManuscriptHandler(BaseHandler):
     """
     Handler for Add/Update Manuscript
     """
@@ -34,10 +34,9 @@ class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
         manuscript_id = self.request.GET.get('manuscript_id')
 
         params = {}
-        params['upload_url'] = blobstore.create_upload_url('/upload_manuscript')
 
         if manuscript_id:
-            manuscript = bmodels.Manuscript.get_by_id(int(manuscript_id))
+            manuscript = bmodels.Manuscript.get_by_id(long(manuscript_id))
             if manuscript.full_manuscript_key and manuscript.full_manuscript_key != '':
                 params['full_manuscript_url'] = '/serve/%s' % manuscript.full_manuscript_key
             params['title'] = manuscript.title
@@ -71,22 +70,12 @@ class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
     def post(self):
         """ Get fields from POST dict """
 
-        upload_full_manuscript = self.get_uploads()
-        if upload_full_manuscript:
-            full_manuscript_key = upload_full_manuscript[0].key()
-        else:
-            full_manuscript_key = None
-
-        pprint(upload_full_manuscript[0].__dict__)
-        print upload_full_manuscript[0].filename
-        print full_manuscript_key
-
         checked_genres = self.request.POST.getall('genres')
 
         manuscript_id = self.request.POST.get('manuscript_id')
 
         if manuscript_id:
-            manuscript = bmodels.Manuscript.get_by_id(int(manuscript_id))
+            manuscript = bmodels.Manuscript.get_by_id(long(manuscript_id))
         else:
             manuscript = bmodels.Manuscript()
 
@@ -110,7 +99,7 @@ class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             manuscript.ownership = (self.request.POST.get('ownership') == 'True')
             manuscript.sample = self.request.POST.get('wysiwyg').replace('\r\r\n', '\r\n')
             manuscript.put()
-            message += " " + _('Your manuscript has been uploaded/updated.')
+            message += " " + _('Your manuscript has been created/updated.')
             self.add_message(message, 'success')
             self.redirect('/')
 
@@ -121,24 +110,34 @@ class EditManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandl
             return self.get()
 
 
-class FullManuscriptUploadHandler(object):
+class UploadManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler to upload full manuscripts
     """
 
     @user_required
     def get(self):
-        params = {}
-        params['upload_url'] = blobstore.create_upload_url('/upload_manuscript')
 
-        return self.render_template('/author/edit_manuscript.html', **params)
+        params = {}
+        params['manuscript_id'] = self.request.GET.get('manuscript_id')
+        manuscript = bmodels.Manuscript.get_by_id(long(params['manuscript_id']))
+
+        params['full_manuscript_filename'] = manuscript.full_manuscript_filename
+
+        params['upload_url'] = blobstore.create_upload_url('/author/upload_manuscript')
+
+        return self.render_template('/author/upload_manuscript.html', **params)
 
     def post(self):
         """ Get fields from POST dict """
 
+        manuscript_id = self.request.POST.get('manuscript_id')
+        manuscript = bmodels.Manuscript.get_by_id(long(manuscript_id))
         upload_full_manuscript = self.get_uploads()
+
         if upload_full_manuscript:
             full_manuscript_key = upload_full_manuscript[0].key()
+            full_manuscript_filename = upload_full_manuscript[0].filename
         else:
             full_manuscript_key = None
 
@@ -148,15 +147,18 @@ class FullManuscriptUploadHandler(object):
 
         try:
             message = ''
-            message += " " + _('Full manuscript file successfully uploaded.')
+            manuscript.full_manuscript_key = full_manuscript_key
+            manuscript.full_manuscript_filename = full_manuscript_filename
+            manuscript.put()
+            message += " " + _('Full manuscript successfully uploaded.')
             self.add_message(message, 'success')
-            self.response.out.write()
 
         except (AttributeError, KeyError, ValueError), e:
             logging.error('Error creating/updating manuscript: ' + e)
             message = _('Unable to create/update manuscript. Please try again later.')
             self.add_message(message, 'error')
-            return self.get()        
+
+        self.redirect('/author/viewmanuscript?mid=%s' % manuscript_id)
 
 
 class MyManuscriptsHandler(BaseHandler):
@@ -231,7 +233,7 @@ class ViewManuscriptHandler(BaseHandler):
 
         manuscript_id = self.request.GET.get('mid')
 
-        manuscript = bmodels.Manuscript.get_by_id(int(manuscript_id))
+        manuscript = bmodels.Manuscript.get_by_id(long(manuscript_id))
 
         params = {}
 
@@ -243,6 +245,7 @@ class ViewManuscriptHandler(BaseHandler):
         params['genres'] = manuscript.genres
         params['display_manuscript'] = manuscript.display
         params['sample'] = manuscript.sample
+        params['full_manuscript_filename'] = manuscript.full_manuscript_filename
 
         return self.render_template('/author/view_manuscript.html', **params)
 
@@ -254,7 +257,7 @@ class SubmitManuscriptHandler(BaseHandler):
 
         manuscript_id = self.request.GET.get('manuscript_id')
 
-        manuscript = bmodels.Manuscript.get_by_id(int(manuscript_id))
+        manuscript = bmodels.Manuscript.get_by_id(long(manuscript_id))
 
         params = {}
         publishinghouses = []
@@ -322,8 +325,8 @@ class SubmitManuscriptHandler(BaseHandler):
 
         # check if manuscript has already been submitted to any of the publishing houses
         ph_ids_list = self.request.POST.getall('pid')
-        phouses = [bmodels.PublishingHouse.get_by_id(int(p)).key for p in ph_ids_list]
-        manuscript = bmodels.Manuscript.get_by_id(int(self.request.POST.get('manuscript_id')))
+        phouses = [bmodels.PublishingHouse.get_by_id(long(p)).key for p in ph_ids_list]
+        manuscript = bmodels.Manuscript.get_by_id(long(self.request.POST.get('manuscript_id')))
 
         already_submitted = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.manuscript == manuscript.key, bmodels.ManuscriptSubmission.publishinghouse.IN(phouses)).fetch()
 
@@ -363,7 +366,7 @@ class LoadCoverletterHandler(BaseHandler):
     @user_required
     def get(self):
         coverletter_id = self.request.GET.get('coverletter_id')
-        coverletter = bmodels.Coverletter.get_by_id(int(coverletter_id))
+        coverletter = bmodels.Coverletter.get_by_id(long(coverletter_id))
         js = ''
         if coverletter:
             js = "CKEDITOR.instances.coverletter.setData('%s');" % coverletter.content

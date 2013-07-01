@@ -48,7 +48,7 @@ _routes = [
     RedirectRoute('/browse/viewsavedpublishinghouses', browse_handlers.ViewSavedPublishingHousesHandler, name='view-saved-publishinghouses', strict_slash=True),
 
     RedirectRoute('/author/editmanuscript', author_handlers.EditManuscriptHandler, name='edit-manuscript', strict_slash=True),
-    RedirectRoute('/upload_manuscript', author_handlers.EditManuscriptHandler, name='upload-manuscript', strict_slash=True),
+    RedirectRoute('/author/upload_manuscript', author_handlers.UploadManuscriptHandler, name='upload-manuscript', strict_slash=True),
     RedirectRoute('/author/mymanuscripts', author_handlers.MyManuscriptsHandler, name='my-manuscripts', strict_slash=True),
     RedirectRoute('/author/viewmanuscript', author_handlers.ViewManuscriptHandler, name='view-manuscript', strict_slash=True),
     RedirectRoute('/author/submitmanuscript', author_handlers.SubmitManuscriptHandler, name='submit-manuscript', strict_slash=True),

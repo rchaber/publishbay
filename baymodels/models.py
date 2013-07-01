@@ -249,6 +249,7 @@ class Manuscript(ndb.Model):
     co_authors = ndb.StringProperty(repeated=True)
     ownership = ndb.BooleanProperty()
     full_manuscript_key = ndb.BlobKeyProperty()
+    full_manuscript_filename = ndb.StringProperty()
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
 

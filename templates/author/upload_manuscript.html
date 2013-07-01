@@ -1,0 +1,129 @@
+    {% extends base_layout %}
+
+    {% block content %}
+    <div class="span12" style="margin-left:0;">
+        <ul id="breadcrumbs">
+            <li><a href="/"><i class="icon-home"></i></a></li>
+            {% if new_manuscript %}
+            <li><span>Author: New Manuscript</span></li>
+            {% else %}
+            <li><a href="{{ uri_for('my-manuscripts') }}">Author: My Manuscripts</a></li>
+            <li><a href="{{ uri_for('view-manuscript') }}?mid={{ manuscript_id }}">Manuscript</a></li>
+            <li><span>Upload Manuscript</span></li>
+            {% endif %}
+        </ul>
+        <div class="span3" style="margin-left: 0;">
+            <div class="sidebar">
+                <div class="w-box w-box-green">
+                    <div class="w-box-header">
+                        <h4>Etc</h4>
+                    </div>
+                    <div class="w-box-content cnt_b">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span9">             
+            <div class="w-box w-box-green">
+                <div class="w-box-header"><h4>{% trans %}Manuscript ID{% endtrans %}: {{ manuscript_id }}</h4></div>
+                <div class="w-box-content cnt_ab">
+
+                    <div id="upload_manuscript" class="well form-vertical">
+
+                        <fieldset>
+
+                            <form id="form_upload_manuscript" action="{{ upload_url }}" enctype="multipart/form-data" method="post">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
+                                <legend>Current / Full Manuscript Upload</legend>
+
+                                {% if full_manuscript_filename %}
+                                <label><b>Current full manuscript file on record:</b> {{ full_manuscript_filename }} </label>
+                                {% else %}
+                                <label><b>There is no full manuscript in our database.</b></label>
+                                {% endif %}
+
+                                <br>
+
+                                <div class="fileupload fileupload-new" data-provides="fileupload">
+                                  <div class="input-append">
+                                    <div class="uneditable-input span5"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input type="file" id="file-to-upload" /></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                  </div>
+                                </div>
+
+                                <div style="font-size: 11px; display: block; line-height: 15px; width: 540px; margin-left: 5px;">
+                                    <p class="muted">File type must be pdf, no larger than 30Mb.</p>
+                                </div>
+
+                                <legend>Ownership Statement</legend>
+
+                                <div class="control-group">
+                                    <div class="form-warning">
+                                        <div class="controls">
+                                            <input type="checkbox" id="ownership" name="ownership" value="True" style="margin-right: 5px;">
+                                            <b>I certify that the work here submitted is entirely of my own hand, or, if produced in collaboration with others, has been clearly identified as such beforehand.</b>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="text" name="manuscript_id" value="{{ manuscript_id }}" style="display: none;" />
+
+                                <div class="form-actions">
+                                    <button type="submit" class="PB-btn PB-btn-primary" id="submit-button">{% trans %}Upload Manuscript{% endtrans %}</button>
+                                </div>
+                            
+                            </form>
+
+                        </fieldset>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block mediaJS %}
+
+    <script src="/static/js/lib/jquery-validation/jquery.validate.js"></script>
+    <script src="/static/js/bootstrap-fileupload.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-fileupload.css">
+
+    <script type="text/javascript">
+
+        $().ready(function() {
+
+            $('.fileupload').fileupload({
+                uploadtype: 'file',
+                name: 'full_manuscript'
+            });
+
+            // regex to extract file name from full path: [^/]*$
+
+            $("#form_upload_manuscript").submit( function(form) {
+                var to_upload = $('input[name="full_manuscript"]').val();
+                if (to_upload == undefined) {
+                    bootbox.alert('Select file to upload');
+                    return false;
+                }
+                else if (to_upload != undefined && to_upload.substring(to_upload.length - 3).toLowerCase() != 'pdf') {
+                    bootbox.alert('Current / Full Manuscript file type must be pdf');
+                    return false;
+                }
+                else if ($('input[name="ownership"]:checked').length == 0) {
+                    bootbox.alert('You must check the ownership statement');
+                    return false;
+                } 
+                else {
+                    form.submit();
+                }
+            });
+
+        });
+
+    </script>
+
+    {% endblock %}
