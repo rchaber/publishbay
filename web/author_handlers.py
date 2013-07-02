@@ -18,6 +18,8 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 from baymodels import models as bmodels
 
+from datetime import datetime as datetime
+
 import config.utils as utils
 from pprint import pprint as pprint
 
@@ -110,6 +112,24 @@ class EditManuscriptHandler(BaseHandler):
             return self.get()
 
 
+class RemoveManuscriptHandler(BaseHandler):
+    @user_required
+    def get(self):
+        js = ''
+        manuscript = bmodels.Manuscript.get_by_id(long(self.request.GET.get('manuscript_id')))
+        try:
+            blobstore.delete(manuscript.full_manuscript_key)
+            manuscript.full_manuscript_filename = None
+            manuscript.full_manuscript_uploaded_on = None
+            manuscript.full_manuscript_key = None
+            manuscript.put()
+            js = '$("#dd-filename, #dd-uploaded").text("-");bootbox.alert("Full manuscript file successfully deleted");'
+            print js
+        except:
+            pass
+        self.response.out.write(js)
+
+
 class UploadManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
     """
     Handler to upload full manuscripts
@@ -122,7 +142,9 @@ class UploadManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
         params['manuscript_id'] = self.request.GET.get('manuscript_id')
         manuscript = bmodels.Manuscript.get_by_id(long(params['manuscript_id']))
 
-        params['full_manuscript_filename'] = manuscript.full_manuscript_filename
+        if manuscript.full_manuscript_filename is not None and manuscript.full_manuscript_filename != '':
+            params['full_manuscript_filename'] = manuscript.full_manuscript_filename
+            params['uploaded_on'] = datetime.strftime(manuscript.full_manuscript_uploaded_on, '%Y-%m-%d %H:%M:%S')
 
         params['upload_url'] = blobstore.create_upload_url('/author/upload_manuscript')
 
@@ -136,8 +158,13 @@ class UploadManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
         upload_full_manuscript = self.get_uploads()
 
         if upload_full_manuscript:
+            try:
+                blobstore.delete(manuscript.full_manuscript_key)
+            except:
+                pass
             full_manuscript_key = upload_full_manuscript[0].key()
             full_manuscript_filename = upload_full_manuscript[0].filename
+            full_manuscript_uploaded_on = datetime.now()
         else:
             full_manuscript_key = None
 
@@ -149,6 +176,7 @@ class UploadManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
             message = ''
             manuscript.full_manuscript_key = full_manuscript_key
             manuscript.full_manuscript_filename = full_manuscript_filename
+            manuscript.full_manuscript_uploaded_on = full_manuscript_uploaded_on
             manuscript.put()
             message += " " + _('Full manuscript successfully uploaded.')
             self.add_message(message, 'success')

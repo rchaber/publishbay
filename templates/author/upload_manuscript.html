@@ -38,12 +38,17 @@
                                 <legend>Current / Full Manuscript Upload</legend>
 
                                 {% if full_manuscript_filename %}
-                                <label><b>Current full manuscript file on record:</b> {{ full_manuscript_filename }} </label>
+                                <dl class="dl-horizontal">
+                                    <dt>Manuscript filename</dt>
+                                    <dd id="dd-filename">{{ full_manuscript_filename }} <i class="splashy-document_a4_remove ptip_se" style="margin-left: 7px; width: 20px; cursor: pointer;" title="Delete file" id="delete-file"></i></dd>
+                                    <dt>Uploaded on</dt>
+                                    <dd id="dd-uploaded">{{ uploaded_on }}</dd>
+                                </dl>
                                 {% else %}
-                                <label><b>There is no full manuscript in our database.</b></label>
+                                <dl class="dl-horizontal">
+                                    You have no full manuscript file currently in our database
+                                </dl>
                                 {% endif %}
-
-                                <br>
 
                                 <div class="fileupload fileupload-new" data-provides="fileupload">
                                   <div class="input-append">
@@ -102,6 +107,15 @@
             });
 
             // regex to extract file name from full path: [^/]*$
+
+            $('#delete-file').click(function(){
+                $.ajax({
+                    url: "{{ uri_for('delete-full-manuscript-file') }}",
+                    type: "GET",
+                    data: { manuscript_id: "{{ manuscript_id }}" },
+                    dataType: "script"
+                })
+            });
 
             $("#form_upload_manuscript").submit( function(form) {
                 var to_upload = $('input[name="full_manuscript"]').val();

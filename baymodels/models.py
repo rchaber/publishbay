@@ -250,6 +250,7 @@ class Manuscript(ndb.Model):
     ownership = ndb.BooleanProperty()
     full_manuscript_key = ndb.BlobKeyProperty()
     full_manuscript_filename = ndb.StringProperty()
+    full_manuscript_uploaded_on = ndb.DateTimeProperty()
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
 
