@@ -110,12 +110,16 @@
             // regex to extract file name from full path: [^/]*$
 
             $('#delete-file').click(function(){
-                $.ajax({
-                    url: "{{ uri_for('delete-full-manuscript-file') }}",
-                    type: "GET",
-                    data: { manuscript_id: "{{ manuscript_id }}" },
-                    dataType: "script"
-                })
+                bootbox.confirm("Confirm delete full manuscript file?", function(result) {
+                    if (result) {
+                        $.ajax({
+                            url: "{{ uri_for('delete-full-manuscript-file') }}",
+                            type: "GET",
+                            data: { manuscript_id: "{{ manuscript_id }}" },
+                            dataType: "script"
+                        });
+                    };
+                }); 
             });
 
             $("#form_upload_manuscript").submit( function(form) {
