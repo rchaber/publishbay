@@ -144,7 +144,8 @@ class UploadManuscriptHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHan
 
         if manuscript.full_manuscript_filename is not None and manuscript.full_manuscript_filename != '':
             params['full_manuscript_filename'] = manuscript.full_manuscript_filename
-            params['uploaded_on'] = datetime.strftime(manuscript.full_manuscript_uploaded_on, '%Y-%m-%d %H:%M:%S')
+            if manuscript.full_manuscript_uploaded_on:
+                params['uploaded_on'] = datetime.strftime(manuscript.full_manuscript_uploaded_on, '%Y-%m-%d %H:%M:%S')
 
         params['upload_url'] = blobstore.create_upload_url('/author/upload_manuscript')
 

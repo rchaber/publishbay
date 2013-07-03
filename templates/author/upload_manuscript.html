@@ -35,7 +35,7 @@
                             <form id="form_upload_manuscript" action="{{ upload_url }}" enctype="multipart/form-data" method="post">
                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
 
-                                <legend>Current / Full Manuscript Upload</legend>
+                                <legend>Full Manuscript Upload</legend>
 
                                 {% if full_manuscript_filename %}
                                 <dl class="dl-horizontal">
@@ -75,6 +75,7 @@
 
                                 <div class="form-actions">
                                     <button type="submit" class="PB-btn PB-btn-primary" id="submit-button">{% trans %}Upload Manuscript{% endtrans %}</button>
+                                    <a href="{{ uri_for('view-manuscript') }}?mid={{ manuscript_id }}" class="PB-btn">Back</a>
                                 </div>
                             
                             </form>
