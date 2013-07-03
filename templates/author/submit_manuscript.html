@@ -91,7 +91,8 @@
                             </div>
 
                             <legend>Select Publishing Houses to Submit</legend>
-                            <p class="muted">Only publishing houses currently accepting unsolicited material are displayed</p>
+                            <p class="muted" style="margin-bottom: 0">Only publishing houses currently accepting unsolicited material are displayed</p>
+                            <p class="muted">Publishing houses to which you have already submitted this manuscript do not display checkboxes</p>
 
                             <table class="table table-bordered" style="margin-bottom: 20px;">
                                 <thead>
@@ -106,7 +107,9 @@
                                         {% for p in publishinghouses %}
                                         <tr>
                                             <td>
+                                                {% if not p.already %}
                                                 <input type="checkbox" id="pid{{ p.publishinghouse_id }}" name="pid" value="{{ p.publishinghouse_id }}" style="margin-right: 5px;">
+                                                {% endif %}
                                             </td>
                                             <td>
                                                 {% if p.logo_url != '' and p.logo_url %}
@@ -123,7 +126,7 @@
                                         {% endfor %}
                                     {% else %}
                                     <tr class="warning">
-                                        <td colspan="3" style="text-align: center;">You have no saved publishing houses that accept unsolicited manuscripts</td>
+                                        <td colspan="3" style="text-align: center;">No saved publishing houses accepting unsolicited manuscripts that you haven't submitted this manuscript to</td>
                                     </tr>
                                     {% endif %}
                                 </tbody>

@@ -295,12 +295,21 @@ class SubmitManuscriptHandler(BaseHandler):
         count = q.count()
         items = q.fetch()
 
+        # check if manuscript has already been submitted to any of the publishing houses
+        already_submitted = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.manuscript == manuscript.key).fetch()
+        phouses_already_submitted_keys = [p.publishinghouse for p in already_submitted]
+
+        # exclude author's own publishing house (in case he has one) from list
         my_publishinghouse_id = bmodels.PublishingHouse.query(bmodels.PublishingHouse.owner == self.user_key).get().key.id()
 
         for i in items:
             d = {}
             publishinghouse = i.marked.get()
             if publishinghouse.unsolicited:
+                if publishinghouse.key in phouses_already_submitted_keys:
+                    d['already'] = True
+                else:
+                    d['already'] = False
                 d['publishinghouse_id'] = i.marked.get().key.id()
                 d['name'] = publishinghouse.name
                 if publishinghouse.logo_key != '' and publishinghouse.logo_key:
