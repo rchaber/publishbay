@@ -48,7 +48,7 @@
                         <tbody>
                             {% if submissions|length > 0 %}
                                 {% for s in submissions %}
-                                <tr class="{{ s.class }}">
+                                <tr> <!-- class="{ s.class }" -->
                                     <td>
                                         {{ s.submission_id }}
                                     </td>

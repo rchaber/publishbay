@@ -47,14 +47,25 @@ submission_status = {'submitted': 'Submitted',
                      'development': 'Development',
                      'published': 'Published'}
 
-sta = ['sent',
-       'read',
-       'rejected',
-       'accepted',
-       'pass',
-       'negotiating',
+
+submission_status_locked = ['inq_rej',
+                            'prop_rej',
+                            'deal',
+                            'offer_rej',
+                            'canceled',
+                            'development',
+                            'published']
+
+
+sta = ['submitted',
+       'rev_inq',
+       'inq_rej',
+       'req_prop',
+       'prop_rej',
+       'offer',
        'canceled',
-       'acquired']
+       'deal']
+
 
 cl = ['',
       '',

@@ -9,6 +9,7 @@ import urllib
 joblist = utils.joblist
 genres_fiction = utils.genres_fiction
 genres_nonfiction = utils.genres_nonfiction
+status_list = utils.submission_status.keys()
 
 
 class BasicSettings(ndb.Model):
@@ -259,7 +260,7 @@ class ManuscriptSubmission(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     manuscript = ndb.KeyProperty(kind=Manuscript)
     publishinghouse = ndb.KeyProperty(kind=PublishingHouse)
-    status = ndb.StringProperty(choices=['sent', 'read', 'rejected', 'accepted', 'pass', 'negotiating', 'canceled', 'acquired'])
+    status = ndb.StringProperty(choices=status_list)
     coverletter = ndb.TextProperty()
     responseletter = ndb.TextProperty()
     passresponseletter = ndb.TextProperty()

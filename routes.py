@@ -59,7 +59,7 @@ _routes = [
     RedirectRoute('/publisher/loadresponseletter', publisher_handlers.LoadResponseLetterHandler, name='load-responseletter', strict_slash=True),
 
     RedirectRoute('/publisher/submissionsreceived', publisher_handlers.SubmissionsReceivedHandler, name='submissions-received', strict_slash=True),
-    RedirectRoute('/publisher/readsubmission', publisher_handlers.ReadSubmissionHandler, name='read-submission', strict_slash=True),
+    RedirectRoute('/publisher/managesubmission', publisher_handlers.ManageSubmissionHandler, name='manage-submission', strict_slash=True),
 
 ]
 

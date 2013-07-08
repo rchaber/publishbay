@@ -20,7 +20,7 @@ from baymodels import models as bmodels
 
 from datetime import datetime as datetime
 
-import config.utils as utils
+from config import utils
 from pprint import pprint as pprint
 
 
@@ -378,7 +378,7 @@ class SubmitManuscriptHandler(BaseHandler):
                 submission.user = self.user_key
                 submission.publishinghouse = p
                 submission.manuscript = manuscript.key
-                submission.status = 'sent'
+                submission.status = 'submitted'
                 if coverletter_checkbox:
                     submission.coverletter = content
                 submission.put()
@@ -411,6 +411,21 @@ class LoadCoverletterHandler(BaseHandler):
         self.response.out.write(js)
 
 
+# submission_status = {'submitted': 'Submitted',
+#                      'rev_inq': 'Reviewing Inquiry',
+#                      'inq_rej': 'Inquiry Rejected',
+#                      'req_prop': 'Requesting Proposal',
+#                      'prop_sent': 'Proposal Sent',
+#                      'eval_prop': 'Evaluating Proposal',
+#                      'prop_rej': 'Proposal Rejected',
+#                      'offer': 'Offer',
+#                      'deal': 'Deal',
+#                      'offer_rej': 'Offer Rejected',
+#                      'canceled': 'Canceled',
+#                      'development': 'Development',
+#                      'published': 'Published'}
+
+
 class MySubmissionsHandler(BaseHandler):
 
     @user_required
@@ -419,10 +434,10 @@ class MySubmissionsHandler(BaseHandler):
         status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else 'all'
 
         if status_filter == 'open':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['sent', 'read', 'negotiating'])).fetch()
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['submitted', 'rev_inq', 'req_prop', 'prop_sent', 'eval_prop', 'offer'])).fetch()
             status_filter_label = 'Status: open'
         elif status_filter == 'closed':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['rejected', 'accepted', 'pass', 'canceled', 'acquired'])).fetch()
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key, bmodels.ManuscriptSubmission.status.IN(['inq_rej', 'prop_rej', 'deal', 'offer_rej', 'canceled', 'development', 'published'])).fetch()
             status_filter_label = 'Status: closed'
         else:
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.user == self.user_key).fetch()
@@ -439,12 +454,12 @@ class MySubmissionsHandler(BaseHandler):
             d['manuscript_title'] = manuscript.title
             d['publishinghouse'] = publishinghouse.name
             d['publishinghouse_id'] = publishinghouse.key.id()
-            d['status'] = item.status.capitalize()
+            d['status'] = utils.submission_status[item.status]
             d['coverletter'] = True if (item.coverletter and item.coverletter.strip() != '') else False
             d['responseletter'] = True if (item.responseletter and item.responseletter.strip() != '') else False
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
-            d['class'] = utils.cl[utils.sta.index(item.status)]
+            # d['class'] = utils.cl[utils.sta.index(item.status)]
             submissions.append(d)
 
         params['status_filter'] = status_filter

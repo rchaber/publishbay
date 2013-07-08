@@ -40,42 +40,36 @@ from baymodels import models as bmodels
 import config.utils as utils
 
 
+# submission_status = {'submitted': 'Submitted',
+#                      'rev_inq': 'Reviewing Inquiry',
+#                      'inq_rej': 'Inquiry Rejected',
+#                      'req_prop': 'Requesting Proposal',
+#                      'prop_sent': 'Proposal Sent',
+#                      'eval_prop': 'Evaluating Proposal',
+#                      'prop_rej': 'Proposal Rejected',
+#                      'offer': 'Offer',
+#                      'deal': 'Deal',
+#                      'offer_rej': 'Offer Rejected',
+#                      'canceled': 'Canceled',
+#                      'development': 'Development',
+#                      'published': 'Published'}
+
+
 class SubmissionsReceivedHandler(BaseHandler):
 
     @user_required
     def get(self):
 
-        status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else ''
+        status_filter = self.request.GET.get('status_filter') if self.request.GET.get('status_filter') else 'all'
 
         phouse_key = bmodels.PublishingHouse.get_by_ownerkey(self.user_key).key
 
-        if status_filter == 'unread':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'sent').fetch()
-            status_filter_label = 'Status: unread'
-        elif status_filter == 'read':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'read').fetch()
-            status_filter_label = 'Status: read'
-        elif status_filter == 'rejected':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'rejected').fetch()
-            status_filter_label = 'Status: rejected'
-        elif status_filter == 'accepted':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'accepted').fetch()
-            status_filter_label = 'Status: accepted'
-        elif status_filter == 'negotiating':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'negotiating').fetch()
-            status_filter_label = 'Status: negotiating'
-        elif status_filter == 'pass':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'pass').fetch()
-            status_filter_label = 'Status: pass'
-        elif status_filter == 'canceled':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'canceled').fetch()
-            status_filter_label = 'Status: canceled'
-        elif status_filter == 'acquired':
-            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == 'acquired').fetch()
-            status_filter_label = 'Status: acquired'
+        if status_filter != 'all':
+            submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key, bmodels.ManuscriptSubmission.status == status_filter).fetch()
+            status_filter_label = 'Status: ' + utils.submission_status[status_filter]
         else:
             submissions_fetch = bmodels.ManuscriptSubmission.query(bmodels.ManuscriptSubmission.publishinghouse == phouse_key).fetch()
-            status_filter_label = 'All'
+            status_filter_label = 'Status: All'
 
         params = {}
         submissions = []
@@ -87,15 +81,12 @@ class SubmissionsReceivedHandler(BaseHandler):
             d['manuscript_title'] = manuscript.title
             d['author'] = author.name + ' ' + author.last_name
             d['author_id'] = author.key.id()
-            if item.status == 'sent':
-                d['status'] = 'unread'
-            else:
-                d['status'] = item.status
+            d['status'] = utils.submission_status[item.status]
             d['coverletter'] = True if (item.coverletter and item.coverletter.strip() != '') else False
             d['responseletter'] = True if (item.responseletter and item.responseletter.strip() != '') else False
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
-            d['class'] = utils.cl[utils.sta.index(item.status)]
+            # d['class'] = utils.cl[utils.sta.index(item.status)]
             submissions.append(d)
 
         params['status_filter'] = status_filter
@@ -105,7 +96,7 @@ class SubmissionsReceivedHandler(BaseHandler):
         return self.render_template('publisher/submissions_received.html', **params)
 
 
-class ReadSubmissionHandler(BaseHandler):
+class ManageSubmissionHandler(BaseHandler):
 
     @user_required
     def get(self):
@@ -113,9 +104,9 @@ class ReadSubmissionHandler(BaseHandler):
         submission_id = self.request.GET.get('submission_id')
         submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
 
-        if submission.status == 'sent':
+        if submission.status == 'submitted':
             try:
-                submission.status = 'read'
+                submission.status = 'rev_inq'
                 submission.put()
             except:
                 pass
@@ -137,18 +128,18 @@ class ReadSubmissionHandler(BaseHandler):
         params['genres'] = manuscript.genres
         params['co_authors'] = ', '.join(manuscript.co_authors)
         params['submitted_on'] = submission.submitted_on.strftime('%Y-%m-%d')
-        params['status'] = submission.status.capitalize()
+        params['status'] = utils.submission_status[submission.status]
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
         params['saved_responseletters'] = saved_responseletters
 
-        if submission.status in ['sent', 'read']:
+        if submission.status in ['submitted', 'read']:
             params['submission_locked'] = False
         else:
             params['submission_locked'] = True
 
         params['responseletter'] = submission.responseletter
 
-        return self.render_template('publisher/read_submission.html', **params)
+        return self.render_template('publisher/manage_submission.html', **params)
 
     def post(self):
         """ Get fields from POST dict """

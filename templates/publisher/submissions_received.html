@@ -17,15 +17,17 @@
                     <div class="toggle-group">
                         <span class="dropdown-toggle" data-toggle="dropdown">{{ status_filter_label }} <span class="caret"></span></span>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=all">All</a></li>
-                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=unread">Status: unread</a></li>
-                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=read">Status: read</a></li>
-                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=rejected">Status: rejected</a></li>
-                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=accepted">Status: accepted</a></li>
-                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=pass">Status: pass</a></li>
-                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=negotiating">Status: negotiating</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=all">Status: all</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=submitted">Status: submitted</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=rev_inq">Status: reviewing inquiry</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=inq_rej">Status: rejected</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=req_prop">Status: requesting prop</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=eval_prop">Status: evaluating prop</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=prop_rej">Status: prop rejected</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=offer">Status: offer</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=offer_rej">Status: offer rejected</a></li>
                             <li><a href="{{ uri_for('submissions-received')}}?status_filter=canceled">Status: canceled</a></li>
-                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=acquired">Status: acquired</a></li>
+                            <li><a href="{{ uri_for('submissions-received')}}?status_filter=deal">Status: deal</a></li>
                         </ul>
                     </div>
                 </div>
@@ -48,9 +50,9 @@
                         <tbody>
                             {% if submissions|length > 0 %}
                                 {% for s in submissions %}
-                                <tr class="{{ s.class }}">
+                                <tr>  <!-- class="{ s.class }" -->
                                     <td>
-                                        <a href="{{ uri_for('read-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
+                                        <a href="{{ uri_for('manage-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
                                     </td>
                                     <td>
                                         {{ s.manuscript_title }}
@@ -81,23 +83,29 @@
                                 {% endfor %}
                             {% else %}
                                 <tr class="warning">
-                                    <td colspan="7" style="text-align: center; padding: 8px 0px;">
-                                        {% if status_filter == 'unread' %}
+                                    <td colspan="8" style="text-align: center; padding: 8px 0px;">
+                                        {% if status_filter == 'submitted' %}
                                         You have no unread submissions received
-                                        {% elif status_filter == 'read' %}
+                                        {% elif status_filter == 'rev_inq' %}
                                         You have no submissions received marked as read
-                                        {% elif status_filter == 'rejected' %}
+                                        {% elif status_filter == 'inq_rej' %}
                                         You have no submissions received which were rejected
-                                        {% elif status_filter == 'accepted' %}
+                                        {% elif status_filter == 'req_prop' %}
                                         You have no submissions received which were accepted
-                                        {% elif status_filter == 'pass' %}
+                                        {% elif status_filter == 'prop_rej' %}
                                         You have no submissions received which you pass after analyzing the full manuscript
-                                        {% elif status_filter == 'negotiating' %}
+                                        {% elif status_filter == 'eval_prop' %}
+                                        You have no proposals under evaluation
+                                        {% elif status_filter == 'offer' %}
                                         You have no submissions received in negotiation process
                                         {% elif status_filter == 'canceled' %}
                                         You have no submissions received which negotiation process was canceled
-                                        {% elif status_filter == 'acquired' %}
+                                        {% elif status_filter == 'deal' %}
                                         You have no submissions received which were acquired
+                                        {% elif status_filter == 'development' %}
+                                        You have no submissions received under development
+                                        {% elif status_filter == 'published' %}
+                                        You have no submissions received turned into a publication
                                         {% elif status_filter == 'all' %}
                                         You have no submissions received
                                         {% endif %}
