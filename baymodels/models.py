@@ -279,7 +279,16 @@ class Coverletter(ndb.Model):
     content = ndb.TextProperty()
 
 
-class ResponseLetter(ndb.Model):
+class SavedResponseLetter(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     name = ndb.StringProperty()
     content = ndb.TextProperty()
+
+
+class SubmissionResponseLetter(ndb.Model):
+    submission = ndb.KeyProperty(kind=ManuscriptSubmission)
+    to_status = ndb.StringProperty(choices=status_list)
+    sender = ndb.StringProperty(choices=['publisher', 'author'])
+    responseletter = ndb.TextProperty()
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+

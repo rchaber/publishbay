@@ -114,7 +114,7 @@ class ManageSubmissionHandler(BaseHandler):
         manuscript = submission.manuscript.get()
         params = {}
 
-        r = bmodels.ResponseLetter.query(bmodels.ResponseLetter.user == self.user_key).fetch()
+        r = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.user == self.user_key).fetch()
         saved_responseletters = [[a.key.id(), a.name] for a in r]
 
         params['submission_id'] = submission_id
@@ -132,9 +132,8 @@ class ManageSubmissionHandler(BaseHandler):
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
         params['saved_responseletters'] = saved_responseletters
 
-        if submission.status in ['submitted', 'read']:
-            params['submission_locked'] = False
-        else:
+        params['submission_locked'] = False
+        if submission.status in utils.submission_status_locked:
             params['submission_locked'] = True
 
         params['responseletter'] = submission.responseletter
@@ -154,9 +153,9 @@ class ManageSubmissionHandler(BaseHandler):
             submission.responseletter = content.strip()
         responseletter_name = self.request.POST.get('responseletter_name').lower().strip()
         if responseletter_name != '' and responseletter_save:
-            q = bmodels.ResponseLetter.query(bmodels.ResponseLetter.name == responseletter_name).get()
+            q = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.name == responseletter_name).get()
             if not q:
-                q = bmodels.ResponseLetter()
+                q = bmodels.SavedResponseLetter()
                 q.user = self.user_key
                 q.name = responseletter_name
             q.content = content
@@ -189,7 +188,7 @@ class LoadResponseLetterHandler(BaseHandler):
     @user_required
     def get(self):
         responseletter_id = self.request.GET.get('responseletter_id')
-        responseletter = bmodels.ResponseLetter.get_by_id(int(responseletter_id))
+        responseletter = bmodels.SavedResponseLetter.get_by_id(int(responseletter_id))
         js = ''
         if responseletter:
             js = "CKEDITOR.instances.responseletter.setData('%s');" % responseletter.content

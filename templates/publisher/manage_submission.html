@@ -7,9 +7,10 @@
         <ul id="breadcrumbs">
             <li><a href="/"><i class="icon-home"></i></a></li>
             <li><a href="{{ uri_for('submissions-received')}}">Publisher: Submissions Received</a></li>
-            <li><span>Read Submission</span></li>
+            <li><span>Manage Submission</span></li>
         </ul>
-        <div class="span12" style="margin-left: 0;">             
+        <div class="span12" style="margin-left: 0;">
+
             <div class="w-box w-box-blue">
                 <div class="w-box-header">
                     <h4>{% trans %}Submission{% endtrans %} ID: {{ submission_id }}</h4>
@@ -19,22 +20,21 @@
                 </div>
                 <div class="w-box-content">
 
-                    {% if submission_locked %}
                     <table class="table">
-                        {% if status == 'Accepted' or status == 'Acquired' %}
+                        {% if status == 'Submitted' or status == 'Reviewing Inquiry' %}
                         <tr class="warning" id="tr-status">
                         {% elif status == 'Inquiry Rejected' or status == 'Canceled' %}
                         <tr class="error" id="tr-status">
-                        {% elif status == 'Negotiating' %}
+                        {% elif status == 'Offer' %}
                         <tr class="info" id="tr-status">
                         {% else %}
                         <tr class="warning" id="tr-status">
                         {% endif %}
                             <td style="border-top: none; vertical-align: middle; text-align: center; height: 60px; padding: 0;">
-                                <b>Manuscript Submission Status:&nbsp;{{ status }}</b>
+                                <b>Current Status:&nbsp;{{ status }}</b>
                             </td>
                         </tr>
-                        {% if status == 'Accepted' %}
+                        {% if status == 'Requesting Proposal' %}
                         <tr class="warning" id="tr-status">
                             <td style="padding: 0 10px 10px; text-align: center; height: 45px; border-top: none;">
                                 <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="makeoffer" >Make Offer</a>
@@ -76,25 +76,18 @@
                         </tr>
                         {% endif %}
                     </table>
-                    {% endif %}
 
                 </div>
             </div> <!-- w-box-blue -->
 
             {% if submission_locked %}
             <div class="w-box w-box-blue hideable">
+            {% else %}
+            <div class="w-box w-box-blue">
+            {% endif %}
                 <div class="w-box-header">
                     <h4>{% trans %}Submission Details{% endtrans %}</h4>
                 </div>
-            {% else %}
-            <div class="w-box w-box-blue">
-                <div class="w-box-header">
-                    <h4>{% trans %}Submission{% endtrans %} ID: {{ submission_id }}</h4>
-                    <div class="pull-right">
-                        <a href="{{ uri_for('submissions-received') }}" class="btn btn-mini icon ptip_sw" title="Back" style="padding: 0 5px;">Back</a>
-                    </div>
-                </div>
-            {% endif %}
                 <div class="w-box-content cnt_ab submission">
                     <div class="submission_header">
                         <span class="title">&#34;{{ title }}&#34;</span>
