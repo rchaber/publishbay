@@ -1,3 +1,8 @@
+body {
+	-webkit-font-smoothing: auto;
+	-webkit-font-kerning: auto;
+}
+
 #fade-menu {
 	font-size: 13px;
 	font-weight: normal;
@@ -9,9 +14,13 @@
 	margin-left: 1px;
 }
 
-#fade-menu ul li ul li a {
-	padding-top: 2px;
-	font-family: Helvetica, arial, freesans, sans-serif; /*Karla*/
+#fade-menu ul li ul {
+	left: 0;
+}
+
+#fade-menu ul li {
+	letter-spacing: normal;
+	font-size: 13px;
 }
 
 #fade-menu ul li ul li {
@@ -21,13 +30,30 @@
 	border-right: none;
 }
 
-#fade-menu ul li ul {
-	left: 0;
+#fade-menu ul li ul li a {
+	padding-top: 2px;
+	font-family: Helvetica, arial, freesans, sans-serif; /*Karla*/
 }
 
 #fade-menu ul li ul li:last-child > a {
 	border-bottom: none;
 	height: 29px;
+}
+
+#fade-menu ul li a.arrow_down {
+	font-size: 14px;
+	/*font-weight: bold;*/
+	font-family: Karla, Helvetica, arial, freesans, sans-serif;
+	text-shadow: 0px 1px 0px #464B4C;
+	background-image: url(/static/images/icon-arrow-down.png);
+	background-repeat: no-repeat;
+	background-position: right 12px;
+}
+
+#fade-menu li.active>a.arrow_down {
+	background-image: url(/static/images/icon-arrow-down.png);
+	background-repeat: no-repeat;
+	background-position: right 12px;
 }
 
 body {
@@ -169,22 +195,6 @@ legend + .control-group {
 
 .navbar .nav > li > a {
     padding: 10 15px 10 0;
-}
-
-#fade-menu ul li a.arrow_down {
-	font-size: 13px;
-	font-weight: bold;
-	font-family: Karla, Helvetica, arial, freesans, sans-serif;
-	text-shadow: 0px 1px 0px #464B4C;
-	background-image: url(/static/images/icon-arrow-down.png);
-	background-repeat: no-repeat;
-	background-position: right 12px;
-}
-
-#fade-menu li.active>a.arrow_down {
-	background-image: url(/static/images/icon-arrow-down.png);
-	background-repeat: no-repeat;
-	background-position: right 12px;
 }
 
 .pull-right.user {
