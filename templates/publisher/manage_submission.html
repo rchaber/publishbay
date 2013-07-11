@@ -80,11 +80,7 @@
                 </div>
             </div> <!-- w-box-blue -->
 
-            {% if submission_locked %}
-            <div class="w-box w-box-blue hideable">
-            {% else %}
             <div class="w-box w-box-blue">
-            {% endif %}
                 <div class="w-box-header">
                     <h4>{% trans %}Submission Details{% endtrans %}</h4>
                 </div>
@@ -166,10 +162,10 @@
                                     <tr class="warning" id="tr-status">
                                         <td style="width: 220px; margin: 0; vertical-align: middle; text-align: center; height: 50px; padding: 0;">
                                             <b>Manuscript Submission Result:&nbsp;&nbsp;&nbsp;</b>
-                                            <select id="status" name="status" style="margin-bottom: 0; width: 140px;">
+                                            <select id="status" name="status" style="margin-bottom: 0; width: 160px;">
                                                 <option value="None">Select</option>
-                                                <option value="accepted">Accepted</option>
-                                                <option value="rejected">Rejected</option>
+                                                <option value="req_prop">Request Proposal</option>
+                                                <option value="inq_rej">Inquiry Rejected</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -199,7 +195,7 @@
 
         $().ready(function() {
 
-            {% if status == 'Accepted' %}
+            {% if status == 'Requesting Proposal' %}
 
             CKEDITOR.replace('passresponseletter');
 
@@ -257,14 +253,19 @@
 
             $('#sendresponse').click(function(){
                 CKEDITOR.instances.responseletter.updateElement();
-                if ($.inArray($('#status').val(), ['accepted', 'rejected']) < 0) {
+                if ($.inArray($('#status').val(), ['inq_rej', 'req_prop']) < 0) {
                     bootbox.alert("You must select manuscript submission result");
                 } else {
                     var confirm_dialog = "Submission ID: {{ submission_id }} <br>";
+                    if ($('#status').val() == 'req_prop') {
+                        var status_string = 'Request Proposal'
+                    } else {
+                        var status_string = 'Inquiry Rejected'
+                    };
                     confirm_dialog += 'Title: <i>"{{ title }}"</i> <br>';
                     confirm_dialog += "Author: {{ author }} <br>";
                     confirm_dialog += "Co-author(s): {{ co_authors }} <br><br>";
-                    confirm_dialog += ("Submission result: <b>" + $('#status').val().toUpperCase() + "</b><br><br>");
+                    confirm_dialog += ("Submission result: <b>" + status_string + "</b><br><br>");
                     confirm_dialog += "Confirm submission response?"
                     bootbox.confirm(confirm_dialog, function(result) {
                         if (result) { $("#form_submission_response").submit(); };
