@@ -25,7 +25,12 @@
         </div>
         <div class="span9">             
             <div class="w-box w-box-green">
-                <div class="w-box-header"><h4>{% trans %}Manuscript{% endtrans %}</h4></div>
+                <div class="w-box-header">
+                    <h4>{% trans %}Manuscript{% endtrans %}</h4>
+                    <div class="pull-right">
+                        <a href="{{ uri_for('view-manuscript') }}?mid={{ manuscript_id }}" class="btn btn-mini" title="Back">Back</a>
+                    </div>
+                </div>
                 <div class="w-box-content cnt_ab">
 
                     <div id="edit_manuscript" class="well form-vertical">
@@ -134,7 +139,7 @@
                                     {% endif %}
                                     </button>
                                     {% if not is_new_manuscript %}
-                                    <a href="{{ uri_for('view-manuscript') }}?mid={{ manuscript_id }}" class="PB-btn">Back</a>
+                                    <a href="{{ uri_for('view-manuscript') }}?mid={{ manuscript_id }}" class="PB-btn">Cancel</a>
                                     {% endif %}
                                 </div>
                             </form>

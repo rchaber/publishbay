@@ -76,13 +76,11 @@
                                     {% endif %}
                                 </dd>
                             </dl>
-                            <dl class="dl-horizontal">
-                                <dt>Manuscript Sample:</dt>
-                            </dl>
                         </div>
-                        <!-- <legend>Manuscript Sample</legend> -->
-                        <div class="manuscript-sample">
-                            {{ sample }}
+                        <legend>Manuscript Sample</legend>
+                        <div class="view manuscript-sample">
+                            <iframe src="{{ uri_for('manuscript-sample') }}?mid={{ manuscript_id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                            <!-- { sample } -->
                         </div>
                     </div>
                 </div>

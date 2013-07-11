@@ -19,7 +19,7 @@
                         <form id="form_edit_profile" action="{{ url|safe }}" method="post">
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                             <div class="control-group">
-                                <label class="control-label" for="username">Username:&nbsp;<b>{{ username }}</b></label>
+                                <label class="control-label" for="username">Username:&nbsp;<div style="font-weight: normal; display: inline;">{% if username != 'None' %}{{ username }}{% else %}{{ email }}{% endif %}</div></label>
                             </div>
                             {{ macros.field(form.name, label=_("Name"), class="input-large focused") }}
                             {{ macros.field(form.last_name, label=_("Last Name"), class="input-large focused") }}

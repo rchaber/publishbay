@@ -23,6 +23,19 @@ from datetime import datetime as datetime
 from config import utils
 from pprint import pprint as pprint
 
+class ManuscriptSampleHandler(BaseHandler):
+    @user_required
+    def get(self):
+
+        manuscript_id = self.request.GET.get('mid')
+
+        manuscript = bmodels.Manuscript.get_by_id(long(manuscript_id))
+
+        params = {}
+        params['sample'] = manuscript.sample
+
+        return self.render_template('/author/manuscript_sample.html', **params)
+
 
 class EditManuscriptHandler(BaseHandler):
     """

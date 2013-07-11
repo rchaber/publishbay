@@ -160,7 +160,7 @@
                     </div>
 
                     {% if user_id %}
-                    <div class="pull-right user" style="color: #EEE; margin-top: 7px; margin-right: 30px;">{{ username }}</div>
+                    <div class="pull-right user" style="color: #EEE; margin-top: 7px; margin-right: 30px;">{% if username != 'None' %}{{ username }}{% else %}{{ email }}{% endif %}</div>
                     {% endif %}
 
                     <div class="pull-left" style="margin-left: 0px; margin-top: 7px; position: relative;">
