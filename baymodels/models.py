@@ -262,8 +262,6 @@ class ManuscriptSubmission(ndb.Model):
     publishinghouse = ndb.KeyProperty(kind=PublishingHouse)
     status = ndb.StringProperty(choices=status_list)
     coverletter = ndb.TextProperty()
-    responseletter = ndb.TextProperty()
-    passresponseletter = ndb.TextProperty()
     submitted_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
 

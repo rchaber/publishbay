@@ -60,7 +60,9 @@ _routes = [
     RedirectRoute('/publisher/loadresponseletter', publisher_handlers.LoadResponseLetterHandler, name='load-responseletter', strict_slash=True),
 
     RedirectRoute('/publisher/submissionsreceived', publisher_handlers.SubmissionsReceivedHandler, name='submissions-received', strict_slash=True),
-    RedirectRoute('/publisher/managesubmission', publisher_handlers.ManageSubmissionHandler, name='manage-submission', strict_slash=True),
+    RedirectRoute('/publisher/respondinquiry', publisher_handlers.RespondInquiryHandler, name='respond-inquiry', strict_slash=True),
+    RedirectRoute('/publisher/view_locked_submission', publisher_handlers.ViewLockedSubmissionHandler, name='view-locked-submission', strict_slash=True),
+    RedirectRoute('/publisher/view_responseletter', publisher_handlers.ViewResponseLetterHandler, name='view-responseletter', strict_slash=True),
 
 ]
 

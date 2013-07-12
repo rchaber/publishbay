@@ -362,6 +362,8 @@ input[type="radio"], input[type="checkbox"] {
 	text-align: left;
 	vertical-align: top;
 	border-top: 1px solid #DDD;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
 	border-radius: 0;
 	height: 15px;
 }
@@ -594,7 +596,7 @@ dd pre {
 	margin-bottom: 0;
 }
 
-.manuscript-sample {
+.manuscript-sample, .response-letter {
 	padding: 10px;
 	border: 1px solid #CCC;
 	height: 400px;
@@ -670,7 +672,6 @@ a.btn-header:hover {
 	background-clip: padding-box;
 	padding: 5px 14px 3px;
 	-webkit-font-smoothing: antialiased;
-	font-smoothing: always;
 	text-decoration: none;
 	text-align: center;
 	vertical-align: middle;
@@ -1018,15 +1019,15 @@ div.list-name a {
 	padding: 10px;
 	margin: 10px auto;
 	width: 700px;
-	box-shadow: 2px 2px 0px 0px #DDD;
 	-moz-box-shadow: 2px 2px 0px 0px #DDD;
 	-webkit-box-shadow:  2px 2px 0px 0px #DDD;
+	box-shadow: 2px 2px 0px 0px #DDD;
 }
 
 .submission pre.summary {
-	box-shadow: 2px 2px 0px 0px #DDD;
 	-moz-box-shadow: 2px 2px 0px 0px #DDD;
 	-webkit-box-shadow:  2px 2px 0px 0px #DDD;
+	box-shadow: 2px 2px 0px 0px #DDD;
 }
 
 span.title {
@@ -1061,25 +1062,25 @@ pre.summary {
 .submission.manuscript-sample {
 	width: 700px;
 	margin: 20px auto;
-	box-shadow: 2px 3px 5px 0px #DDD;
 	-moz-box-shadow: 2px 3px 5px 0px #DDD;
 	-webkit-box-shadow: 2px 3px 5px 0px #DDD;
+	box-shadow: 2px 3px 5px 0px #DDD;
 	overflow: auto;
 }
 
-.view.manuscript-sample {
-	box-shadow: 2px 3px 5px 0px #DDD;
+.view.manuscript-sample, .view.response-letter {
 	-moz-box-shadow: 2px 3px 5px 0px #DDD;
 	-webkit-box-shadow: 2px 3px 5px 0px #DDD;	
+	box-shadow: 2px 3px 5px 0px #DDD;
 	overflow: hidden;
 }
 
 .submission.response-letter {
 	width: 700px;
 	margin: 20px auto;
-	box-shadow: 2px 3px 5px 0px #DDD;
 	-moz-box-shadow: 2px 3px 5px 0px #DDD;
 	-webkit-box-shadow:  2px 3px 5px 0px #DDD;
+	box-shadow: 2px 3px 5px 0px #DDD;
 	overflow: auto;
 	padding: 10px;
 	border: 1px solid rgb(204, 204, 204);

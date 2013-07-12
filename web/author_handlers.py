@@ -23,6 +23,7 @@ from datetime import datetime as datetime
 from config import utils
 from pprint import pprint as pprint
 
+
 class ManuscriptSampleHandler(BaseHandler):
     @user_required
     def get(self):

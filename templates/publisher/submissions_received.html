@@ -52,7 +52,13 @@
                                 {% for s in submissions %}
                                 <tr>  <!-- class="{ s.class }" -->
                                     <td>
-                                        <a href="{{ uri_for('manage-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
+                                        {% if s.status_code in ['submitted', 'rev_inq'] %}
+                                        <a href="{{ uri_for('respond-inquiry') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
+                                        {% elif s.status_code in ['inq_rej', 'prop_rej', 'canceled', 'development', 'published'] %}
+                                        <a href="{{ uri_for('view-locked-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
+                                        {% else %}
+                                        something
+                                        {% endif %}
                                     </td>
                                     <td>
                                         {{ s.manuscript_title }}

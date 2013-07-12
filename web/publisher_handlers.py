@@ -82,6 +82,7 @@ class SubmissionsReceivedHandler(BaseHandler):
             d['author'] = author.name + ' ' + author.last_name
             d['author_id'] = author.key.id()
             d['status'] = utils.submission_status[item.status]
+            d['status_code'] = item.status
             d['coverletter'] = True if (item.coverletter and item.coverletter.strip() != '') else False
             d['responseletter'] = True if (item.responseletter and item.responseletter.strip() != '') else False
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
@@ -96,7 +97,7 @@ class SubmissionsReceivedHandler(BaseHandler):
         return self.render_template('publisher/submissions_received.html', **params)
 
 
-class ManageSubmissionHandler(BaseHandler):
+class RespondInquiryHandler(BaseHandler):
 
     @user_required
     def get(self):
@@ -138,7 +139,7 @@ class ManageSubmissionHandler(BaseHandler):
 
         params['responseletter'] = submission.responseletter
 
-        return self.render_template('publisher/manage_submission.html', **params)
+        return self.render_template('publisher/respond_inquiry.html', **params)
 
     def post(self):
         """ Get fields from POST dict """
@@ -181,6 +182,54 @@ class ManageSubmissionHandler(BaseHandler):
             message = _('Unable to send response and update submission. Please try again later.')
             self.add_message(message, 'error')
             return self.get()
+
+
+class ViewLockedSubmissionHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+        submission_id = self.request.GET.get('submission_id')
+        submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
+
+        manuscript = submission.manuscript.get()
+        params = {}
+
+        r = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.user == self.user_key).fetch()
+
+        params['submission_id'] = submission_id
+        params['author'] = submission.manuscript.get().user.get().name + ' ' + submission.manuscript.get().user.get().last_name
+        params['author_id'] = submission.manuscript.get().author.id()
+        params['coverletter'] = submission.coverletter
+        params['title'] = manuscript.title
+        params['tagline'] = manuscript.tagline
+        params['summary'] = manuscript.summary
+        params['manuscript_id'] = manuscript.key.id()
+        params['genres'] = manuscript.genres
+        params['co_authors'] = ', '.join(manuscript.co_authors)
+        params['submitted_on'] = submission.submitted_on.strftime('%Y-%m-%d')
+        params['status_code'] = submission.status
+        params['status'] = utils.submission_status[submission.status]
+        params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
+
+        responseletters = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key).fetch()
+
+        params['responseletters_ids'] = [i.key.id() for i in responseletters]
+
+        return self.render_template('publisher/view_locked_submission.html', **params)
+
+
+class ViewResponseLetterHandler(BaseHandler):
+    @user_required
+    def get(self):
+
+        responseletter_id = self.request.GET.get('rlid')
+
+        responseletter = bmodels.ResponseLetter.get_by_id(long(responseletter_id))
+
+        params = {}
+        params['responseletter'] = responseletter.responseletter
+
+        return self.render_template('/author/view_responseletter.html', **params)
 
 
 class LoadResponseLetterHandler(BaseHandler):
