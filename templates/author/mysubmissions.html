@@ -50,7 +50,13 @@
                                 {% for s in submissions %}
                                 <tr> <!-- class="{ s.class }" -->
                                     <td>
-                                        {{ s.submission_id }}
+                                        {% if s.status_code in ['submitted', 'rev_inq', 'inq_rej', 'prop_rej', 'canceled', 'development', 'published'] %}
+                                        <a href="{{ uri_for('view-locked-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
+                                        {% elif s.status_code == 'req_prop' %}
+                                        link send prop
+                                        {% else %}
+                                        something
+                                        {% endif %}
                                     </td>
                                     <td>
                                         <a href="{{ uri_for('view-manuscript') }}?mid={{ s.manuscript_id }}">{{ s.manuscript_title }}</a>

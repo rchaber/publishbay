@@ -463,14 +463,16 @@ class MySubmissionsHandler(BaseHandler):
             d = {}
             manuscript = item.manuscript.get()
             publishinghouse = item.publishinghouse.get()
+            responseletters = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == item.key).fetch()
             d['submission_id'] = item.key.id()
             d['manuscript_id'] = manuscript.key.id()
             d['manuscript_title'] = manuscript.title
             d['publishinghouse'] = publishinghouse.name
             d['publishinghouse_id'] = publishinghouse.key.id()
+            d['status_code'] = item.status
             d['status'] = utils.submission_status[item.status]
             d['coverletter'] = True if (item.coverletter and item.coverletter.strip() != '') else False
-            d['responseletter'] = True if (item.responseletter and item.responseletter.strip() != '') else False
+            d['responseletter'] = True if len(responseletters) > 0 else False
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
             # d['class'] = utils.cl[utils.sta.index(item.status)]

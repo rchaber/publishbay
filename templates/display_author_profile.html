@@ -12,6 +12,7 @@
     <div class="span9">             
         <div class="w-box w-box-green">
             <div class="w-box-header">
+                <h4>My Author Profile</h4>
                 <div class="pull-right">
                     {% if there_is_author_profile %}
                     <a href="{{ uri_for('edit-authorprofile') }}" class="btn btn-mini icon ptip_sw" title="Edit"><i class="icon-pencil"></i></a>
@@ -22,7 +23,7 @@
                 <div class="well form-vertical">
                     {% if there_is_author_profile %}
                     <div>
-                        <legend>{% trans %}My Author Profile{% endtrans %}</legend>
+                        <!-- <legend>{% trans %}My Author Profile{% endtrans %}</legend> -->
                         <dl class="dl-horizontal">
                             <dt>Statement</dt>
                             <dd>{{ title }}</dd>
