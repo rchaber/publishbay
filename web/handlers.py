@@ -468,7 +468,7 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
         params['name'] = ''
         params['tagline'] = ''
         params['description'] = ''
-        params['genres'] = ''
+        params['genres'] = []
         params['show_in_job_posts'] = ''
         params['logo_url'] = ''
         params['unsolicited'] = True
@@ -483,16 +483,12 @@ class EditPublishingHouseHandler(blobstore_handlers.BlobstoreUploadHandler, Base
                 params['description'] = publishing_house.description
                 if publishing_house.logo_key and publishing_house.logo_key != '':
                     params['logo_url'] = '/serve/%s' % publishing_house.logo_key
-                params['genres'] = publishing_house.genres
+                params['genres'] = [str(i) for i in publishing_house.genres]
                 params['show_in_job_posts'] = publishing_house.show_in_job_posts
                 params['unsolicited'] = publishing_house.unsolicited
 
-        params['fiction_genres_left'] = utils.split_3cols(utils.genres_fiction)['left']
-        params['fiction_genres_center'] = utils.split_3cols(utils.genres_fiction)['center']
-        params['fiction_genres_right'] = utils.split_3cols(utils.genres_fiction)['right']
-        params['nonfiction_genres_left'] = utils.split_3cols(utils.genres_nonfiction)['left']
-        params['nonfiction_genres_center'] = utils.split_3cols(utils.genres_nonfiction)['center']
-        params['nonfiction_genres_right'] = utils.split_3cols(utils.genres_nonfiction)['right']
+        params['fiction_genres'] = utils.genres_fiction
+        params['nonfiction_genres'] = utils.genres_nonfiction
 
         return self.render_template('edit_publishing_house.html', **params)
 
@@ -591,7 +587,7 @@ class EditAuthorProfileHandler(BaseHandler):
         params['title'] = ''
         params['pseudonyms'] = ''
         params['overview'] = ''
-        params['genres_list'] = ''
+        params['genres_list'] = []
         params['freelance'] = ''
         params['ghostwrites'] = ''
         params['there_is_author_profile'] = False
@@ -602,17 +598,13 @@ class EditAuthorProfileHandler(BaseHandler):
                 params['title'] = author_profile.title
                 params['overview'] = author_profile.overview
                 params['pseudonyms'] = ', '.join(author_profile.pseudonyms)
-                params['genres_list'] = author_profile.genres
+                params['genres'] = [str(i) for i in author_profile.genres]
                 params['freelance'] = author_profile.freelance
                 params['ghostwrites'] = author_profile.ghostwrites
                 params['there_is_author_profile'] = True
 
-        params['fiction_genres_left'] = utils.split_3cols(utils.genres_fiction)['left']
-        params['fiction_genres_center'] = utils.split_3cols(utils.genres_fiction)['center']
-        params['fiction_genres_right'] = utils.split_3cols(utils.genres_fiction)['right']
-        params['nonfiction_genres_left'] = utils.split_3cols(utils.genres_nonfiction)['left']
-        params['nonfiction_genres_center'] = utils.split_3cols(utils.genres_nonfiction)['center']
-        params['nonfiction_genres_right'] = utils.split_3cols(utils.genres_nonfiction)['right']
+        params['fiction_genres'] = utils.genres_fiction
+        params['nonfiction_genres'] = utils.genres_nonfiction
 
         return self.render_template('edit_author_profile.html', **params)
 

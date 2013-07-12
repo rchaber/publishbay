@@ -158,11 +158,9 @@
     <script src="/static/js/lib/ckeditor/ckeditor.js"></script>
     <script src="/static/js/lib/jquery-validation/jquery.validate.js"></script>
     <script src="/static/js/jquery.multi-select.js"></script>
-    <script src="/static/js/bootstrap-fileupload.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/static/css/cke_overwrite.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/multi-select.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-fileupload.css">
 
     <script type="text/javascript">
 
@@ -181,11 +179,6 @@
                 selectionHeader: "<div class='custom-header'>Selected genres</div>"
             });
             $('#optgroup').multiSelect('select', a);
-
-            $('.fileupload').fileupload({
-                uploadtype: 'file',
-                name: 'full_manuscript'
-            });
 
             // setTimeout is necessary for the ckeditor load wysiwyg instance with saved text
             var t=setTimeout(function(){
