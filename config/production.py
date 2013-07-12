@@ -31,7 +31,7 @@ config = {
 
 # contact page email settings
 'contact_sender': "rchaber@publishbay.com",
-'contact_recipient': "PUT_RECIPIENT_EMAIL_HERE",
+'contact_recipient': "rchaber@publishbay.com",
 
 # Password AES Encryption Parameters
 'aes_key': "770A8A65DA156D24EE2A093277530142",
