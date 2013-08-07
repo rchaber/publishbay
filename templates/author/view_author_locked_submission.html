@@ -1,0 +1,97 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+            
+    <div class="span12" style="margin-left:0;">
+        <ul id="breadcrumbs">
+            <li><a href="/"><i class="icon-home"></i></a></li>
+            <li><a href="{{ uri_for('submissions-received')}}">Author: My Submissions</a></li>
+            <li><span>View Locked Submission</span></li>
+        </ul>
+        <div class="span12" style="margin-left: 0;">
+
+            <div class="w-box w-box-blue">
+                <div class="w-box-header">
+                    <h4>{% trans %}Submission{% endtrans %} ID: {{ submission_id }}</h4>
+                    <div class="pull-right">
+                        <a href="{{ uri_for('my-submissions') }}" class="btn btn-mini" title="Back">Back</a>
+                    </div>
+                </div>
+                <div class="w-box-content">
+
+                    <table class="table">
+                        {% if status_code in ['inq_rej', 'prop_rej', 'offer_rej', 'canceled'] %}
+                        <tr class="error" id="tr-status">
+                        {% elif status_code in ['deal', 'development', 'published'] %}
+                        <tr class="success" id="tr-status">
+                        {% else %}
+                        <tr class="warning" id="tr-status">
+                        {% endif %}
+                            <td style="border-top: none; vertical-align: middle; text-align: center; height: 60px; padding: 0;">
+                                <b>Current Status:&nbsp;{{ status }}</b>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div> <!-- w-box-blue -->
+
+            <div class="w-box w-box-blue">
+                <div class="w-box-header">
+                    <h4>{% trans %}Submission Details{% endtrans %}</h4>
+                </div>
+                <div class="w-box-content cnt_ab submission">
+                    <div class="submission_header">
+                        <span class="title">&#34;{{ title }}&#34;</span>
+                        <br/>by&nbsp;<a href="{{ uri_for('view-authors')}}?aid={{ author_id }}" class="author">{{ author }}</a>
+                        <br/>
+                        {% if co_authors %}
+                        <span class="co-authors">co-author(s): {{ co_authors }}</span>
+                        <br/>
+                        {% endif %}
+                        <span class="tagline">{{ tagline }}</span>
+                        <br/>
+                        <div class="genres">{% for g in genres %}<span class="label label-info">{{ g }}</span>{% endfor %}</div>
+                    </div>
+
+                    {% if coverletter and coverletter != '' %}
+                    <div class="submission_coverletter">
+                        {{ coverletter }}
+                    </div>
+                    {% endif %}
+
+                    <legend>Summary</legend>
+                    <div>
+                        <pre class="summary">{{ summary }}</pre>
+                    </div>
+
+                    <legend>Manuscript Sample</legend>
+                    <div class="view manuscript-sample">
+                        <iframe src="{{ uri_for('manuscript-sample') }}?mid={{ manuscript_id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                    </div>
+
+                    {% if responseletters_ids|length > 0 %}
+                    <legend>Response Letter</legend>
+                        {% for id in responseletters_ids %}
+                        <div class="view response-letter">
+                            <iframe src="{{ uri_for('view-responseletter') }}?rlid={{ id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    <script type="text/javascript">
+
+        $().ready(function() {
+
+        });
+    </script>
+    {% endblock %}
+

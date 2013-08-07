@@ -601,6 +601,8 @@ dd pre {
 	border: 1px solid #CCC;
 	height: 400px;
 	overflow: scroll;
+	width: 700px;
+	margin: 10px auto;
 }
 
 .btn {

@@ -483,3 +483,13 @@ class MySubmissionsHandler(BaseHandler):
         params['submissions'] = submissions
 
         return self.render_template('author/mysubmissions.html', **params)
+
+
+class SendProposalHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+        pass
+
+    def post(self):
+        pass
