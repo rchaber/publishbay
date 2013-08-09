@@ -485,11 +485,35 @@ class MySubmissionsHandler(BaseHandler):
         return self.render_template('author/mysubmissions.html', **params)
 
 
-class SendProposalHandler(BaseHandler):
+class AuthorViewUpdateSubmissionHandler(BaseHandler):
 
     @user_required
     def get(self):
-        pass
+        submission_id = self.request.GET.get('submission_id')
+        submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
 
-    def post(self):
-        pass
+        manuscript = submission.manuscript.get()
+        params = {}
+
+        # r = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.user == self.user_key).fetch()
+
+        params['submission_id'] = submission_id
+        params['author'] = submission.manuscript.get().user.get().name + ' ' + submission.manuscript.get().user.get().last_name
+        params['author_id'] = submission.manuscript.get().author.id()
+        params['coverletter'] = submission.coverletter
+        params['title'] = manuscript.title
+        params['tagline'] = manuscript.tagline
+        params['summary'] = manuscript.summary
+        params['manuscript_id'] = manuscript.key.id()
+        params['genres'] = manuscript.genres
+        params['co_authors'] = ', '.join(manuscript.co_authors)
+        params['submitted_on'] = submission.submitted_on.strftime('%Y-%m-%d')
+        params['status_code'] = submission.status
+        params['status'] = utils.submission_status[submission.status]
+        params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
+
+        responseletters = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key).fetch()
+
+        params['responseletters_ids'] = [i.key.id() for i in responseletters]
+
+        return self.render_template('author/author_viewupdate_submission.html', **params)

@@ -56,12 +56,14 @@ _routes = [
     RedirectRoute('/author/mysubmissions', author_handlers.MySubmissionsHandler, name='my-submissions', strict_slash=True),
     RedirectRoute('/author/manuscript_sample', author_handlers.ManuscriptSampleHandler, name='manuscript-sample', strict_slash=True),
 
+    RedirectRoute('/author/viewupdate_submission', author_handlers.AuthorViewUpdateSubmissionHandler, name='author-viewupdate-submission', strict_slash=True),
+    RedirectRoute('/publisher/viewupdate_submission', publisher_handlers.PublisherViewUpdateSubmissionHandler, name='publisher-viewupdate-submission', strict_slash=True),
+
     RedirectRoute('/author/loadcoverletter', author_handlers.LoadCoverletterHandler, name='load-coverletter', strict_slash=True),
     RedirectRoute('/publisher/loadresponseletter', publisher_handlers.LoadResponseLetterHandler, name='load-responseletter', strict_slash=True),
 
     RedirectRoute('/publisher/submissionsreceived', publisher_handlers.SubmissionsReceivedHandler, name='submissions-received', strict_slash=True),
     RedirectRoute('/publisher/respondinquiry', publisher_handlers.RespondInquiryHandler, name='respond-inquiry', strict_slash=True),
-    RedirectRoute('/publisher/view_locked_submission', publisher_handlers.ViewLockedSubmissionHandler, name='view-locked-submission', strict_slash=True),
     RedirectRoute('/publisher/view_responseletter', publisher_handlers.ViewResponseLetterHandler, name='view-responseletter', strict_slash=True),
 
 ]

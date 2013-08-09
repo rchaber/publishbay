@@ -84,7 +84,7 @@ class SubmissionsReceivedHandler(BaseHandler):
             d['status'] = utils.submission_status[item.status]
             d['status_code'] = item.status
             d['coverletter'] = True if (item.coverletter and item.coverletter.strip() != '') else False
-            d['responseletter'] = True if (item.responseletter and item.responseletter.strip() != '') else False
+            # d['responseletter'] = True if (item.responseletter and item.responseletter.strip() != '') else False
             d['submitted_on'] = item.submitted_on.strftime('%Y-%m-%d %H:%M')
             d['status_updated_on'] = item.updated_on.strftime('%Y-%m-%d %H:%M')
             # d['class'] = utils.cl[utils.sta.index(item.status)]
@@ -137,7 +137,7 @@ class RespondInquiryHandler(BaseHandler):
         if submission.status in utils.submission_status_locked:
             params['submission_locked'] = True
 
-        params['responseletter'] = submission.responseletter
+        # params['responseletter'] = submission.responseletter
 
         return self.render_template('publisher/respond_inquiry.html', **params)
 
@@ -184,18 +184,25 @@ class RespondInquiryHandler(BaseHandler):
             return self.get()
 
 
-class ViewLockedSubmissionHandler(BaseHandler):
+class PublisherViewUpdateSubmissionHandler(BaseHandler):
 
     @user_required
     def get(self):
         submission_id = self.request.GET.get('submission_id')
         submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
 
+        # if status is 'submitted', then it automatically changes to 'rev_inq' as the publisher views the submission
+        if submission.status == 'submitted':
+            try:
+                submission.status = 'rev_inq'
+                submission.put()
+            except:
+                pass
+
         manuscript = submission.manuscript.get()
         params = {}
 
-        r = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.user == self.user_key).fetch()
-
+        # The following is the basic group of params, with info that any submission will have independent of its status
         params['submission_id'] = submission_id
         params['author'] = submission.manuscript.get().user.get().name + ' ' + submission.manuscript.get().user.get().last_name
         params['author_id'] = submission.manuscript.get().author.id()
@@ -203,6 +210,7 @@ class ViewLockedSubmissionHandler(BaseHandler):
         params['title'] = manuscript.title
         params['tagline'] = manuscript.tagline
         params['summary'] = manuscript.summary
+        params['sample'] = manuscript.sample
         params['manuscript_id'] = manuscript.key.id()
         params['genres'] = manuscript.genres
         params['co_authors'] = ', '.join(manuscript.co_authors)
@@ -211,11 +219,59 @@ class ViewLockedSubmissionHandler(BaseHandler):
         params['status'] = utils.submission_status[submission.status]
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
 
+
+        r = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.user == self.user_key).fetch()
+        saved_responseletters = [[a.key.id(), a.name] for a in r]
+        params['saved_responseletters'] = saved_responseletters
+
         responseletters = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key).fetch()
 
         params['responseletters_ids'] = [i.key.id() for i in responseletters]
 
-        return self.render_template('publisher/view_locked_submission.html', **params)
+        return self.render_template('publisher/publisher_viewupdate_submission.html', **params)
+
+
+    def post(self):
+        """ Get fields from POST dict """
+
+        submission_id = self.request.POST.get('submission_id')
+        submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
+
+        responseletter_save = (self.request.POST.get('responseletter_save_checkbox') == 'True')
+
+        content = self.request.POST.get('responseletter').replace('\r', ' ').replace('\n', ' ')
+        if content.strip() != '':
+            submission.responseletter = content.strip()
+        responseletter_name = self.request.POST.get('responseletter_name').lower().strip()
+        if responseletter_name != '' and responseletter_save:
+            q = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.name == responseletter_name).get()
+            if not q:
+                q = bmodels.SavedResponseLetter()
+                q.user = self.user_key
+                q.name = responseletter_name
+            q.content = content
+            q.put()
+
+        try:
+            message = ''
+            submission.status = self.request.POST.get('status')
+
+            submission.put()
+            message += _('Submission updated and response sent. Please reload.')
+
+            self.add_message(message, 'success')
+            if submission.status == 'rejected':
+                self.redirect('/publisher/submissionsreceived?status_filter=rejected')
+            elif submission.status == 'accepted':
+                self.redirect('/publisher/submissionsreceived?status_filter=accepted')
+            else:
+                self.redirect('/publisher/submissionsreceived')
+
+        except (AttributeError, KeyError, ValueError), e:
+            logging.error('Error responding submission: ' + str(e))
+            message = _('Unable to send response and update submission. Please try again later.')
+            self.add_message(message, 'error')
+            return self.get()
 
 
 class ViewResponseLetterHandler(BaseHandler):

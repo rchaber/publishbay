@@ -51,7 +51,7 @@
                                 <tr> <!-- class="{ s.class }" -->
                                     <td>
                                         {% if s.status_code in ['submitted', 'rev_inq', 'inq_rej', 'prop_rej', 'canceled', 'development', 'published'] %}
-                                        <a href="{{ uri_for('view-locked-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
+                                        <a href="{{ uri_for('author-viewupdate-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
                                         {% elif s.status_code == 'req_prop' %}
                                         link send prop
                                         {% else %}

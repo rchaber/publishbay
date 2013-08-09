@@ -1,0 +1,224 @@
+    {% extends base_layout %}
+
+    {% block content %}
+
+            
+    <div class="span12" style="margin-left:0;">
+        <ul id="breadcrumbs">
+            <li><a href="/"><i class="icon-home"></i></a></li>
+            <li><a href="{{ uri_for('submissions-received')}}">Publisher: Submissions Received</a></li>
+            <li><span>View/Update Submission</span></li>
+        </ul>
+        <div class="span12" style="margin-left: 0;">
+
+            <div class="w-box w-box-blue">
+                <div class="w-box-header">
+                    <h4>{% trans %}Submission{% endtrans %} ID: {{ submission_id }}</h4>
+                    <div class="pull-right">
+                        <a href="{{ uri_for('submissions-received') }}" class="btn btn-mini" title="Back">Back</a>
+                    </div>
+                </div>
+                <div class="w-box-content">
+
+                    <table class="table">
+                        {% if status_code in ['inq_rej', 'prop_rej', 'offer_rej', 'canceled'] %}
+                        <tr class="error" id="tr-status">
+                        {% elif status_code in ['deal', 'development', 'published'] %}
+                        <tr class="success" id="tr-status">
+                        {% else %}
+                        <tr class="warning" id="tr-status">
+                        {% endif %}
+                            <td style="border-top: none; vertical-align: middle; text-align: center; height: 60px; padding: 0;">
+                                <b>Current Status:&nbsp;{{ status }}</b>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div> <!-- w-box-blue -->
+
+            <div class="w-box w-box-blue">
+                <div class="w-box-header">
+                    <h4>{% trans %}Submission Details{% endtrans %}</h4>
+                </div>
+                <div class="w-box-content cnt_ab submission">
+                    <div class="submission_header">
+                        <span class="title">&#34;{{ title }}&#34;</span>
+                        <br/>by&nbsp;<a href="{{ uri_for('view-authors')}}?aid={{ author_id }}" class="author">{{ author }}</a>
+                        <br/>
+                        {% if co_authors %}
+                        <span class="co-authors">co-author(s): {{ co_authors }}</span>
+                        <br/>
+                        {% endif %}
+                        <span class="tagline">{{ tagline }}</span>
+                        <br/>
+                        <div class="genres">{% for g in genres %}<span class="label label-info">{{ g }}</span>{% endfor %}</div>
+                    </div>
+
+                    {% if coverletter and coverletter != '' %}
+                    <div class="submission_coverletter">
+                        {{ coverletter }}
+                    </div>
+                    {% endif %}
+
+                    <legend>Summary</legend>
+                    <div>
+                        <pre class="summary">{{ summary }}</pre>
+                    </div>
+
+                    <legend>Manuscript Sample</legend>
+                    <div class="view manuscript-sample">
+                        <iframe src="{{ uri_for('manuscript-sample') }}?mid={{ manuscript_id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                    </div>
+
+                    {% if responseletters_ids|length > 0 %}
+                    <legend>Response Letter</legend>
+                        {% for id in responseletters_ids %}
+                        <div class="view response-letter">
+                            <iframe src="{{ uri_for('view-responseletter') }}?rlid={{ id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                </div>
+            </div>
+
+            {% if status_code in ['submitted', 'rev_inq'] %}
+            <div class="w-box w-box-blue"> <!-- respond inquiry, status_code is either 'submitted' or 'rev_inq' -->
+                
+                <div class="w-box-header">
+                    <h4>{% trans %}Respond Inquiry{% endtrans %}</h4>
+                </div>
+                
+                <div class="w-box-content cnt_ab submission">
+
+                    <legend style="margin-top: 0;">Response Letter</legend>
+                    <form id="form_submission_response" action="{{ url|safe }}" method="post">
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="submission_id" value="{{ submission_id }}">
+
+                        <div class="controls" id="responseletter_area">
+                            {% if saved_responseletters|length > 0 %}
+                            <dd style="text-align: right; margin-bottom: 10px;" id="coverletter_select">
+                                <select id="responseletter_to_load" style="height: 30px; line-height: 30px; padding: 6px; vertical-align: middle; margin-bottom: 0; font-size: 12px; max-width: 200px;">
+                                      <option value="None">Select a saved response letter</option>
+                                      {% for c in saved_responseletters %}
+                                      <option value="{{ c[0] }}">{{ c[1] }}</option>
+                                      {% endfor %}
+                                </select>
+                                <button type="button" class="btn btn-mini" id="responseletter_load" style="height: 30px; width: 50px;">Load</button>
+                            </dd>
+                            {% endif %}
+                            <textarea class="input-xxlarge focused" cols="50" id="responseletter" name="responseletter" rows="8" style="resize: vertical; width: 620px;"></textarea>
+                            <div style="font-size: 11px; display: block; line-height: 15px; width: 720px; margin-bottom: 20px;">
+                                <p class="muted">Be professional, consistent, brief and, most of all, respectful.</p>
+                            </div>
+                            <dl class="dl-horizontal" style="margin-top: -10px; height: 30px; padding-left: 10px;">
+                                <dt style="width: 200px; padding-top: 5px;"><input type="checkbox" id="responseletter_save_checkbox" name="responseletter_save_checkbox" value="True" style="margin-right: 5px;">
+                                    Save Response Letter
+                                </dt>
+                                <dt style="white-space: normal; line-height: 15px; display: none;">Enter response letter name</dt>
+                                <dd id='responseletter_name_dd' style="display: none; height: 30px; line-height: 30px; vertical-align: top;">
+                                    Enter response letter name<input class="input-large focused" id="responseletter_name" name="responseletter_name" type="text" value="" style="height: 15px; margin-left: 10px; margin-bottom: 0; font-size: 13px;">
+                                </dd>
+                            </dl>
+                            <table class="table table-bordered">
+                                <tr class="warning" id="tr-new-status">
+                                    <td style="width: 220px; margin: 0; vertical-align: middle; text-align: center; height: 50px; padding: 0;">
+                                        <b>Manuscript Submission Result:&nbsp;&nbsp;&nbsp;</b>
+                                        <select id="new_status" name="status" style="margin-bottom: 0; width: 160px;">
+                                            <option value="None">Select</option>
+                                            <option value="req_prop">Request Proposal</option>
+                                            <option value="inq_rej">Inquiry Rejected</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </form>
+                    <div class="response_buttons">
+                        <a href="javascript:void(0)" class="PB-btn PB-btn-primary" id="sendresponse" >Send Response</a>
+                    </div>
+
+                </div>
+
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block mediaJS %}
+    <script src="/static/js/lib/ckeditor/ckeditor.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/cke_overwrite.css"/>
+
+    <script type="text/javascript">
+
+        $().ready(function() {
+
+            {% if status_code == 'req_prop' %}
+
+                CKEDITOR.replace('passresponseletter');
+
+            {% elif status_code in ['submitted', 'rev_inq'] %}
+
+                CKEDITOR.replace('responseletter');
+
+                $('#responseletter_save_checkbox').click(function(){
+                    if ($('#responseletter_save_checkbox').is(':checked')){
+                        $("#responseletter_name_dd").show();  // checked
+                    } else {
+                        $('#responseletter_name').val('');
+                        $("#responseletter_name_dd").hide();  // unchecked
+                    }
+                });
+
+                $('#responseletter_load').click(function(){
+                    if ($('#responseletter_to_load').val() != 'None') {
+                        $.ajax({
+                            url: "{{ uri_for('load-responseletter') }}",
+                            type: "GET",
+                            data: { responseletter_id: $('#responseletter_to_load').val() },
+                            dataType: "script"
+                        });
+                    };
+                });
+
+                $('#sendresponse').click(function(){
+                    CKEDITOR.instances.responseletter.updateElement();
+                    if ($.inArray($('#status').val(), ['inq_rej', 'req_prop']) < 0) {
+                        bootbox.alert("You must select manuscript submission result");
+                    } else {
+                        var confirm_dialog = "Submission ID: {{ submission_id }} <br>";
+                        if ($('#status').val() == 'req_prop') {
+                            var status_string = 'Request Proposal'
+                        } else {
+                            var status_string = 'Inquiry Rejected'
+                        };
+                        confirm_dialog += 'Title: <i>"{{ title }}"</i> <br>';
+                        confirm_dialog += "Author: {{ author }} <br>";
+                        confirm_dialog += "Co-author(s): {{ co_authors }} <br><br>";
+                        confirm_dialog += ("Submission result: <b>" + status_string + "</b><br><br>");
+                        confirm_dialog += "Confirm submission response?"
+                        bootbox.confirm(confirm_dialog, function(result) {
+                            if (result) { $("#form_submission_response").submit(); };
+                        });                     
+                    };
+                });
+
+            {% endif %}                    
+
+            $('#new_status').change(function(){
+                var sta = ['warning', 'success', 'error'];
+                var color = sta[$.inArray($('#new_status').val(), ['None', 'req_prop', 'inq_rej'])];
+                $('#tr-new-status').attr('class', color)
+            })
+
+        });
+    </script>
+    {% endblock %}
+
