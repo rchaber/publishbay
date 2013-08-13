@@ -45,13 +45,13 @@
                         </tr>
                         <tr class="warning" id="passresponseletter_row" style="display: none;">
                             <td style="padding: 0 87px 20px; vertical-align: middle; text-align: center; border-top: none;">
-                                {% if saved_responseletters|length > 0 %}
+                                {% if responseletter_templates|length > 0 %}
                                 <dl style="margin: 0;">
                                     <dt style="font-size: 21px; font-weight: normal; line-height: 40px; float: left;">Pass Response Letter</dt>
                                     <dd style="text-align: right; margin-bottom: 10px;" id="coverletter_select">
                                         <select id="responseletter_to_load" style="height: 30px; line-height: 30px; padding: 6px; vertical-align: middle; margin-bottom: 0; font-size: 12px; max-width: 200px;">
                                               <option value="None">Select a saved response letter</option>
-                                              {% for c in saved_responseletters %}
+                                              {% for c in responseletter_templates %}
                                               <option value="{{ c[0] }}">{{ c[1] }}</option>
                                               {% endfor %}
                                         </select>
@@ -134,11 +134,11 @@
                             <input type="hidden" name="submission_id" value="{{ submission_id }}">
 
                             <div class="controls" id="responseletter_area">
-                                {% if saved_responseletters|length > 0 %}
+                                {% if responseletter_templates|length > 0 %}
                                 <dd style="text-align: right; margin-bottom: 10px;" id="coverletter_select">
                                     <select id="responseletter_to_load" style="height: 30px; line-height: 30px; padding: 6px; vertical-align: middle; margin-bottom: 0; font-size: 12px; max-width: 200px;">
                                           <option value="None">Select a saved response letter</option>
-                                          {% for c in saved_responseletters %}
+                                          {% for c in responseletter_templates %}
                                           <option value="{{ c[0] }}">{{ c[1] }}</option>
                                           {% endfor %}
                                     </select>

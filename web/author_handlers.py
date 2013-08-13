@@ -425,21 +425,6 @@ class LoadCoverletterHandler(BaseHandler):
         self.response.out.write(js)
 
 
-# submission_status = {'submitted': 'Submitted',
-#                      'rev_inq': 'Reviewing Inquiry',
-#                      'inq_rej': 'Inquiry Rejected',
-#                      'req_prop': 'Requesting Proposal',
-#                      'prop_sent': 'Proposal Sent',
-#                      'eval_prop': 'Evaluating Proposal',
-#                      'prop_rej': 'Proposal Rejected',
-#                      'offer': 'Offer',
-#                      'deal': 'Deal',
-#                      'offer_rej': 'Offer Rejected',
-#                      'canceled': 'Canceled',
-#                      'development': 'Development',
-#                      'published': 'Published'}
-
-
 class MySubmissionsHandler(BaseHandler):
 
     @user_required
@@ -485,6 +470,21 @@ class MySubmissionsHandler(BaseHandler):
         return self.render_template('author/mysubmissions.html', **params)
 
 
+# submission_status = {'submitted': 'Submitted',
+#                      'rev_inq': 'Reviewing Inquiry',
+#                      'inq_rej': 'Inquiry Rejected',
+#                      'req_prop': 'Requesting Proposal',
+#                      'prop_sent': 'Proposal Sent',
+#                      'eval_prop': 'Evaluating Proposal',
+#                      'prop_rej': 'Proposal Rejected',
+#                      'offer': 'Offer',
+#                      'deal': 'Deal',
+#                      'offer_rej': 'Offer Rejected',
+#                      'canceled': 'Canceled',
+#                      'development': 'Development',
+#                      'published': 'Published'}
+
+
 class AuthorViewUpdateSubmissionHandler(BaseHandler):
 
     @user_required
@@ -495,7 +495,7 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
         manuscript = submission.manuscript.get()
         params = {}
 
-        # r = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.user == self.user_key).fetch()
+        # r = bmodels.ResponseLetterTemplate.query(bmodels.ResponseLetterTemplate.user == self.user_key).fetch()
 
         params['submission_id'] = submission_id
         params['author'] = submission.manuscript.get().user.get().name + ' ' + submission.manuscript.get().user.get().last_name

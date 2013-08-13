@@ -115,8 +115,8 @@ class RespondInquiryHandler(BaseHandler):
         manuscript = submission.manuscript.get()
         params = {}
 
-        r = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.user == self.user_key).fetch()
-        saved_responseletters = [[a.key.id(), a.name] for a in r]
+        r = bmodels.ResponseLetterTemplate.query(bmodels.ResponseLetterTemplate.user == self.user_key).fetch()
+        responseletter_templates = [[a.key.id(), a.name] for a in r]
 
         params['submission_id'] = submission_id
         params['author'] = submission.manuscript.get().user.get().name + ' ' + submission.manuscript.get().user.get().last_name
@@ -131,7 +131,7 @@ class RespondInquiryHandler(BaseHandler):
         params['submitted_on'] = submission.submitted_on.strftime('%Y-%m-%d')
         params['status'] = utils.submission_status[submission.status]
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
-        params['saved_responseletters'] = saved_responseletters
+        params['responseletter_templates'] = responseletter_templates
 
         params['submission_locked'] = False
         if submission.status in utils.submission_status_locked:
@@ -154,9 +154,9 @@ class RespondInquiryHandler(BaseHandler):
             submission.responseletter = content.strip()
         responseletter_name = self.request.POST.get('responseletter_name').lower().strip()
         if responseletter_name != '' and responseletter_save:
-            q = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.name == responseletter_name).get()
+            q = bmodels.ResponseLetterTemplate.query(bmodels.ResponseLetterTemplate.name == responseletter_name).get()
             if not q:
-                q = bmodels.SavedResponseLetter()
+                q = bmodels.ResponseLetterTemplate()
                 q.user = self.user_key
                 q.name = responseletter_name
             q.content = content
@@ -219,13 +219,12 @@ class PublisherViewUpdateSubmissionHandler(BaseHandler):
         params['status'] = utils.submission_status[submission.status]
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
 
-
-        r = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.user == self.user_key).fetch()
-        saved_responseletters = [[a.key.id(), a.name] for a in r]
-        params['saved_responseletters'] = saved_responseletters
+        # retrieve response letter templates previously saved by the user
+        r = bmodels.ResponseLetterTemplate.query(bmodels.ResponseLetterTemplate.user == self.user_key).fetch()
+        responseletter_templates = [[a.key.id(), a.name] for a in r]
+        params['responseletter_templates'] = responseletter_templates
 
         responseletters = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key).fetch()
-
         params['responseletters_ids'] = [i.key.id() for i in responseletters]
 
         return self.render_template('publisher/publisher_viewupdate_submission.html', **params)
@@ -234,19 +233,23 @@ class PublisherViewUpdateSubmissionHandler(BaseHandler):
     def post(self):
         """ Get fields from POST dict """
 
+        # this is the submission basic info
         submission_id = self.request.POST.get('submission_id')
         submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
 
+        # check whether the user wants to save the entered response letter
         responseletter_save = (self.request.POST.get('responseletter_save_checkbox') == 'True')
 
+        # this is related to the saved
         content = self.request.POST.get('responseletter').replace('\r', ' ').replace('\n', ' ')
         if content.strip() != '':
             submission.responseletter = content.strip()
         responseletter_name = self.request.POST.get('responseletter_name').lower().strip()
+        # next, if the user wants to save a response letter template and he entered a name for it
         if responseletter_name != '' and responseletter_save:
-            q = bmodels.SavedResponseLetter.query(bmodels.SavedResponseLetter.name == responseletter_name).get()
+            q = bmodels.ResponseLetterTemplate.query(bmodels.ResponseLetterTemplate.name == responseletter_name).get()
             if not q:
-                q = bmodels.SavedResponseLetter()
+                q = bmodels.ResponseLetterTemplate()
                 q.user = self.user_key
                 q.name = responseletter_name
             q.content = content
@@ -269,7 +272,7 @@ class PublisherViewUpdateSubmissionHandler(BaseHandler):
 
         except (AttributeError, KeyError, ValueError), e:
             logging.error('Error responding submission: ' + str(e))
-            message = _('Unable to send response and update submission. Please try again later.')
+            message = _('Unable to update submission. Please try again later.')
             self.add_message(message, 'error')
             return self.get()
 
@@ -293,7 +296,7 @@ class LoadResponseLetterHandler(BaseHandler):
     @user_required
     def get(self):
         responseletter_id = self.request.GET.get('responseletter_id')
-        responseletter = bmodels.SavedResponseLetter.get_by_id(int(responseletter_id))
+        responseletter = bmodels.ResponseLetterTemplate.get_by_id(int(responseletter_id))
         js = ''
         if responseletter:
             js = "CKEDITOR.instances.responseletter.setData('%s');" % responseletter.content

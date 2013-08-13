@@ -1071,9 +1071,14 @@ pre.summary {
 }
 
 .view.manuscript-sample, .view.response-letter {
+	/* this is a soft shadow
 	-moz-box-shadow: 2px 3px 5px 0px #DDD;
 	-webkit-box-shadow: 2px 3px 5px 0px #DDD;	
 	box-shadow: 2px 3px 5px 0px #DDD;
+	*/	
+	-moz-box-shadow: 2px 2px 0px 0px #DDD;
+	-webkit-box-shadow:  2px 2px 0px 0px #DDD;
+	box-shadow: 2px 2px 0px 0px #DDD;
 	overflow: hidden;
 }
 
@@ -1135,7 +1140,7 @@ pre.summary {
 	width: 700px;
 }
 
-#responseletter_area {
+#responseletter_area, #proposalletter_area {
 	width: 725px;
 	margin: 25px auto 20px;
 }

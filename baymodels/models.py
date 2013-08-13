@@ -277,7 +277,7 @@ class Coverletter(ndb.Model):
     content = ndb.TextProperty()
 
 
-class SavedResponseLetter(ndb.Model):
+class ResponseLetterTemplate(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
     name = ndb.StringProperty()
     content = ndb.TextProperty()
