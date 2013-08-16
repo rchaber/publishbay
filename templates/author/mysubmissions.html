@@ -50,7 +50,7 @@
                                 {% for s in submissions %}
                                 <tr> <!-- class="{ s.class }" -->
                                     <td>
-                                        {% if s.status_code in ['submitted', 'rev_inq', 'inq_rej', 'prop_rej', 'req_prop', 'canceled', 'development', 'published'] %}
+                                        {% if s.status_code in ['submitted', 'rev_inq', 'inq_rej', 'prop_rej', 'req_prop', 'prop_sent', 'canceled', 'development', 'published'] %}
                                         <a href="{{ uri_for('author-viewupdate-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
                                         {% else %}
                                         something

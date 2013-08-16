@@ -10,6 +10,7 @@ joblist = utils.joblist
 genres_fiction = utils.genres_fiction
 genres_nonfiction = utils.genres_nonfiction
 status_list = utils.submission_status.keys()
+letter_kinds = utils.letter_kinds
 
 
 class BasicSettings(ndb.Model):
@@ -279,6 +280,19 @@ class Coverletter(ndb.Model):
 
 class ResponseLetterTemplate(ndb.Model):
     user = ndb.KeyProperty(kind=models.User)
+    name = ndb.StringProperty()
+    content = ndb.TextProperty()
+
+
+class ProposalLetterTemplate(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    name = ndb.StringProperty()
+    content = ndb.TextProperty()
+
+
+class LetterTemplate(ndb.Model):
+    user = ndb.KeyProperty(kind=models.User)
+    kind = ndb.StringProperty(choices=letter_kinds)
     name = ndb.StringProperty()
     content = ndb.TextProperty()
 

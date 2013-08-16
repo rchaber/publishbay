@@ -61,6 +61,7 @@ _routes = [
 
     RedirectRoute('/author/loadcoverletter', author_handlers.LoadCoverletterHandler, name='load-coverletter', strict_slash=True),
     RedirectRoute('/publisher/loadresponseletter', publisher_handlers.LoadResponseLetterHandler, name='load-responseletter', strict_slash=True),
+    RedirectRoute('/author/loadproposalletter', author_handlers.LoadProposalLetterHandler, name='load-proposalletter', strict_slash=True),
 
     RedirectRoute('/publisher/submissionsreceived', publisher_handlers.SubmissionsReceivedHandler, name='submissions-received', strict_slash=True),
     RedirectRoute('/publisher/respondinquiry', publisher_handlers.RespondInquiryHandler, name='respond-inquiry', strict_slash=True),

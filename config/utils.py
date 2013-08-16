@@ -86,6 +86,10 @@ joblist = ['Publisher',
            'Proofreader']
 
 
+letter_kinds = ['cover',
+                'response_to_inquiry',
+                'proposal']
+
 genres_fiction = ['Action and Adventure',
                   'Chick Lit',
                   'Children',

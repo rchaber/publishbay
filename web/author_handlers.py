@@ -425,6 +425,18 @@ class LoadCoverletterHandler(BaseHandler):
         self.response.out.write(js)
 
 
+class LoadProposalLetterHandler(BaseHandler):
+
+    @user_required
+    def get(self):
+        proposalletter_id = self.request.GET.get('proposalletter_id')
+        proposalletter = bmodels.ProposalLetterTemplate.get_by_id(int(proposalletter_id))
+        js = ''
+        if proposalletter:
+            js = "CKEDITOR.instances.proposalletter.setData('%s');" % proposalletter.content
+        self.response.out.write(js)
+
+
 class MySubmissionsHandler(BaseHandler):
 
     @user_required
@@ -512,8 +524,51 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
         params['status'] = utils.submission_status[submission.status]
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
 
-        responseletters = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key).fetch()
+        # proposalletter = bmodels.ProposalLetter.query(bmodels.ProposalLetter.submission == submission.key).fetch().get()
 
-        params['responseletters_ids'] = [i.key.id() for i in responseletters]
+        # params['responseletters_ids'] = [i.key.id() for i in responseletters]
 
         return self.render_template('author/author_viewupdate_submission.html', **params)
+
+
+    def post(self):
+
+        # this is the submission basic info
+        submission_id = self.request.POST.get('submission_id')
+        submission = bmodels.ManuscriptSubmission.get_by_id(int(submission_id))
+
+        if submission.status == 'req_prop':
+
+            # check whether the user wants to save the entered response letter
+            proposalletter_save = (self.request.POST.get('proposalletter_save_checkbox') == 'True')
+
+            # this is related to the saved
+            content = self.request.POST.get('proposalletter').replace('\r', ' ').replace('\n', ' ')
+            if content.strip() != '':
+                submission.proposalletter = content.strip()
+            proposalletter_name = self.request.POST.get('proposalletter_name').lower().strip()
+            # next, if the user wants to save a proposal letter template and he entered a name for it
+            if proposalletter_name != '' and proposalletter_save:
+                q = bmodels.ProposalLetterTemplate.query(bmodels.ProposalLetterTemplate.name == proposalletter_name).get()
+                if not q:
+                    q = bmodels.ProposalLetterTemplate()
+                    q.user = self.user_key
+                    q.name = proposalletter_name
+                q.content = content
+                q.put()
+
+            try:
+                message = ''
+                submission.status = 'prop_sent'
+
+                submission.put()
+                message += _('Proposal sent. Please reload.')
+
+                self.add_message(message, 'success')
+                self.redirect('/author/mysubmissions')
+
+            except (AttributeError, KeyError, ValueError), e:
+                logging.error('Error responding submission: ' + str(e))
+                message = _('Unable to send proposal letter. Please try again later.')
+                self.add_message(message, 'error')
+                return self.get()
