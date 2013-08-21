@@ -263,6 +263,7 @@ class ManuscriptSubmission(ndb.Model):
     publishinghouse = ndb.KeyProperty(kind=PublishingHouse)
     status = ndb.StringProperty(choices=status_list)
     coverletter = ndb.TextProperty()
+    view_full_manuscript = ndb.BooleanProperty(default=False)
     submitted_on = ndb.DateTimeProperty(auto_now_add=True)
     updated_on = ndb.DateTimeProperty(auto_now=True)
 
@@ -299,8 +300,8 @@ class LetterTemplate(ndb.Model):
 
 class SubmissionResponseLetter(ndb.Model):
     submission = ndb.KeyProperty(kind=ManuscriptSubmission)
-    to_status = ndb.StringProperty(choices=status_list)
+    kind = ndb.StringProperty(choices=letter_kinds)
     sender = ndb.StringProperty(choices=['publisher', 'author'])
-    responseletter = ndb.TextProperty()
+    content = ndb.TextProperty()
     created_on = ndb.DateTimeProperty(auto_now_add=True)
 

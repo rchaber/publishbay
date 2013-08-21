@@ -524,7 +524,13 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
         params['status'] = utils.submission_status[submission.status]
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
 
-        # proposalletter = bmodels.ProposalLetter.query(bmodels.ProposalLetter.submission == submission.key).fetch().get()
+        if utils.submission_status_step[submission.status] >= 50:
+            proposalletter = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key, bmodels.SubmissionResponseLetter.kind == 'proposal').get()
+            if proposalletter :
+                params['proposalletter'] = proposalletter.content
+            else:
+                params['proposalletter'] = None
+
 
         # params['responseletters_ids'] = [i.key.id() for i in responseletters]
 
@@ -539,7 +545,7 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
 
         if submission.status == 'req_prop':
 
-            # check whether the user wants to save the entered response letter
+            # check whether the user wants to save the entered proposal letter
             proposalletter_save = (self.request.POST.get('proposalletter_save_checkbox') == 'True')
 
             # this is related to the saved
@@ -549,19 +555,26 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
             proposalletter_name = self.request.POST.get('proposalletter_name').lower().strip()
             # next, if the user wants to save a proposal letter template and he entered a name for it
             if proposalletter_name != '' and proposalletter_save:
-                q = bmodels.ProposalLetterTemplate.query(bmodels.ProposalLetterTemplate.name == proposalletter_name).get()
+                q = bmodels.LetterTemplate.query(bmodels.LetterTemplate.name == proposalletter_name).get()
                 if not q:
-                    q = bmodels.ProposalLetterTemplate()
+                    q = bmodels.LetterTemplate()
                     q.user = self.user_key
                     q.name = proposalletter_name
                 q.content = content
                 q.put()
+
+            letter = bmodels.SubmissionResponseLetter()
+            letter.submission = submission.key
+            letter.kind = 'proposal'
+            letter.sender = 'author'
+            letter.content = content
 
             try:
                 message = ''
                 submission.status = 'prop_sent'
 
                 submission.put()
+                letter.put()
                 message += _('Proposal sent. Please reload.')
 
                 self.add_message(message, 'success')

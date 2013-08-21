@@ -48,6 +48,21 @@ submission_status = {'submitted': 'Submitted',
                      'published': 'Published'}
 
 
+submission_status_step = {'submitted': 10,
+                     'rev_inq': 20,
+                     'inq_rej': 30,
+                     'req_prop': 40,
+                     'prop_sent': 50,
+                     'eval_prop': 60,
+                     'prop_rej': 70,
+                     'offer': 80,
+                     'deal': 90,
+                     'offer_rej': 90,
+                     'canceled': 200,
+                     'development': 300,
+                     'published': 400}
+
+
 submission_status_locked = ['inq_rej',
                             'prop_rej',
                             'deal',

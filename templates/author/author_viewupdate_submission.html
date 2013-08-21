@@ -194,6 +194,7 @@
                     confirm_dialog += 'Title: <i>"{{ title }}"</i> <br>';
                     confirm_dialog += "Author: {{ author }} <br>";
                     confirm_dialog += "Co-author(s): {{ co_authors }} <br><br>";
+                    confirm_dialog += "Sending proposal allows the publisher to view the full manuscript.<br>"
                     confirm_dialog += "Confirm sending proposal?"
                     bootbox.confirm(confirm_dialog, function(result) {
                         if (result) { $("#form_submission_proposal").submit(); };

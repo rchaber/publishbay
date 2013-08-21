@@ -97,6 +97,7 @@ class SubmissionsReceivedHandler(BaseHandler):
         return self.render_template('publisher/submissions_received.html', **params)
 
 
+# this class to be removed
 class RespondInquiryHandler(BaseHandler):
 
     @user_required
@@ -219,13 +220,14 @@ class PublisherViewUpdateSubmissionHandler(BaseHandler):
         params['status'] = utils.submission_status[submission.status]
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
 
-        # retrieve response letter templates previously saved by the user
-        r = bmodels.ResponseLetterTemplate.query(bmodels.ResponseLetterTemplate.user == self.user_key).fetch()
-        responseletter_templates = [[a.key.id(), a.name] for a in r]
-        params['responseletter_templates'] = responseletter_templates
+        if submission.status in ['submitted', 'rev_inq']:
+            # retrieve response letter templates previously saved by the user
+            r = bmodels.LetterTemplate.query(bmodels.LetterTemplate.user == self.user_key, bmodels.LetterTemplate.kind == 'response_to_inquiry').fetch()
+            responseletter_templates = [[a.key.id(), a.name] for a in r]
+            params['responseletter_templates'] = responseletter_templates
 
-        responseletters = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key).fetch()
-        params['responseletters_ids'] = [i.key.id() for i in responseletters]
+            responseletters = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key).fetch()
+            params['responseletters_ids'] = [i.key.id() for i in responseletters]
 
         return self.render_template('publisher/publisher_viewupdate_submission.html', **params)
 
