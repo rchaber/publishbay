@@ -2,16 +2,20 @@
 
     {% block content %}
 
-            
+    <style type="text/css">
+        .tabs-left.tabbable-bordered .nav-tabs > li.active { border-left: 3px solid #75B643; }
+        dt, dd { font-size: 14px; }
+    </style>
+
     <div class="span12" style="margin-left:0;">
         <ul id="breadcrumbs">
             <li><a href="/"><i class="icon-home"></i></a></li>
             <li><a href="{{ uri_for('submissions-received')}}">Author: My Submissions</a></li>
             <li><span>View/Update Submission</span></li>
         </ul>
-        <div class="span9" style="margin-left: 0;">
+        <div class="span12" style="margin-left: 0;">
 
-            <div class="w-box w-box-blue">
+            <div class="w-box w-box-green">
                 <div class="w-box-header">
                     <h4>{% trans %}Submission{% endtrans %} ID: {{ submission_id }}</h4>
                     <div class="pull-right">
@@ -35,56 +39,80 @@
                     </table>
 
                 </div>
-            </div> <!-- w-box-blue -->
+            </div> <!-- w-box-green -->
 
-            <div class="w-box w-box-blue">
-                <div class="w-box-header">
-                    <h4>{% trans %}Submission Details{% endtrans %}</h4>
-                </div>
+            <div class="w-box w-box-green" style="margin-top: 0;">
                 <div class="w-box-content cnt_ab submission">
-                    <div class="submission_header">
-                        <span class="title">&#34;{{ title }}&#34;</span>
-                        <br/>by&nbsp;<a href="{{ uri_for('view-authors')}}?aid={{ author_id }}" class="author">{{ author }}</a>
-                        <br/>
-                        {% if co_authors %}
-                        <span class="co-authors">co-author(s): {{ co_authors }}</span>
-                        <br/>
-                        {% endif %}
-                        <span class="tagline">{{ tagline }}</span>
-                        <br/>
-                        <div class="genres">{% for g in genres %}<span class="label label-info">{{ g }}</span>{% endfor %}</div>
-                    </div>
 
-                    {% if coverletter and coverletter != '' %}
-                    <div class="submission_coverletter">
-                        {{ coverletter }}
-                    </div>
-                    {% endif %}
-
-                    <legend>Summary</legend>
-                    <div>
-                        <pre class="summary">{{ summary }}</pre>
-                    </div>
-
-                    <legend>Manuscript Sample</legend>
-                    <div class="view manuscript-sample">
-                        <iframe src="{{ uri_for('manuscript-sample') }}?mid={{ manuscript_id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
-                    </div>
-
-                    {% if responseletters_ids|length > 0 %}
-                    <legend>Response Letter</legend>
-                        {% for id in responseletters_ids %}
-                        <div class="view response-letter">
-                            <iframe src="{{ uri_for('view-responseletter') }}?rlid={{ id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                    <div class="tabbable tabs-left tabbable-bordered">
+                        <ul class="nav nav-tabs" style="width: 130px;">
+                            <li class="active"><a data-toggle="tab" href="#tb3_a">Details</a></li>
+                            {% if coverletter and coverletter != '' %}
+                            <li><a data-toggle="tab" href="#tb3_b">Cover Letter</a></li>
+                            {% endif %}
+                            <li><a data-toggle="tab" href="#tb3_c">Sample</a></li>
+                            <li><a data-toggle="tab" href="#tb3_d">Proposal Letter</a></li>
+                        </ul>
+                        <div class="tab-content" style="height: 440px;">
+                            <div id="tb3_a" class="tab-pane active">
+                                <div class="submission_header" style="text-align: left; padding: 1px 15px 10px 15px;">
+                                    <dl class="dl-horizontal">
+                                        <dt>Title</dt>
+                                        <dd class="list-name"><span class="title"><a href="{{ uri_for('view-manuscript')}}?mid={{ manuscript_id }}">{{ title }}</a></span></dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>Author</dt>
+                                        <dd><a href="{{ uri_for('view-authors')}}?aid={{ author_id }}" class="author">{{ author }}</a></dd>
+                                    </dl>
+                                    {% if co_authors %}
+                                    <dl class="dl-horizontal">
+                                        <dt>Co-authors</dt>
+                                        <dd>{{ co_authors }}</dd>
+                                    </dl>
+                                    {% endif %}
+                                    <dl class="dl-horizontal">
+                                        <dt>Tagline</dt>
+                                        <dd>{{ tagline }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>Summary</dt>
+                                        <dd><pre>{{ summary }}</pre></dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>Genres</dt>
+                                        <dd>
+                                            {% for g in genres %}<span class="label label-info">{{ g }}</span>{% endfor %}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            {% if coverletter and coverletter != '' %}
+                            <div id="tb3_b" class="tab-pane">
+                                <div class="submission_coverletter" style="width: 650px; border: none; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;">
+                                    {{ coverletter }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div id="tb3_c" class="tab-pane">
+                                <div class="view manuscript-sample" style="width: 650px; border: none; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;">
+                                    <iframe src="{{ uri_for('manuscript-sample') }}?mid={{ manuscript_id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                                </div>
+                            </div>
+                            {% if proposalletter_id %}
+                            <div id="tb3_d" class="tab-pane">
+                                <div class="view response-letter" style="width: 650px; border: none; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;">
+                                    <iframe src="{{ uri_for('view-responseletter') }}?rlid={{ proposalletter_id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endfor %}
-                    {% endif %}
-                    
+                    </div>
+
                 </div>
-            </div> <!-- w-box-blue -->
+            </div> <!-- w-box-green -->
 
             {% if status_code == 'req_prop' %}
-            <div class="w-box w-box-blue"> <!-- status_code is 'req_prop', send proposal -->
+            <div class="w-box w-box-green"> <!-- status_code is 'req_prop', send proposal -->
                 
                 <div class="w-box-header">
                     <h4>{% trans %}Send Proposal{% endtrans %}</h4>
@@ -135,24 +163,6 @@
             </div>
             {% endif %}
 
-            {% if status_code == 'prop_sent' %}
-            <div class="w-box w-box-blue"> <!-- status_code is 'prop_sent', send proposal -->
-                
-                <div class="w-box-header">
-                    <h4>{% trans %}Proposal Sent{% endtrans %}</h4>
-                </div>
-                
-                <div class="w-box-content cnt_ab submission">
-
-                    <legend style="margin-top: 0;">Proposal Letter</legend>
-                        <div class="view response-letter">
-                            <iframe src="{{ uri_for('view-responseletter') }}?rlid={{ proposalletter_id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
-                        </div>
-                    
-                </div>
-
-            </div>
-            {% endif %}
 
         </div>
     </div>
