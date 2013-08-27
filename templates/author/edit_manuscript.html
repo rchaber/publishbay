@@ -27,9 +27,11 @@
             <div class="w-box w-box-green">
                 <div class="w-box-header">
                     <h4>{% trans %}Manuscript{% endtrans %}</h4>
+                    {% if not is_new_manuscript %}
                     <div class="pull-right">
                         <a href="{{ uri_for('view-manuscript') }}?mid={{ manuscript_id }}" class="btn btn-mini" title="Back">Back</a>
                     </div>
+                    {% endif %}
                 </div>
                 <div class="w-box-content cnt_ab">
 

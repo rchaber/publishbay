@@ -9,7 +9,7 @@
             <li><a href="{{ uri_for('submissions-received')}}">Author: My Submissions</a></li>
             <li><span>View/Update Submission</span></li>
         </ul>
-        <div class="span12" style="margin-left: 0;">
+        <div class="span9" style="margin-left: 0;">
 
             <div class="w-box w-box-blue">
                 <div class="w-box-header">
@@ -145,7 +145,10 @@
                 <div class="w-box-content cnt_ab submission">
 
                     <legend style="margin-top: 0;">Proposal Letter</legend>
-
+                        <div class="view response-letter">
+                            <iframe src="{{ uri_for('view-responseletter') }}?rlid={{ proposalletter_id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                        </div>
+                    
                 </div>
 
             </div>
@@ -194,7 +197,7 @@
                     confirm_dialog += 'Title: <i>"{{ title }}"</i> <br>';
                     confirm_dialog += "Author: {{ author }} <br>";
                     confirm_dialog += "Co-author(s): {{ co_authors }} <br><br>";
-                    confirm_dialog += "Sending proposal allows the publisher to view the full manuscript.<br>"
+                    confirm_dialog += "Sending proposal automatically allows the publisher to view the full manuscript.<br>"
                     confirm_dialog += "Confirm sending proposal?"
                     bootbox.confirm(confirm_dialog, function(result) {
                         if (result) { $("#form_submission_proposal").submit(); };

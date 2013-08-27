@@ -527,9 +527,9 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
         if utils.submission_status_step[submission.status] >= 50:
             proposalletter = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key, bmodels.SubmissionResponseLetter.kind == 'proposal').get()
             if proposalletter :
-                params['proposalletter'] = proposalletter.content
+                params['proposalletter_id'] = proposalletter.key.id()
             else:
-                params['proposalletter'] = None
+                params['proposalletter_id'] = None
 
 
         # params['responseletters_ids'] = [i.key.id() for i in responseletters]
@@ -572,6 +572,7 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
             try:
                 message = ''
                 submission.status = 'prop_sent'
+                submission.view_full_manuscript = True
 
                 submission.put()
                 letter.put()
@@ -585,3 +586,20 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
                 message = _('Unable to send proposal letter. Please try again later.')
                 self.add_message(message, 'error')
                 return self.get()
+
+
+class ViewProposalLetterHandler(BaseHandler):
+    @user_required
+    def get(self):
+
+        proposalletter_id = self.request.GET.get('rlid')
+
+        proposalletter = bmodels.SubmissionResponselLetter.get_by_id(long(proposalletter_id))
+
+        params = {}
+        params['responseletter'] = proposalletter.content
+        params['responseletter_id'] = proposalletter.key.id()
+
+        return self.render_template('/publisher/view_responseletter.html', **params)
+
+

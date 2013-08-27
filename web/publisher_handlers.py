@@ -285,12 +285,12 @@ class ViewResponseLetterHandler(BaseHandler):
 
         responseletter_id = self.request.GET.get('rlid')
 
-        responseletter = bmodels.ResponseLetter.get_by_id(long(responseletter_id))
+        responseletter = bmodels.SubmissionResponseLetter.get_by_id(long(responseletter_id))
 
         params = {}
-        params['responseletter'] = responseletter.responseletter
+        params['responseletter'] = responseletter.content
 
-        return self.render_template('/author/view_responseletter.html', **params)
+        return self.render_template('/publisher/view_responseletter.html', **params)
 
 
 class LoadResponseLetterHandler(BaseHandler):
