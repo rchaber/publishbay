@@ -56,7 +56,7 @@
                                         <a href="{{ uri_for('publisher-viewupdate-submission') }}?submission_id={{ s.submission_id }}">{{ s.submission_id }}</a>
                                     </td>
                                     <td>
-                                        {{ s.manuscript_title }}
+                                        <a href="{{ uri_for('view-manuscript-details') }}?mid={{ s.manuscript_id }}">{{ s.manuscript_title }}</a>
                                     </td>
                                     <td>
                                         <a href="{{ uri_for('view-authors') }}?aid={{ s.author_id }}">{{ s.author }}</a>

@@ -79,6 +79,7 @@ class SubmissionsReceivedHandler(BaseHandler):
             author = bmodels.AuthorProfile.get_by_userkey(item.user)
             d['submission_id'] = item.key.id()
             d['manuscript_title'] = manuscript.title
+            d['manuscript_id'] = manuscript.key.id()
             d['author'] = author.name + ' ' + author.last_name
             d['author_id'] = author.key.id()
             d['status'] = utils.submission_status[item.status]
