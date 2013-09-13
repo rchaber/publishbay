@@ -512,6 +512,8 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
         params['submission_id'] = submission_id
         params['author'] = submission.manuscript.get().user.get().name + ' ' + submission.manuscript.get().user.get().last_name
         params['author_id'] = submission.manuscript.get().author.id()
+        params['publishinghouse_id'] = submission.publishinghouse.id()
+        params['publishinghouse'] = submission.publishinghouse.get().name
         params['coverletter'] = submission.coverletter
         params['title'] = manuscript.title
         params['tagline'] = manuscript.tagline
@@ -520,6 +522,7 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
         params['genres'] = manuscript.genres
         params['co_authors'] = ', '.join(manuscript.co_authors)
         params['submitted_on'] = submission.submitted_on.strftime('%Y-%m-%d')
+        params['updated_on'] = submission.updated_on.strftime('%Y-%m-%d')
         params['status_code'] = submission.status
         params['status'] = utils.submission_status[submission.status]
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')

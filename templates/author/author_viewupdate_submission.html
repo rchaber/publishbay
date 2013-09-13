@@ -55,7 +55,7 @@
                         </ul>
                         <div class="tab-content" style="height: 440px;">
                             <div id="tb3_a" class="tab-pane active">
-                                <div class="submission_header" style="text-align: left; padding: 1px 15px 10px 15px;">
+                                <div class="submission_header" style="text-align: left; padding: 1px 15px 10px 15px; border-bottom: 1px solid #CCC;">
                                     <dl class="dl-horizontal">
                                         <dt>Title</dt>
                                         <dd class="list-name"><span class="title"><a href="{{ uri_for('view-manuscript')}}?mid={{ manuscript_id }}">{{ title }}</a></span></dd>
@@ -83,6 +83,20 @@
                                         <dd>
                                             {% for g in genres %}<span class="label label-info">{{ g }}</span>{% endfor %}
                                         </dd>
+                                    </dl>
+                                </div>
+                                <div class="submission_header" style="text-align: left; padding: 1px 15px 10px 15px;">
+                                    <dl class="dl-horizontal">
+                                        <dt>Submitted To</dt>
+                                        <dd><a href="{{ uri_for('view-publishinghouses')}}?phid={{ publishinghouse_id }}" class="author">{{ publishinghouse }}</a></dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>Submission Date</dt>
+                                        <dd>{{ submitted_on }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>Last Update</dt>
+                                        <dd>{{ updated_on }}</dd>
                                     </dl>
                                 </div>
                             </div>

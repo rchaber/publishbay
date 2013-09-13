@@ -47,14 +47,16 @@
                             <li><a data-toggle="tab" href="#tb3_b">Cover Letter</a></li>
                             {% endif %}
                             <li><a data-toggle="tab" href="#tb3_c">Sample</a></li>
+                            {% if proposalletter_id %}
                             <li><a data-toggle="tab" href="#tb3_d">Proposal Letter</a></li>
+                            {% endif %}
                         </ul>
                         <div class="tab-content" style="height: 440px;">
                             <div id="tb3_a" class="tab-pane active">
                                 <div class="submission_header" style="text-align: left; padding: 1px 15px 10px 15px;">
                                     <dl class="dl-horizontal">
                                         <dt>Title</dt>
-                                        <dd class="list-name"><span class="title"><a href="{{ uri_for('view-manuscript')}}?mid={{ manuscript_id }}">{{ title }}</a></span></dd>
+                                        <dd class="list-name"><span class="title"><a href="{{ uri_for('view-manuscript-details') }}?mid={{ manuscript_id }}">{{ title }}</a></span></dd>
                                     </dl>
                                     <dl class="dl-horizontal">
                                         <dt>Author</dt>

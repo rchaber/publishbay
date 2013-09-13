@@ -26,7 +26,7 @@ from boilerplate.lib.basehandler import BaseHandler
 from boilerplate.lib.basehandler import user_required
 
 # from google.appengine.ext import ndb
-# from google.appengine.ext import blobstore
+from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
 # from google.appengine.api import users
@@ -220,8 +220,10 @@ class PublisherViewUpdateSubmissionHandler(BaseHandler):
         params['status_code'] = submission.status
         params['status'] = utils.submission_status[submission.status]
         params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
+        step = utils.submission_status_step[submission.status]
+        params['submission_step'] = step
 
-        if submission.status in ['submitted', 'rev_inq']:
+        if step >= 20:  # meaning: it's either submitted or reviewing inquiry
             # retrieve response letter templates previously saved by the user
             r = bmodels.LetterTemplate.query(bmodels.LetterTemplate.user == self.user_key, bmodels.LetterTemplate.kind == 'response_to_inquiry').fetch()
             responseletter_templates = [[a.key.id(), a.name] for a in r]
@@ -229,6 +231,15 @@ class PublisherViewUpdateSubmissionHandler(BaseHandler):
 
             responseletters = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key).fetch()
             params['responseletters_ids'] = [i.key.id() for i in responseletters]
+
+        if step >= 50:  # meaning: proposal sent
+            proposalletter = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key, bmodels.SubmissionResponseLetter.kind == 'proposal').get()
+            if proposalletter :
+                params['proposalletter_id'] = proposalletter.key.id()
+            else:
+                params['proposalletter_id'] = None
+            params['view_full_manuscript'] = submission.view_full_manuscript
+            full_manuscript_key = manuscript.full_manuscript_key
 
         return self.render_template('publisher/publisher_viewupdate_submission.html', **params)
 
