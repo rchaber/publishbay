@@ -49,11 +49,12 @@
                             <li><a data-toggle="tab" href="#tb3_c">Sample</a></li>
                             {% if proposalletter_id %}
                             <li><a data-toggle="tab" href="#tb3_d">Proposal Letter</a></li>
+                            <li><a data-toggle="tab" href="#tb3_e">Full Manuscript</a></li>
                             {% endif %}
                         </ul>
                         <div class="tab-content" style="height: 440px;">
                             <div id="tb3_a" class="tab-pane active">
-                                <div class="submission_header" style="text-align: left; padding: 1px 15px 10px 15px;">
+                                <div class="submission_header" style="text-align: left; padding: 1px 15px 10px 15px; border-bottom: 1px solid #CCC;">
                                     <dl class="dl-horizontal">
                                         <dt>Title</dt>
                                         <dd class="list-name"><span class="title"><a href="{{ uri_for('view-manuscript-details') }}?mid={{ manuscript_id }}">{{ title }}</a></span></dd>
@@ -83,6 +84,16 @@
                                         </dd>
                                     </dl>
                                 </div>
+                                <div class="submission_header" style="text-align: left; padding: 1px 15px 10px 15px;">
+                                    <dl class="dl-horizontal">
+                                        <dt>Submission Date</dt>
+                                        <dd>{{ submitted_on }}</dd>
+                                    </dl>
+                                    <dl class="dl-horizontal">
+                                        <dt>Last Update</dt>
+                                        <dd>{{ updated_on }}</dd>
+                                    </dl>
+                                </div>
                             </div>
                             {% if coverletter and coverletter != '' %}
                             <div id="tb3_b" class="tab-pane">
@@ -100,6 +111,11 @@
                             <div id="tb3_d" class="tab-pane">
                                 <div class="view response-letter" style="width: 650px; border: none; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;">
                                     <iframe src="{{ uri_for('view-responseletter') }}?rlid={{ proposalletter_id }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
+                                </div>
+                            </div>
+                            <div id="tb3_e" class="tab-pane">
+                                <div class="view manuscript-sample" style="width: 650px; border: none; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;">
+                                    <iframe src="{{ full_manuscript_url }}" frameborder="0" style="width: 100%; height: 400px;"></iframe>
                                 </div>
                             </div>
                             {% endif %}

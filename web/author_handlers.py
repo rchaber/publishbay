@@ -525,7 +525,6 @@ class AuthorViewUpdateSubmissionHandler(BaseHandler):
         params['updated_on'] = submission.updated_on.strftime('%Y-%m-%d')
         params['status_code'] = submission.status
         params['status'] = utils.submission_status[submission.status]
-        params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
 
         if utils.submission_status_step[submission.status] >= 50:
             proposalletter = bmodels.SubmissionResponseLetter.query(bmodels.SubmissionResponseLetter.submission == submission.key, bmodels.SubmissionResponseLetter.kind == 'proposal').get()

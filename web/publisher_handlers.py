@@ -186,7 +186,7 @@ class RespondInquiryHandler(BaseHandler):
             return self.get()
 
 
-class PublisherViewUpdateSubmissionHandler(BaseHandler):
+class PublisherViewUpdateSubmissionHandler(blobstore_handlers.BlobstoreUploadHandler, BaseHandler):
 
     @user_required
     def get(self):
@@ -217,9 +217,9 @@ class PublisherViewUpdateSubmissionHandler(BaseHandler):
         params['genres'] = manuscript.genres
         params['co_authors'] = ', '.join(manuscript.co_authors)
         params['submitted_on'] = submission.submitted_on.strftime('%Y-%m-%d')
+        params['updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
         params['status_code'] = submission.status
         params['status'] = utils.submission_status[submission.status]
-        params['status_updated_on'] = submission.updated_on.strftime('%Y-%m-%d %H:%M')
         step = utils.submission_status_step[submission.status]
         params['submission_step'] = step
 
@@ -239,7 +239,8 @@ class PublisherViewUpdateSubmissionHandler(BaseHandler):
             else:
                 params['proposalletter_id'] = None
             params['view_full_manuscript'] = submission.view_full_manuscript
-            full_manuscript_key = manuscript.full_manuscript_key
+            # full_manuscript_key = manuscript.full_manuscript_key
+            params['full_manuscript_url'] = '/serve/%s' % manuscript.full_manuscript_key
 
         return self.render_template('publisher/publisher_viewupdate_submission.html', **params)
 
